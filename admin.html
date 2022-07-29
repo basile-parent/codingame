@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Codingame ADMIN</title>
+
+    <link rel="icon" type="image/svg+xml" href="assets/logo-admin.svg" />
+
+    <script src="js/constants.js"></script>
+    <script src="https://kit.fontawesome.com/c17e258317.js" crossorigin="anonymous"></script>
+    <script src="js/landing-page/Player.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/timer.js"></script>
+
+    <link rel="stylesheet" href="bulma/css/bulma.min.css" />
+    <link rel="stylesheet" href="style/index.css" />
+    <link rel="stylesheet" href="style/ide.css" />
+    <link rel="stylesheet/less" type="text/css" href="style/landing.less" />
+    <link rel="stylesheet/less" type="text/css" href="style/game.less" />
+
+    <script src="js/less.js"></script>
+</head>
+<body>
+
+    <article id="landing-page" class="page">
+        <section id="landing-page-content">
+            <img src="assets/logo-cube.svg" />
+            <h1>Codingame Atecna</h1>
+
+            <div id="waiting-player-list">
+                <!--                <p>En attente de joueurs...</p>-->
+                <ul>
+                </ul>
+            </div>
+
+            <button class="button is-success">Démarrer le jeu</button>
+        </section>
+
+        <aside id="game-link">Pour rejoindre: https://codingame.basileparent.fr</aside>
+
+    </article>
+
+    <script src="js/landing-page/index.js"></script>
+
+    <script src="js/socket.io.min.js"></script>
+    <script src="js/reconnecting-websocket.js"></script>
+    <script>
+      const WEBSOCKET = new WebsocketClient(WEBSOCKET_URL, WEBSOCKET_PATH, { onConnect: () => {}, onDisconnect: () => {} });
+    </script>
+
+</body>
+</html>

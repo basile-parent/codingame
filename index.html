@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Codingame</title>
+
+    <link rel="icon" type="image/svg+xml" href="assets/logo-cube.svg" />
+
+    <script src="https://kit.fontawesome.com/c17e258317.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script>
+    <script src="js/landing-page/Player.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/timer.js"></script>
+
+    <link rel="stylesheet" href="bulma/css/bulma.min.css" />
+    <link rel="stylesheet" href="style/index.css" />
+    <link rel="stylesheet" href="style/ide.css" />
+    <link rel="stylesheet/less" type="text/css" href="style/landing.less" />
+    <link rel="stylesheet/less" type="text/css" href="style/game.less" />
+
+    <script src="js/less.js"></script>
+</head>
+<body>
+    <article id="landing-page" class="page">
+        <section id="landing-page-content">
+            <img src="assets/logo-cube.svg" />
+            <h1>Codingame Atecna</h1>
+
+            <div id="waiting-player-list">
+<!--                <p>En attente de joueurs...</p>-->
+                <ul>
+                </ul>
+            </div>
+        </section>
+    </article>
+
+    <article id="game-page" class="page hidden">
+        <section id="upper-section">
+            <header>
+                <h1>
+                    <img src="assets/logo-cube.svg" />
+                    Codingame Atecna
+                </h1>
+                <p id="game-mode">
+                    <span class="icon">
+                      <i class="fa-solid fa-puzzle-piece"></i>
+                    </span>
+                    Mode de jeu : Le + rapide
+                </p>
+                <p id="timer">
+                    <span class="icon">
+                      <i class="fa-solid fa-hourglass"></i>
+                    </span>
+                    Timer:
+                    <time></time>
+                </p>
+            </header>
+
+
+            <section id="upper-section-content">
+
+                <!-- Problem -->
+                <section id="problem">
+                    <h2>
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Problème
+                    </h2>
+                    <p>
+                        Vous recevez 2 entiers <strong>A</strong> et <strong>B</strong> en entrée. Le résultat doit être la somme des 2 entiers.
+                    </p>
+                    <div class="block details">
+                        <h3>Entrées:</h3>
+                        <p>input = [ A, B ]</p>
+
+                        <hr/>
+                        <h3>Sortie:</h3>
+                        <p>Retourne un entier qui est la somme de <strong>A</strong> et <strong>B</strong></p>
+
+                        <hr/>
+                        <h3>Contraintes:</h3>
+                        <ul>
+                            <li>-500 000 <= <strong>A</strong> <= 500 000</li>
+                            <li>-500 000 <= <strong>B</strong> <= 500 000</li>
+                        </ul>
+
+                        <hr/>
+                        <h3>Exemples:</h3>
+                        <div class="block example">
+                            <div class="example-input">
+                                <p class="example-title">Entrée</p>
+                                <p class="example-value">3 0</p>
+                            </div>
+                            <div class="example-output">
+                                <p class="example-title">Sortie</p>
+                                <p class="example-value">3</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- Solution IDE -->
+                <section id="solution">
+                    <div id="solution-ide"></div>
+                    <div id="solution-ide-char-count">0</div>
+                </section>
+            </section>
+        </section>
+
+        <section id="lower-section">
+            <section id="lower-section-content">
+
+                <!-- Output -->
+                <section id="output">
+                    <section id="other-players">
+                        <h2><i class="fa-solid fa-users"></i> Autres joueurs</h2>
+                        <ul>
+
+                        </ul>
+                    </section>
+                    <section id="output-console">
+                        <p>Sortie standard:</p>
+                        <pre>> 11122</pre>
+
+                        <div class="notification is-success is-light">Success</div>
+                    </section>
+                </section>
+
+
+                <!-- Tests & submit -->
+                <section id="unit-tests">
+                    <section id="unit-tests-list">
+                        <ol>
+                            <li class="unit-test is-success">
+                                <span>Test 1 : 1 + 2</span>
+                                <button class="button is-light" onclick="runTest([1, 2], 3)"><i class="fa-solid fa-play"></i></button>
+                            </li>
+
+                            <li class="unit-test is-failure">
+                                <span>Test 2 : 5 + 0</span>
+                                <button class="button is-light"><i class="fa-solid fa-play"></i></button>
+                            </li>
+
+                        </ol>
+                    </section>
+                    <section id="unit-tests-actions">
+                        <button class="button is-light" id="unit-tests-execute-all"><i class="fa-solid fa-play"></i> Tous les tests</button>
+                        <button class="button is-light" id="submit-solution"><i class="fa-solid fa-check"></i> Soumettre</button>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </article>
+
+    <script>
+        const flask = new CodeFlask('#solution-ide', { language: 'js', lineNumbers: true, defaultTheme: false });
+        flask.onUpdate((code) => {
+          document.getElementById("solution-ide-char-count").innerHTML = code.length
+        })
+        flask.updateCode(`const [ firstInput ] = inputArray
+// Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
+// Faire un "return" de la solution au problème
+
+for (let i = 0; i < 5000; i++) {}
+return "your solution"`)
+    </script>
+    <script src="js/execute-code.js"></script>
+
+    <script src="js/landing-page/index.js"></script>
+</body>
+</html>

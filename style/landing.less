@@ -1,0 +1,55 @@
+#landing-page {
+
+  #landing-page-content {
+    margin: auto;
+    text-align: center;
+
+    img {
+      height: 200px;
+    }
+    h1 {
+      font-size: 5rem;
+    }
+
+    #waiting-player-list {
+      height: 300px;
+      border: 1px solid grey;
+      overflow: auto;
+
+      ul {
+        column-count: 2;
+        column-gap: 0;
+
+        li {
+          width: 100%;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid red;
+
+          page-break-inside: avoid;
+          break-inside: avoid-column;
+
+          font-weight: 600;
+
+          i {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  button {
+    margin-top: 20px;
+  }
+
+  #game-link {
+    position: absolute;
+    top: 0;
+    right: 10px;
+
+    font-size: 1.5rem;
+  }
+}

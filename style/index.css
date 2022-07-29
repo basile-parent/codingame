@@ -1,0 +1,60 @@
+:root {
+    --highlight: #e08d00;
+    --highlight-contrast: #242424;
+    --timer: #3a7bc2;
+    --timer-ending: #c23a3a;
+    --lowlight: #959595;
+
+    --border-color: #8e8e8e;
+    --details-background: #323232;
+    --details-example-background: #4c4c4c;
+
+    --all-test-color: #5cb64e;
+    --submit-solution-color: #d09667;
+    --ok-test-color: #5cb64e;
+    --ko-test-color: #e77b7b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    background-color: #222;
+    margin: 0;
+    padding: 0;
+    color: white;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+p {
+    margin: 0;
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    transition: opacity 0.3s;
+    opacity: 1;
+    z-index: 1;
+}
+
+.page.hidden {
+    opacity: 0;
+
+    animation-name: hiddenZIndex;
+    animation-duration: 0s;
+    animation-delay: 0.3s;
+}
+
+@keyframes hiddenZIndex {
+    from {z-index: 1;}
+    to {z-index: -1;}
+}

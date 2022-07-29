@@ -1,0 +1,45 @@
+@import "./variables.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  background-color: $background;
+  margin: 0;
+  padding: 0;
+  color: white;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+p {
+  margin: 0;
+}
+
+/*.page {*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  height: 100%;*/
+/*  width: 100%;*/
+
+/*  display: flex;*/
+/*  transition: opacity 0.3s;*/
+/*  opacity: 1;*/
+/*  z-index: 1;*/
+/*}*/
+
+/*.page.hidden {*/
+/*  opacity: 0;*/
+
+/*  animation-name: hiddenZIndex;*/
+/*  animation-duration: 0s;*/
+/*  animation-delay: 0.3s;*/
+/*}*/
+
+/*@keyframes hiddenZIndex {*/
+/*  from {z-index: 1;}*/
+/*  to {z-index: -1;}*/
+/*}*/
