@@ -1,0 +1,17 @@
+@import "../../../variables.scss";
+
+.editor {
+  flex: 1;
+  position: relative;
+  border: 1px solid $border-color;
+
+  .editorCharCount {
+    position: absolute;
+    background-color: $details-example-background;
+    padding: 2px 5px;
+    z-index: 20;
+    bottom: 0;
+    right: 0;
+    font-size: 0.75rem;
+  }
+}

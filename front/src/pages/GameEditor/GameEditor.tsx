@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Header, Topic} from "./components";
+import {Editor, Header, Topic} from "./components";
 import styles from "./GameEditor.module.scss"
 
 type GameEditorProps = {}
@@ -11,7 +11,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
 
                 <section className={styles.upperSectionContent}>
                     <Topic />
-                    <div id="solution">AAA</div>
+                    <Editor />
                 </section>
             </section>
         </article>
