@@ -1,0 +1,51 @@
+@import "../../../variables.scss";
+
+.topic {
+  flex: 1;
+  overflow: auto;
+  max-height: calc(75vh - 50px);
+
+  h2 {
+    color: $lowlight;
+
+    svg {
+      margin-right: 5px;
+    }
+  }
+
+  .example {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+  }
+
+  .exampleInput, .exampleOutput {
+    flex: 1;
+    background-color: $details-example-background;
+    border-radius: 3px;
+    padding: 5px 15px;
+  }
+
+  h3, .exampleTitle {
+    color: $lowlight;
+    font-weight: 600;
+  }
+
+  .exampleValue {
+    font-family: monospace;
+  }
+
+  strong {
+    background-color: $highlight;
+    color: $highlight-contrast;
+    padding: 0 3px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  .details {
+    background-color: $details-background;
+    padding: 15px 25px;
+    margin-top: 25px;
+  }
+}

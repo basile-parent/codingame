@@ -1,0 +1,35 @@
+@import "../../../variables.scss";
+
+.header {
+  & > * {
+    display: inline-block;
+  }
+
+  h1 {
+    margin: 0;
+
+    svg {
+      height: 22px;
+      vertical-align: middle;
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+  }
+
+  .gameMode {
+    color: $highlight;
+    margin-left: 40px;
+    font-weight: 600;
+  }
+
+  .timer {
+    color: $timer;
+    font-weight: 600;
+    margin-left: 40px;
+  }
+
+  .timer .ending {
+    color: $timer-ending;
+  }
+
+}
