@@ -1,0 +1,48 @@
+@import "../../../variables.scss";
+
+.list {
+  list-style-type: decimal-leading-zero;
+
+  li {
+    height: 60px;
+    line-height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 15px;
+    border-bottom: 1px solid $border-color;
+    counter-increment: item;
+
+    &:before {
+      margin-right: 10px;
+      content: counter(item, decimal-leading-zero);
+      background: $details-example-background;
+      border-radius: 4px;
+      width: 35px;
+      padding: 5px;
+      font-weight: 700;
+      text-align: center;
+      display: inline-block;
+    }
+  }
+}
+
+.unitTest {
+  &.is-success {
+    color: var(--ok-test-color)
+  }
+  &.is-failure {
+    color: var(--ko-test-color)
+  }
+
+  button {
+    background-color: $details-example-background;
+    color: $all-test-color;
+    height: 40px;
+    width: 40px;
+  }
+
+  span {
+    flex: 1;
+  }
+}

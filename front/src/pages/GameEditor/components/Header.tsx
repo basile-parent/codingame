@@ -23,7 +23,7 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
                   <FontAwesomeIcon icon={faHourglass} />
                 </span>
                 Timer:
-                <time></time>
+                <time>00:00:00</time>
             </p>
         </header>
     )

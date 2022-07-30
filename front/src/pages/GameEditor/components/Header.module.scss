@@ -26,10 +26,14 @@
     color: $timer;
     font-weight: 600;
     margin-left: 40px;
-  }
 
-  .timer .ending {
-    color: $timer-ending;
+    time {
+      margin-left: 5px;
+    }
+
+    .ending {
+      color: $timer-ending;
+    }
   }
 
 }

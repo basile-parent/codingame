@@ -1,0 +1,17 @@
+@import "../../../variables.scss";
+
+.unitTestsExecuteAll {
+  color: $all-test-color !important;
+
+  svg {
+    margin-right: 10px;
+  }
+}
+
+.submitSolution {
+  color: $submit-solution-color !important;
+
+  svg {
+    margin-right: 10px;
+  }
+}

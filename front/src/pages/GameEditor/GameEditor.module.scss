@@ -65,117 +65,50 @@
 
   }
 
-  #lower-section {
+  .lowerSection {
     flex: 1;
     display: flex;
 
-    #lower-section-content {
+    .lowerSectionContent {
       flex: 1;
       display: flex;
       gap: 20px;
 
-      #output, #unit-tests {
+      .output {
         flex: 1;
         border: 1px solid $border-color;
-      }
-
-      #output {
         display: flex;
         min-height: 0;
         height: calc(25vh - 6px);
 
-        #other-players {
-          background-color: $details-background;
+        .otherPlayers {
+          background-color: var(--details-background);
           flex: 1;
           padding: 5px 15px;
           min-width: 0;
           overflow: auto;
-
-          h2 {
-            font-size: 1.2rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
         }
 
-        #output-console {
+        .outputConsole {
           flex: 2;
           padding: 5px 15px;
           overflow: auto;
-
-          p {
-            font-weight: 600;
-          }
-
-          pre {
-            padding: unset;
-          }
-
-          .notification {
-            margin-top: 15px;
-            padding: 5px 15px;
-          }
         }
       }
 
-      #unit-tests {
+
+      .unitTests {
+        flex: 1;
+        border: 1px solid $border-color;
         display: flex;
         height: calc(25vh - 6px);
 
-        #unit-tests-list {
+        .unitTestsList {
           flex: 2;
           overflow: auto;
-
-          ol {
-            list-style-type: decimal-leading-zero;
-
-            li {
-              height: 60px;
-              line-height: 25px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              padding: 5px 15px;
-              border-bottom: 1px solid $border-color;
-              counter-increment: item;
-
-              &:before {
-                margin-right: 10px;
-                content: counter(item, decimal-leading-zero);
-                background: $details-example-background;
-                border-radius: 4px;
-                width: 35px;
-                padding: 5px;
-                font-weight: 700;
-                text-align: center;
-                display: inline-block;
-              }
-            }
-          }
-
-          .unit-test {
-            &.is-success {
-              color: var(--ok-test-color)
-            }
-            &.is-failure {
-              color: var(--ko-test-color)
-            }
-
-            button {
-              background-color: $details-example-background;
-              color: $all-test-color;
-              height: 40px;
-              width: 40px;
-            }
-
-            span {
-              flex: 1;
-            }
-          }
         }
 
-        #unit-tests-actions {
+        .unitTestsActions {
           flex: 1;
           border-left: 1px solid $border-color;
 
@@ -196,13 +129,6 @@
           }
         }
 
-        #unit-tests-execute-all {
-          color: $all-test-color;
-        }
-
-        #submit-solution {
-          color: $submit-solution-color;
-        }
       }
     }
   }

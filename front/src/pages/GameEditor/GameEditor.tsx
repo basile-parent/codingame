@@ -1,6 +1,7 @@
-import {FC, useEffect, useState} from 'react';
-import {Editor, Header, Topic} from "./components";
+import {FC, useCallback, useState} from 'react';
+import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsList} from "./components";
 import styles from "./GameEditor.module.scss"
+import UnitTestsActions from "./components/UnitTestsActions";
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
@@ -11,6 +12,8 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
 for (let i = 0; i < 5000; i++) {}
 return "your solution"`)
 
+    const executeTest = useCallback((args: any[], expectedResult: any) => runTest(code, args, expectedResult), [ code ])
+
     return (
         <article className={styles.gamePage}>
             <section className={styles.upperSection}>
@@ -19,6 +22,29 @@ return "your solution"`)
                 <section className={styles.upperSectionContent}>
                     <Topic />
                     <Editor code={code} updateCode={setCode} />
+                </section>
+
+                <section className={styles.lowerSection}>
+                    <section className={styles.lowerSectionContent}>
+
+                        <section className={styles.output}>
+                            <section className={styles.otherPlayers}>
+                                <OtherPlayers />
+                            </section>
+                            <section className={styles.outputConsole}>
+                                <OutputConsole />
+                            </section>
+                        </section>
+
+                        <section className={styles.unitTests}>
+                            <section className={styles.unitTestsList}>
+                                <UnitTestsList onPlayTest={executeTest} />
+                            </section>
+                            <section className={ styles.unitTestsActions }>
+                                <UnitTestsActions />
+                            </section>
+                        </section>
+                    </section>
                 </section>
             </section>
         </article>
