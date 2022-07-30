@@ -1,0 +1,86 @@
+$background: #2a2a2a;
+$background-contrast: #DDD;
+$text: #b1b7ff;
+$punctuation: #aed5ff;
+$keyword: #ffc379;
+$type: #bc79ff;
+$type-number: #799fff;
+$operator: #ff78af;
+$token: #41ad8f;
+$comment: #9badb7;
+
+$lines-backgound: #494949;
+$lines-backgound-contrast: #DDD;
+
+.codeflask__lines {
+  background-color: $lines-backgound;
+  color: $lines-backgound-contrast !important;
+}
+
+.codeflask {
+  background: $background;
+  color: $text;
+
+  &::before {
+    background-color: $lines-backgound !important;
+  }
+
+  /** Unset bulma styles */
+  .number {
+    align-items: unset;
+    background-color: unset;
+    border-radius: unset;
+    display: unset;
+    font-size: unset;
+    height: unset;
+    justify-content: unset;
+    margin-right: unset;
+    min-width: unset;
+    padding: unset;
+    text-align: unset;
+    vertical-align: unset;
+  }
+  /** END Unset bulma styles */
+}
+
+.codeflask__textarea {
+  color: $background !important;
+  caret-color: $background-contrast !important;
+}
+
+.codeflask .token.punctuation {
+  color: $punctuation;
+}
+.codeflask .token.keyword {
+  color: $keyword;
+}
+.codeflask .token.operator {
+  color: $operator;
+}
+.codeflask .token.string {
+  color: $token;
+}
+.codeflask .token.comment {
+  color: $comment;
+}
+.codeflask .token.function {
+  color: $type;
+}
+.codeflask .token.boolean {
+  color: $type;
+}
+.codeflask .token.number {
+  color: $type-number;
+}
+.codeflask .token.selector {
+  color: $keyword;
+}
+.codeflask .token.property {
+  color: $keyword;
+}
+.codeflask .token.tag {
+  color: $keyword;
+}
+.codeflask .token.attr-value {
+  color: $keyword;
+}
