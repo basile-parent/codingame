@@ -3,16 +3,11 @@ import CodeFlask from "codeflask"
 import styles from "./Editor.module.scss"
 import "./Editor.ide.scss"
 
-type EditorProps = {}
-
-const Editor: FC<EditorProps> = () => {
-    const [ code, setCode ] = useState(`const [ firstInput ] = inputArray
-// Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
-// Faire un "return" de la solution au problème
-
-for (let i = 0; i < 5000; i++) {}
-return "your solution"`)
-
+type EditorProps = {
+    code: string,
+    updateCode: (code: string) => void
+}
+const Editor: FC<EditorProps> = ({ code, updateCode }) => {
     useEffect(() => {
         const id = "editor-ide"
         const codeFlask = new CodeFlask(`#${id}`, {
@@ -22,14 +17,14 @@ return "your solution"`)
         });
 
         codeFlask.updateCode(code);
-        codeFlask.onUpdate(setCode);
+        codeFlask.onUpdate(updateCode);
     }, [])
 
 
     return (
         <section className={styles.editor}>
             <div id="editor-ide"/>
-            <div className={styles.editorCharCount}>0</div>
+            <div className={styles.editorCharCount}>{ code.length }</div>
         </section>
     )
 }
