@@ -28,14 +28,14 @@
 }
 
 .unitTest {
-  &.is-success {
-    color: var(--ok-test-color)
+  &.isSuccess {
+    color: $ok-test-color
   }
-  &.is-failure {
-    color: var(--ko-test-color)
+  &.isFailure {
+    color: $ko-test-color
   }
 
-  button {
+  .button, .button:hover {
     background-color: $details-example-background;
     color: $all-test-color;
     height: 40px;

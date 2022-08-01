@@ -8,7 +8,7 @@ const OutputConsole: FC<OutputConsoleProps> = ({}: OutputConsoleProps) => {
             <p className={styles.title}>Sortie standard:</p>
             <pre className={styles.console}>- 11122</pre>
 
-            <div className={`${ styles.notification } is-success is-light`}>Success</div>
+            <div className={`notification ${ styles.notification } is-success is-light`}>Success</div>
         </>
     )
 }

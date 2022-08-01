@@ -22,26 +22,26 @@ return "your solution"`)
                     <Topic />
                     <Editor code={code} updateCode={setCode} />
                 </section>
+            </section>
 
-                <section className={styles.lowerSection}>
-                    <section className={styles.lowerSectionContent}>
+            <section className={styles.lowerSection}>
+                <section className={styles.lowerSectionContent}>
 
-                        <section className={styles.output}>
-                            <section className={styles.otherPlayers}>
-                                <OtherPlayers />
-                            </section>
-                            <section className={styles.outputConsole}>
-                                <OutputConsole />
-                            </section>
+                    <section className={styles.output}>
+                        <section className={styles.otherPlayers}>
+                            <OtherPlayers />
                         </section>
+                        <section className={styles.outputConsole}>
+                            <OutputConsole />
+                        </section>
+                    </section>
 
-                        <section className={styles.unitTests}>
-                            <section className={styles.unitTestsList}>
-                                <UnitTestsList onPlayTest={executeTest} />
-                            </section>
-                            <section className={ styles.unitTestsActions }>
-                                <UnitTestsActions />
-                            </section>
+                    <section className={styles.unitTests}>
+                        <section className={styles.unitTestsList}>
+                            <UnitTestsList onPlayTest={executeTest} />
+                        </section>
+                        <section className={ styles.unitTestsActions }>
+                            <UnitTestsActions />
                         </section>
                     </section>
                 </section>

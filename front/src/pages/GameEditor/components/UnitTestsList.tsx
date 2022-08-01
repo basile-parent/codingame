@@ -9,16 +9,16 @@ type UnitTestsListProps = {
 const UnitTestsList: FC<UnitTestsListProps> = ({ onPlayTest }: UnitTestsListProps) => {
     return (
         <ol className={styles.list}>
-            <li className={`${styles.unitTest} is-success`}>
+            <li className={`${styles.unitTest} ${ styles.isSuccess }`}>
                 <span>Test 1 : 1 + 2</span>
-                <button className="button is-light" onClick={() => onPlayTest([1, 2], 3)}>
+                <button className={`button ${ styles.button } is-light`} onClick={() => onPlayTest([1, 2], 3)}>
                     <FontAwesomeIcon icon={faPlay} />
                 </button>
             </li>
 
-            <li className={`${styles.unitTest} is-success`}>
+            <li className={`${styles.unitTest} ${ styles.isFailure }`}>
                 <span>Test 2 : 5 + 0</span>
-                <button className="button is-light" onClick={() => onPlayTest([5, 0], 5)}>
+                <button className={`button ${ styles.button } is-light`} onClick={() => onPlayTest([5, 0], 5)}>
                     <FontAwesomeIcon icon={faPlay} />
                 </button>
             </li>
