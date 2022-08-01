@@ -1,7 +1,6 @@
 import {FC, useCallback, useState} from 'react';
-import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsList} from "./components";
+import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsList, UnitTestsActions} from "./components";
 import styles from "./GameEditor.module.scss"
-import UnitTestsActions from "./components/UnitTestsActions";
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
@@ -52,9 +51,7 @@ return "your solution"`)
 };
 
 const runTest = (code: string, args: any[], expectedResult: any) => {
-    const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url), {
-        type: 'module'
-    })
+    const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url), { type: 'module' })
     let workerTimeout: number | null = null
 
     worker.addEventListener('message', e => {
