@@ -33,7 +33,7 @@ const startCountdown = () => {
 };
 
 const _calculateCountdown = () => {
-  return END_DATE.getTime() - new Date().getTime()
+  return Math.max(0, END_DATE.getTime() - new Date().getTime())
 }
 
 const updateCountdown = () => {

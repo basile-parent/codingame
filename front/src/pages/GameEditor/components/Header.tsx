@@ -35,7 +35,7 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
 const runTimer = (date: string,
                   setTimerString: (s: string) => void,
                   setIsEnding: (b: boolean) => void) => {
-    const worker = new Worker(new URL('../lib/timer.worker.js', import.meta.url), {type: 'module'})
+    const worker = new Worker(new URL('../lib/timer.worker.js', import.meta.url))
 
     worker.addEventListener('message', e => {
         switch (e.data.action) {

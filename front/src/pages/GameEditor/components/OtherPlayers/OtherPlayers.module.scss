@@ -1,0 +1,56 @@
+@import "../../../../variables.scss";
+
+.title {
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  margin-bottom: 10px;
+
+  svg {
+    margin-right: 10px;
+  }
+}
+
+.player {
+  white-space: nowrap;
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+
+  .completion {
+    font-size: 12px;
+    line-height: 22px;
+    font-weight: 700;
+    width: 30px;
+    text-align: center;
+  }
+
+  svg {
+    margin: 3px 5px;
+    vertical-align: middle;
+  }
+
+  .info {
+    flex: 1;
+    display: inline-flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    & > div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .name {
+      font-weight: 500;
+    }
+    .status {
+      font-style: italic;
+      color: $lowlight;
+      font-size: 14px;
+      line-height: 12px;
+    }
+  }
+}

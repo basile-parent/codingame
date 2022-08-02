@@ -51,7 +51,7 @@ return "your solution"`)
 };
 
 const runTest = (code: string, args: any[], expectedResult: any) => {
-    const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url), { type: 'module' })
+    const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url))
     let workerTimeout: number | null = null
 
     worker.addEventListener('message', e => {
