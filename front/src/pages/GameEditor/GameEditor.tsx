@@ -14,7 +14,7 @@ return "your solution"`)
     const executeTest = useCallback((args: any[], expectedResult: any) => runTest(code, args, expectedResult), [ code ])
 
     return (
-        <article className={styles.gamePage}>
+        <article className={styles.gamePage + " page"}>
             <section className={styles.upperSection}>
                 <Header/>
 

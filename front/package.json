@@ -13,15 +13,18 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@types/codeflask": "^1.4.3",
+    "animate.css": "^4.1.1",
     "codeflask": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-transition-group": "^4.4.5",
     "vite-plugin-svgr": "^2.2.1",
     "vite-tsconfig-paths": "^3.5.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "@types/react-transition-group": "^4.4.5",
     "@vitejs/plugin-react": "^2.0.0",
     "sass": "^1.54.0",
     "typescript": "^4.6.4",

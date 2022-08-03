@@ -23,6 +23,21 @@ p {
   height: 100%;
 }
 
+
+
+.page {
+  opacity: 0;
+  animation-name: revealPage;
+  animation-duration: 0s;
+  animation-delay: 0.3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes revealPage {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /*.page {*/
 /*  position: absolute;*/
 /*  top: 0;*/
