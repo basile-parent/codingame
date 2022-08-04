@@ -1,27 +1,31 @@
-import {FC} from 'react'
+import {FC, useContext} from 'react'
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import styles from "./UnitTestsList.module.scss"
+import {WSContext} from "../../../common/context/WSContext";
 
 type UnitTestsListProps = {
     onPlayTest: (args: any[], expectedResult: any) => void
 }
 const UnitTestsList: FC<UnitTestsListProps> = ({ onPlayTest }: UnitTestsListProps) => {
+    const { wsState } = useContext(WSContext)
+
     return (
         <ol className={styles.list}>
-            <li className={`${styles.unitTest} ${ styles.isSuccess }`}>
-                <span>Test 1 : 1 + 2</span>
-                <button className={`button ${ styles.button } is-light`} onClick={() => onPlayTest([1, 2], 3)}>
-                    <FontAwesomeIcon icon={faPlay} />
-                </button>
-            </li>
-
-            <li className={`${styles.unitTest} ${ styles.isFailure }`}>
-                <span>Test 2 : 5 + 0</span>
-                <button className={`button ${ styles.button } is-light`} onClick={() => onPlayTest([5, 0], 5)}>
-                    <FontAwesomeIcon icon={faPlay} />
-                </button>
-            </li>
+            {
+                wsState.game?.topic.tests.map((test, index) => (
+                    <li className={`${styles.unitTest}`} key={`test-${ index }`}>
+                        <span>Test { index + 1 }</span>
+                        <button className={`button ${ styles.button } is-light`}
+                                onClick={
+                                    () => onPlayTest(test.inputs, test.output)
+                                }
+                        >
+                            <FontAwesomeIcon icon={faPlay} />
+                        </button>
+                    </li>
+                ))
+            }
         </ol>
     )
 }

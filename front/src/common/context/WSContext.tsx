@@ -2,6 +2,7 @@ import {createContext, Dispatch, FC, useEffect, useReducer} from "react"
 import WebSocketHandler from "./WebSocketHandler"
 import {DisplayMode} from "../../types/DisplayMode";
 import {Screen} from "../../types/Screen";
+import {Game} from "../../types/Game";
 
 type WSState = {
     ws: WebSocketHandler | null,
@@ -9,6 +10,7 @@ type WSState = {
     connected: boolean,
     players: any[],
     screen: Screen,
+    game: Game | null,
 }
 type WSStateAction = {
     type: string,
@@ -21,8 +23,9 @@ const INTIAL_STATE: WSState = {
     connected: false,
     players: [],
     screen: Screen.LANDING_PAGE,
+    game: null,
 }
-const WSContext = createContext<{ state: WSState, dispatch: Dispatch<any> }>({ state: INTIAL_STATE, dispatch: () => null })
+const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
 const wsStateReducer = (state: WSState, action: WSStateAction) => {
     switch (action.type) {
@@ -68,7 +71,7 @@ type WSProviderProps = {
     children: any,
 }
 const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
-    const [state, dispatch] = useReducer(wsStateReducer, { ...INTIAL_STATE, mode })
+    const [wsState, dispatch] = useReducer(wsStateReducer, { ...INTIAL_STATE, mode })
 
     useEffect(() => {
         dispatch({ type: "disconnect" })
@@ -76,7 +79,7 @@ const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
         dispatch({ type: "setWs", payload: socket })
     }, [ dispatch ])
 
-    const value = {state, dispatch}
+    const value = {wsState, dispatch}
 
     return <WSContext.Provider value={value}>{children}</WSContext.Provider>
 }

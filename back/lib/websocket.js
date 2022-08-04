@@ -34,7 +34,7 @@ const createWebSocketServer = http => {
       PLAYERS.push({socket, io, data: {score: 0}})
     }
 
-    socket.emit('status', GAME)
+    socket.emit('status', GAME.toJson())
     socket.emit('leaderboard', getLeaderboard())
 
     socket.on("setUuid", uuid => {
@@ -95,7 +95,7 @@ const createWebSocketServer = http => {
 
     socket.on("startGame", (uuid, name) => {
       GAME.startGame()
-      broadcast('status', GAME)
+      broadcast('status', GAME.toJson())
       console.log("Partie démarrée")
     })
 

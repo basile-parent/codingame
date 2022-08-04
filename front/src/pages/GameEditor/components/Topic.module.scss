@@ -17,6 +17,11 @@
     display: flex;
     gap: 40px;
     width: 100%;
+    margin-top: 10px;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
   }
 
   .exampleInput, .exampleOutput {

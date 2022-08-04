@@ -1,17 +1,22 @@
-import {FC, useCallback, useState} from 'react';
+import {FC, useCallback, useContext, useState} from 'react';
 import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsList, UnitTestsActions} from "./components";
 import styles from "./GameEditor.module.scss"
+import {WSContext} from "../../common/context/WSContext";
 
-type GameEditorProps = {}
-const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const [ code, setCode ] = useState(`const [ firstInput ] = inputArray
+const DEFAULT_CODE = `const [ firstInput ] = inputArray
 // Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
 // Faire un "return" de la solution au problème
 
 for (let i = 0; i < 5000; i++) {}
-return "your solution"`)
+return "your solution"`
 
-    const executeTest = useCallback((args: any[], expectedResult: any) => runTest(code, args, expectedResult), [ code ])
+type GameEditorProps = {}
+const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
+    const { wsState } = useContext(WSContext)
+    const [ code, setCode ] = useState<string>(wsState.game?.topic.defaultCode || DEFAULT_CODE)
+
+    const executeTest = useCallback((args: any[], expectedResult: any) =>
+        runTest(code, args, expectedResult), [ code ])
 
     return (
         <article className={styles.gamePage + " page"}>
@@ -26,7 +31,6 @@ return "your solution"`)
 
             <section className={styles.lowerSection}>
                 <section className={styles.lowerSectionContent}>
-
                     <section className={styles.output}>
                         <section className={styles.otherPlayers}>
                             <OtherPlayers />

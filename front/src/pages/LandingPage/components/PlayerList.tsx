@@ -10,16 +10,16 @@ type PlayerListProps = {
     onChangeName?: () => void
 }
 const PlayerList: FC<PlayerListProps> = ({ onChangeName }: PlayerListProps) => {
-    const {state} = useContext(WSContext);
+    const {wsState} = useContext(WSContext);
 
     return (
         <div className={styles.waitingPlayerList}>
             {
-                !state.players.length ?
+                !wsState.players.length ?
                     <p>En attente de joueurs...</p>:
                     <ul>
                         {
-                            state.players
+                            wsState.players
                                 .sort((p1, p2) => p1.name.localeCompare(p2.name))
                                 .map((player, index) => (
                                 <Player key={`player-${ index }`} player={player} onChangeName={onChangeName} />
