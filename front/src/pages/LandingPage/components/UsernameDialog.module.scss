@@ -1,13 +1,27 @@
 @import "../../../variables.scss";
 
-.usernameDialog {
+.usernameDialogWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 99;
+  background-color: rgba(104, 104, 104, 0.5);
+
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.usernameDialog {
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  height: 100%;
-  width: 100%;
+  background-color: $background;
+  border: 1px solid white;
+  padding: 15px 35px 25px 35px;
 }
 
 .title {

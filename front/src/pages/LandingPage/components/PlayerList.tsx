@@ -3,9 +3,13 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import styles from "./PlayerList.module.scss";
 import {WSContext} from "../../../common/context/WSContext";
+import playerUtils from "../../../utils/playerUtils";
+import {GamePlayer} from "../../../types/Player";
 
-type PlayerListProps = {}
-const PlayerList: FC<PlayerListProps> = ({}: PlayerListProps) => {
+type PlayerListProps = {
+    onChangeName?: () => void
+}
+const PlayerList: FC<PlayerListProps> = ({ onChangeName }: PlayerListProps) => {
     const {state} = useContext(WSContext);
 
     return (
@@ -17,16 +21,37 @@ const PlayerList: FC<PlayerListProps> = ({}: PlayerListProps) => {
                         {
                             state.players
                                 .sort((p1, p2) => p1.name.localeCompare(p2.name))
-                                .map(player => (
-                                <li key={`player-${ player.name }`}>
-                                    <FontAwesomeIcon icon={faUser} />
-                                    { player.name }
-                                </li>
+                                .map((player, index) => (
+                                <Player key={`player-${ index }`} player={player} onChangeName={onChangeName} />
                             ))
                         }
                     </ul>
             }
         </div>
+    )
+}
+
+type PlayerProps = {
+    player: GamePlayer,
+    onChangeName?: () => void
+}
+const Player: FC<PlayerProps> = ({ player, onChangeName }) => {
+    if (player.name === playerUtils.getPlayerName()) {
+        return (
+            <li>
+                <button className={styles.changeNameButton} onClick={onChangeName}>
+                    <FontAwesomeIcon icon={faUser} />
+                    { player.name }
+                </button>
+            </li>
+        )
+    }
+
+    return (
+        <li>
+            <FontAwesomeIcon icon={faUser} />
+            { player.name }
+        </li>
     )
 }
 

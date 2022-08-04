@@ -25,12 +25,10 @@ const LandingPage: FC<LandingPageProps> = ({ presentationMode }: LandingPageProp
         })
     }, [])
 
-    if (!userName) {
-        return <UsernameDialog onSetUsername={recordUsername}/>
-    }
-
     return (
         <>
+            { !userName && <UsernameDialog onSetUsername={recordUsername}/> }
+
             <article className={styles.landingPage}>
                 <section className={styles.landingPageContent}>
                     <AtecnaIcon height="200px" width="200px" />
@@ -39,11 +37,11 @@ const LandingPage: FC<LandingPageProps> = ({ presentationMode }: LandingPageProp
                     {
                         !state.connected ?
                             <h2>Connection en cours...</h2>:
-                            <PlayerList />
+                            <PlayerList onChangeName={() => setUsername(null)} />
                     }
 
 
-                    { presentationMode && <button className="button is-success">Démarrer le jeu</button> }
+                    { presentationMode && <button className={`button is-success ${styles.startGame}`}>Démarrer le jeu</button> }
                 </section>
 
                 {

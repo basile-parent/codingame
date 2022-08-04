@@ -17,24 +17,26 @@ const UsernameDialog: FC<UsernameDialogProps> = ({ onSetUsername }: UsernameDial
             e.preventDefault()
 
             setDisabled(true)
-            onSetUsername(userName)
+            onSetUsername(userName.trim())
                 .catch(errorMessage => alert(errorMessage))
                 .finally(() => setDisabled(false))
         }
     }, [ userName ])
 
     return (
-        <div className={styles.usernameDialog}>
-            <h1 className={styles.title}>Saisir un pseudo et appuyer sur Entrée</h1>
-            <input type="text"
-                   className={styles.input}
-                   value={userName}
-                   onChange={handleChange}
-                   onKeyDown={handleKeyDown}
-                   disabled={disabled}
-                   autoFocus
-                   maxLength={20}
-            />
+        <div className={styles.usernameDialogWrapper}>
+            <div className={styles.usernameDialog}>
+                <h1 className={styles.title}>Saisir un pseudo et appuyer sur Entrée</h1>
+                <input type="text"
+                       className={styles.input}
+                       value={userName}
+                       onChange={handleChange}
+                       onKeyDown={handleKeyDown}
+                       disabled={disabled}
+                       autoFocus
+                       maxLength={20}
+                />
+            </div>
         </div>
     )
 }

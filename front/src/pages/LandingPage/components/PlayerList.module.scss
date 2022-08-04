@@ -31,6 +31,19 @@
       svg {
         margin-right: 10px;
       }
+
+      .changeNameButton {
+        border: none;
+        background: none;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        color: white;
+
+        font-size: inherit;
+        font-weight: inherit;
+      }
     }
   }
 }
