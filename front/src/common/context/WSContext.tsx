@@ -1,11 +1,14 @@
-import {createContext, Dispatch, FC, PropsWithChildren, useEffect, useMemo, useReducer} from "react"
+import {createContext, Dispatch, FC, useEffect, useReducer} from "react"
 import WebSocketHandler from "./WebSocketHandler"
 import {DisplayMode} from "../../types/DisplayMode";
+import {Screen} from "../../types/Screen";
 
 type WSState = {
+    ws: WebSocketHandler | null,
+    mode: DisplayMode,
     connected: boolean,
     players: any[],
-    ws: WebSocketHandler | null
+    screen: Screen,
 }
 type WSStateAction = {
     type: string,
@@ -13,9 +16,11 @@ type WSStateAction = {
 }
 
 const INTIAL_STATE: WSState = {
+    ws: null,
+    mode: DisplayMode.PLAYER,
     connected: false,
     players: [],
-    ws: null
+    screen: Screen.LANDING_PAGE,
 }
 const WSContext = createContext<{ state: WSState, dispatch: Dispatch<any> }>({ state: INTIAL_STATE, dispatch: () => null })
 
@@ -43,18 +48,27 @@ const wsStateReducer = (state: WSState, action: WSStateAction) => {
         case 'setPlayers': {
             return { ...state, players: action.payload }
         }
+        case 'startGame': {
+            state.ws?.startGame()
+            return state
+        }
+        case 'status': {
+            console.log("New State", { ...state, ...action.payload })
+            return { ...state, ...action.payload }
+        }
         default: {
-            throw new Error(`Unhandled action type: ${action.type}`)
+            console.error(`Unhandled action type: ${action.type}`, action.payload)
+            return state
         }
     }
 }
 
 type WSProviderProps = {
-    mode?: DisplayMode,
+    mode: DisplayMode,
     children: any,
 }
 const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
-    const [state, dispatch] = useReducer(wsStateReducer, INTIAL_STATE)
+    const [state, dispatch] = useReducer(wsStateReducer, { ...INTIAL_STATE, mode })
 
     useEffect(() => {
         dispatch({ type: "disconnect" })

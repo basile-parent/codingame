@@ -3,6 +3,7 @@ import playerUtils from "../../utils/playerUtils";
 import UsernameDialog from "./components/UsernameDialog";
 import {WSContext} from "../../common/context/WSContext";
 import {ReactComponent as AtecnaIcon} from "../../assets/logo-cube.svg"
+import {ReactComponent as AtecnaAdminIcon} from "../../assets/logo-admin.svg"
 import styles from "./LandingPage.module.scss"
 import PlayerList from "./components/PlayerList";
 import {DisplayMode} from "../../types/DisplayMode";
@@ -32,7 +33,12 @@ const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
 
             <article className={styles.landingPage}>
                 <section className={styles.landingPageContent}>
-                    <AtecnaIcon height="200px" width="200px" />
+                    {
+                        mode === DisplayMode.ADMIN ?
+                            <AtecnaAdminIcon height="200px" width="200px" />:
+                            <AtecnaIcon height="200px" width="200px" />
+                    }
+
                     <h1>Codingame Atecna</h1>
 
                     {
@@ -42,7 +48,14 @@ const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
                     }
 
 
-                    { mode === DisplayMode.ADMIN && <button className={`button is-success ${styles.startGame}`}>Démarrer le jeu</button> }
+                    {
+                        mode === DisplayMode.ADMIN &&
+                        <button className={`button is-success ${styles.startGame}`}
+                                onClick={() => dispatch({ type: "startGame" })}
+                        >
+                          Démarrer le jeu
+                        </button>
+                    }
                 </section>
 
                 {

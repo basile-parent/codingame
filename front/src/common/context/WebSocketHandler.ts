@@ -42,25 +42,34 @@ class WebSocketHandler {
             this.dispatch({type: "disconnected"})
         })
         this.socket.on("leaderboard", (players) => {
+            console.debug("leaderboard", players)
             this.dispatch({type: "setPlayers", payload: players})
+        })
+        this.socket.on("status", (gameStatus) => {
+            console.debug("status", gameStatus)
+            this.dispatch({type: "status", payload: gameStatus})
         })
     }
 
-    setUuid = () => {
+    setUuid() {
         this._emit("setUuid", playerUtils.getPlayerUuid())
     }
-    setName = (userName: string) => {
+    setName(userName: string) {
         if (this.mode !== DisplayMode.PLAYER) {
             return
         }
         this._emit("setName", playerUtils.getPlayerUuid(), userName)
     }
 
+    startGame() {
+        this._emit("startGame")
+    }
+
     // _on = (channel: string, cb: () => {}) => {
     //     this.socket.on(channel, cb)
     // }
 
-    _emit = (channel: string, ...messages: any) => {
+    _emit(channel: string, ...messages: any) {
         console.debug("Emit message :", channel, ">", messages)
         if (!this.isConnected) {
             console.error("Cannot emit message : WebSocket is disconnected.")

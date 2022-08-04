@@ -1,11 +1,12 @@
 import {ChangeEvent, FC, KeyboardEvent, useCallback, useState} from 'react'
 import styles from "./UsernameDialog.module.scss"
+import playerUtils from "../../../utils/playerUtils";
 
 type UsernameDialogProps = {
     onSetUsername: (username: string) => Promise<void>
 }
 const UsernameDialog: FC<UsernameDialogProps> = ({ onSetUsername }: UsernameDialogProps) => {
-    const [ userName, setUsername ] = useState<string>("")
+    const [ userName, setUsername ] = useState<string>(playerUtils.getPlayerName() || "")
     const [ disabled, setDisabled ] = useState<boolean>(false)
 
     const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
