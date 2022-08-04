@@ -1,0 +1,32 @@
+@import "../../../variables.scss";
+
+.usernameDialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 100%;
+}
+
+.title {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.input {
+  font-size: 40px;
+  width: 520px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid $highlight;
+  color: $highlight;
+  outline: 0;
+  text-align: center;
+}
+
+.input[disabled] {
+  border-bottom: 1px solid $lowlight;
+  color: $lowlight;
+}
