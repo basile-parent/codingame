@@ -38,7 +38,6 @@ class Game {
         players: this.players,
         topic: {
           ...this.topic,
-          timer: undefined,
           points: undefined,
           maxPointsTimer: undefined,
           tests: this.topic.tests.filter(test => !test.hidden)

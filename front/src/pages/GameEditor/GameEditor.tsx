@@ -5,6 +5,7 @@ import {WSContext} from "../../common/context/WSContext";
 import {DisplayMode} from "../../types/DisplayMode";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
+import InstructionsModal from "./components/InstructionsModal";
 
 const DEFAULT_CODE = `const [ firstInput ] = inputArray
 // Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
@@ -15,58 +16,62 @@ return "your solution"`
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const {wsState} = useContext(WSContext)
-    const [code, setCode] = useState<string>(wsState.game?.topic.defaultCode || DEFAULT_CODE)
+    const {wsState: { game, mode }} = useContext(WSContext)
+    const [code, setCode] = useState<string>(game?.topic.defaultCode || DEFAULT_CODE)
+    const [dialogOpen, setDialogOpen] = useState<boolean>(true)
 
     const executeTest = useCallback((args: any[], expectedResult: any) =>
         runTest(code, args, expectedResult), [code])
 
     return (
-        <article className={styles.gamePage + " page"}>
-            <section className={styles.upperSection}>
-                <Header/>
+        <>
+            <InstructionsModal open={dialogOpen} onClose={() => setDialogOpen(false)} />
+            <article className={styles.gamePage + " page"}>
+                <section className={styles.upperSection}>
+                    <Header/>
 
-                <section className={styles.upperSectionContent}>
-                    <Topic/>
-                    <Editor code={code} updateCode={setCode}/>
-                </section>
-            </section>
-
-            <section className={styles.lowerSection}>
-                <section className={styles.lowerSectionContent}>
-                    <section className={styles.output}>
-                        <section className={styles.otherPlayers}>
-                            <OtherPlayers/>
-                        </section>
-                        <section className={styles.outputConsole}>
-                            <OutputConsole/>
-                        </section>
+                    <section className={styles.upperSectionContent}>
+                        <Topic/>
+                        <Editor code={code} updateCode={setCode}/>
                     </section>
-
-                    {
-                        wsState.mode === DisplayMode.PLAYER &&
-                        <section className={styles.unitTests}>
-                          <section className={styles.unitTestsList}>
-                            <UnitTestsList onPlayTest={executeTest}/>
-                          </section>
-                          <section className={styles.unitTestsActions}>
-                            <UnitTestsActions/>
-                          </section>
-                        </section>
-                    }
-
-                    {
-                        wsState.mode === DisplayMode.ADMIN &&
-                        <section className={styles.adminControls}>
-                          <button className={`button is-light ${ styles.unitTestsExecuteAll }`}>
-                            <FontAwesomeIcon icon={faCheck} /> Terminer le sujet
-                          </button>
-                        </section>
-                    }
-
                 </section>
-            </section>
-        </article>
+
+                <section className={styles.lowerSection}>
+                    <section className={styles.lowerSectionContent}>
+                        <section className={styles.output}>
+                            <section className={styles.otherPlayers}>
+                                <OtherPlayers/>
+                            </section>
+                            <section className={styles.outputConsole}>
+                                <OutputConsole/>
+                            </section>
+                        </section>
+
+                        {
+                            mode === DisplayMode.PLAYER &&
+                            <section className={styles.unitTests}>
+                              <section className={styles.unitTestsList}>
+                                <UnitTestsList onPlayTest={executeTest}/>
+                              </section>
+                              <section className={styles.unitTestsActions}>
+                                <UnitTestsActions/>
+                              </section>
+                            </section>
+                        }
+
+                        {
+                            mode === DisplayMode.ADMIN &&
+                            <section className={styles.adminControls}>
+                              <button className={`button is-light ${ styles.unitTestsExecuteAll }`}>
+                                <FontAwesomeIcon icon={faCheck} /> Terminer le sujet
+                              </button>
+                            </section>
+                        }
+
+                    </section>
+                </section>
+            </article>
+        </>
     )
 };
 

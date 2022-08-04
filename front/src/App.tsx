@@ -19,7 +19,6 @@ type CurrentPageProps = {}
 const CurrentPage: FC<CurrentPageProps> = () => {
     const { wsState } = useContext(WSContext)
     const { screen, mode } = wsState
-    console.log("wsState", wsState)
 
     if (screen === Screen.GAME_EDITOR) {
         return <GameEditor />

@@ -12,6 +12,7 @@ export enum GameMode {
 }
 
 type Topic = {
+    timer: number,
     gameMode: GameMode,
     subject: string,
     inputs: string,

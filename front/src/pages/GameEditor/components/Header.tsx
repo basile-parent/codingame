@@ -6,6 +6,7 @@ import styles from "./Header.module.scss"
 import {WSContext} from "../../../common/context/WSContext";
 import {GameMode} from "../../../types/Game";
 import Timer from "../../../common/Timer";
+import gameModeUtils from "../../../utils/gameModeUtils";
 
 type HeaderProps = {}
 const Header: FC<HeaderProps> = ({}: HeaderProps) => {
@@ -21,9 +22,7 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
                 <FontAwesomeIcon icon={faPuzzlePiece}/>
                 Mode de jeu : &nbsp;
                 {
-                    wsState.game?.topic.gameMode === GameMode.FASTEST ? "Le + rapide" :
-                        wsState.game?.topic.gameMode === GameMode.SHORTEST ? "Le + court" :
-                            "???"
+                    gameModeUtils.informations[wsState.game?.topic.gameMode || ""]?.title || "???"
                 }
             </p>
             <p className={styles.timer}>
