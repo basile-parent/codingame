@@ -3,6 +3,11 @@ const app = require('express')();
 app.use('/', require('./routes'));
 app.use(require("./errorHandler"));
 
+process.on('uncaughtException', function(err) {
+  console.log( " UNCAUGHT EXCEPTION " );
+  console.log( "[Inside 'uncaughtException' event] " + err.stack || err.message );
+});
+
 app.use(require('cors')());
 app.use(require('body-parser').json());
 
