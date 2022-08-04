@@ -5,11 +5,12 @@ import {WSContext} from "../../common/context/WSContext";
 import {ReactComponent as AtecnaIcon} from "../../assets/logo-cube.svg"
 import styles from "./LandingPage.module.scss"
 import PlayerList from "./components/PlayerList";
+import {DisplayMode} from "../../types/DisplayMode";
 
 type LandingPageProps = {
-    presentationMode?: boolean
+    mode: DisplayMode
 }
-const LandingPage: FC<LandingPageProps> = ({ presentationMode }: LandingPageProps) => {
+const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
     const [userName, setUsername] = useState<string | null>(playerUtils.getPlayerName())
     const {state, dispatch} = useContext(WSContext);
 
@@ -27,7 +28,7 @@ const LandingPage: FC<LandingPageProps> = ({ presentationMode }: LandingPageProp
 
     return (
         <>
-            { !userName && <UsernameDialog onSetUsername={recordUsername}/> }
+            { !userName && mode === DisplayMode.PLAYER && <UsernameDialog onSetUsername={recordUsername}/> }
 
             <article className={styles.landingPage}>
                 <section className={styles.landingPageContent}>
@@ -41,11 +42,11 @@ const LandingPage: FC<LandingPageProps> = ({ presentationMode }: LandingPageProp
                     }
 
 
-                    { presentationMode && <button className={`button is-success ${styles.startGame}`}>Démarrer le jeu</button> }
+                    { mode === DisplayMode.ADMIN && <button className={`button is-success ${styles.startGame}`}>Démarrer le jeu</button> }
                 </section>
 
                 {
-                    presentationMode &&
+                    mode === DisplayMode.PRESENTATION &&
                     <aside className={styles.gameLink}>Pour rejoindre: <span>https://codingame.basileparent.fr</span></aside>
                 }
             </article>

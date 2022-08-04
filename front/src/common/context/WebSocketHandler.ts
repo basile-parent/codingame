@@ -2,15 +2,22 @@ import {Dispatch} from "react"
 import io from "socket.io-client"
 import {Socket} from "socket.io-client/build/esm/socket"
 import playerUtils from "../../utils/playerUtils"
+import {DisplayMode} from "../../types/DisplayMode";
 
+type WSOptions = {
+    mode?: DisplayMode,
+    path?: string
+}
 class WebSocketHandler {
     public socket: Socket
     public dispatch: Dispatch<any>
     public isConnected: boolean
+    public mode: DisplayMode
 
-    constructor(url: string, dispatch: Dispatch<any>, path?: string) {
+    constructor(url: string, dispatch: Dispatch<any>, options?: WSOptions) {
         this.isConnected = false
-        this.socket = io(url, { path, reconnection: true })
+        this.mode = options?.mode || DisplayMode.PLAYER
+        this.socket = io(url, { path: options?.path, reconnection: true, reconnectionDelay: 500, extraHeaders: {"X-mode": this.mode}})
         this.dispatch = dispatch
 
         this._initSocket()
@@ -20,10 +27,12 @@ class WebSocketHandler {
         this.socket.on("connect", () => {
             this.isConnected = true
 
-            this.setUuid()
-            const userName = playerUtils.getPlayerName()
-            if (userName) {
-                this.setName(userName)
+            if (this.mode === DisplayMode.PLAYER) {
+                this.setUuid()
+                const userName = playerUtils.getPlayerName()
+                if (userName) {
+                    this.setName(userName)
+                }
             }
 
             this.dispatch({type: "connected"})
@@ -41,6 +50,9 @@ class WebSocketHandler {
         this._emit("setUuid", playerUtils.getPlayerUuid())
     }
     setName = (userName: string) => {
+        if (this.mode !== DisplayMode.PLAYER) {
+            return
+        }
         this._emit("setName", playerUtils.getPlayerUuid(), userName)
     }
 

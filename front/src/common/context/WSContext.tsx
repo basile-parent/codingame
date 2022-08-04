@@ -1,5 +1,6 @@
-import {createContext, Dispatch, PropsWithChildren, useEffect, useMemo, useReducer} from "react"
+import {createContext, Dispatch, FC, PropsWithChildren, useEffect, useMemo, useReducer} from "react"
 import WebSocketHandler from "./WebSocketHandler"
+import {DisplayMode} from "../../types/DisplayMode";
 
 type WSState = {
     connected: boolean,
@@ -48,12 +49,16 @@ const wsStateReducer = (state: WSState, action: WSStateAction) => {
     }
 }
 
-const WSProvider = ({ children }: PropsWithChildren) => {
+type WSProviderProps = {
+    mode?: DisplayMode,
+    children: any,
+}
+const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
     const [state, dispatch] = useReducer(wsStateReducer, INTIAL_STATE)
 
     useEffect(() => {
         dispatch({ type: "disconnect" })
-        const socket = new WebSocketHandler("http://localhost:9090", dispatch, "")
+        const socket = new WebSocketHandler("http://localhost:9090", dispatch, { mode })
         dispatch({ type: "setWs", payload: socket })
     }, [ dispatch ])
 

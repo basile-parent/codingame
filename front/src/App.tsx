@@ -1,17 +1,21 @@
 import {FC, useState} from "react"
 import {CSSTransition, SwitchTransition} from 'react-transition-group'
 import 'animate.css'
+import {WSProvider} from "./common/context/WSContext";
+import ConnectedIcon from "./common/ConnectedIcon";
 import GameEditor from "./pages/GameEditor"
 import LandingPage from "./pages/LandingPage";
 import {Screen} from "./types/Screen";
-import {WSProvider} from "./common/context/WSContext";
-import ConnectedIcon from "./common/ConnectedIcon";
+import {DisplayMode} from "./types/DisplayMode";
 
-const App = () => {
+type AppProps = {
+    mode?: DisplayMode
+}
+const App: FC<AppProps> = ({ mode= DisplayMode.PLAYER }) => {
     const [currentScreen, setCurrentScreen] = useState<Screen>(Screen.LANDING_PAGE)
 
     return (
-        <WSProvider>
+        <WSProvider mode={mode}>
             <ConnectedIcon />
             <SwitchTransition mode="out-in">
                 <CSSTransition key={currentScreen}
@@ -21,7 +25,7 @@ const App = () => {
                                    exitActive: 'animate__animated animate__backOutRight'
                                }}
                                timeout={500}>
-                    <CurrentPage currentScreen={currentScreen} />
+                    <CurrentPage currentScreen={currentScreen} mode={mode} />
                 </CSSTransition>
             </SwitchTransition>
         </WSProvider>
@@ -29,14 +33,15 @@ const App = () => {
 };
 
 type CurrentPageProps = {
-    currentScreen: Screen
+    currentScreen: Screen,
+    mode: DisplayMode
 }
-const CurrentPage: FC<CurrentPageProps> = ({ currentScreen }) => {
+const CurrentPage: FC<CurrentPageProps> = ({ currentScreen, mode }) => {
     if (currentScreen === Screen.GAME_EDITOR) {
         return <GameEditor />
     }
 
-    return <LandingPage />
+    return <LandingPage mode={mode} />
 }
 
 export default App
