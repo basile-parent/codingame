@@ -1,5 +1,9 @@
+const Game = require("./Game");
+
 let ADMINS = [];
 let PLAYERS = [];
+
+const GAME = new Game()
 
 const getLeaderboard = () => {
   return PLAYERS.filter(p => p.data.name).map(p => ({...p.data, uuid: undefined}))
@@ -30,6 +34,7 @@ const createWebSocketServer = http => {
       PLAYERS.push({socket, io, data: {score: 0}})
     }
 
+    socket.emit('status', GAME)
     socket.emit('leaderboard', getLeaderboard())
 
     socket.on("setUuid", uuid => {
@@ -51,7 +56,7 @@ const createWebSocketServer = http => {
       player.data.uuid = uuid
 
       logPlayers()
-      socket.emit('leaderboard', getLeaderboard())
+      broadcast('leaderboard', getLeaderboard())
     })
 
     socket.on("setName", (uuid, name) => {
@@ -60,7 +65,7 @@ const createWebSocketServer = http => {
       player.data.name = name
 
       logPlayers()
-      socket.emit('leaderboard', getLeaderboard())
+      broadcast('leaderboard', getLeaderboard())
     })
 
     socket.on('disconnect', () => {
@@ -80,23 +85,39 @@ const createWebSocketServer = http => {
           }
         }
 
-        socket.emit('leaderboard', getLeaderboard())
+        broadcast('leaderboard', getLeaderboard())
         logPlayers();
       }
     );
+
+
+
+
+    socket.on("startGame", (uuid, name) => {
+      GAME.startGame()
+      broadcast('status', GAME)
+      console.log("Partie démarrée")
+    })
+
+
   });
 };
 
 const logPlayers = () => {
-  const adminLabel = ADMINS.length > 0 ? `${ ADMINS.length } admin${ADMINS.length > 1 ? "s" : ""}` : ""
-  const playerLabel = PLAYERS.length > 0 ? `${ PLAYERS.length } player${PLAYERS.length > 1 ? "s" : ""} : ${PLAYERS.map(u => u.data.name || u.data.uuid).join(", ") || "-"}` : ""
-  const labels = [ adminLabel, playerLabel ].filter(label => label)
+  const adminLabel = ADMINS.length > 0 ? `${ADMINS.length} admin${ADMINS.length > 1 ? "s" : ""}` : ""
+  const playerLabel = PLAYERS.length > 0 ? `${PLAYERS.length} player${PLAYERS.length > 1 ? "s" : ""} : ${PLAYERS.map(u => u.data.name || u.data.uuid).join(", ") || "-"}` : ""
+  const labels = [adminLabel, playerLabel].filter(label => label)
   if (labels.length) {
     console.debug(`There is ${labels.join(", ")}`);
   } else {
     console.debug("There is nobody");
   }
 };
+
+const broadcast = (...args) => {
+  ADMINS.forEach(a => a.socket.emit(...args))
+  PLAYERS.forEach(p => p.socket.emit(...args))
+}
 
 // const sendMessageToUser = (login, topic, message) => {
 //   const user = getUser(login);
