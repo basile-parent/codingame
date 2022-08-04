@@ -1,5 +1,6 @@
 import {FC, useContext, useEffect, useState} from 'react'
-import {WSContext} from "./context/WSContext";
+import {WSContext} from "./context/WSContext"
+import styles from "./Timer.module.scss"
 
 type TimerProps = {}
 const Timer: FC<TimerProps> = ({}: TimerProps) => {
@@ -8,11 +9,11 @@ const Timer: FC<TimerProps> = ({}: TimerProps) => {
     const {wsState} = useContext(WSContext)
 
     useEffect(() => {
-        runTimer(new Date(wsState.game!.endTimer!).toISOString(), setTimerString, setIsEnding)
+        runTimer(new Date(wsState.game!.endTimer! + 2000).toISOString(), setTimerString, setIsEnding)
     }, [])
 
     return (
-        <time className={isEnding ? ".ending" : undefined}>{timerString}</time>
+        <time className={isEnding ? styles.ending : undefined}>{timerString}</time>
     )
 }
 

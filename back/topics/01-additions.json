@@ -1,5 +1,5 @@
 {
-  "timer": 300,
+  "timer": 70,
   "points": 5000,
   "maxPointsTimer": 60,
   "gameMode": "fastest",
