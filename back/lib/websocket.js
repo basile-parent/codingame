@@ -6,8 +6,10 @@ let PLAYERS = [];
 const GAME = new Game()
 
 const getLeaderboard = () => {
-  return PLAYERS.filter(p => p.data.name).map(p => ({...p.data, uuid: undefined}))
+  return PLAYERS.filter(p => p.data.name).map(_mapPlayerForFront)
 }
+
+const _mapPlayerForFront = player => ({...player.data, uuid: undefined})
 
 const createWebSocketServer = http => {
   const {Server} = require("socket.io");
@@ -94,7 +96,7 @@ const createWebSocketServer = http => {
 
 
     socket.on("startGame", (uuid, name) => {
-      GAME.startGame()
+      GAME.startGame(PLAYERS.map(_mapPlayerForFront))
       broadcast('status', GAME.toJson())
       console.log("Partie démarrée")
     })

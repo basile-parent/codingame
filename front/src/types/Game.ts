@@ -1,6 +1,9 @@
+import {GamePlayer} from "./Player";
+
 export type Game = {
     topic: Topic,
-    endTimer?: number
+    endTimer?: number;
+    players: GamePlayer[],
 }
 
 export enum GameMode {
@@ -16,7 +19,7 @@ type Topic = {
     constraints?: string[],
     examples?: Test[],
     defaultCode?: string,
-    tests: Test[]
+    tests: Test[],
 }
 
 type Test = {

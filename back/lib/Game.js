@@ -5,6 +5,7 @@ class Game {
   topic
   topicIndex
   endTimer
+  players = []
 
   constructor() {
     this.screen = Screen.LANDING_PAGE
@@ -20,23 +21,25 @@ class Game {
       })
   }
 
-  startGame() {
+  startGame(players) {
     this.screen = Screen.GAME_EDITOR
     this.topic = this.allTopics[this.topicIndex]
+    this.players = players
   }
 
   toJson() {
     let game = null
     if (this.topic) {
       game = {
-        endTimer: new Date("2022-08-04T19:40:00").getTime(),
+        endTimer: new Date("2022-08-04T20:10:00").getTime(),
+        players: this.players,
         topic: {
           ...this.topic,
           timer: undefined,
           points: undefined,
           maxPointsTimer: undefined,
           tests: this.topic.tests.filter(test => !test.hidden)
-        }
+        },
       }
     }
 

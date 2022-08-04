@@ -98,6 +98,7 @@
       }
 
 
+
       .unitTests {
         flex: 1;
         border: 1px solid $border-color;
@@ -124,12 +125,29 @@
             background-color: $details-example-background;
             font-size: 1.4rem;
 
-            i {
+            svg {
               margin-right: 15px;
             }
           }
         }
+      }
 
+      .adminControls {
+        flex: 1;
+        border: 1px solid $border-color;
+        display: flex;
+        height: calc(25vh - 6px);
+
+        button {
+          width: 100%;
+          background-color: $details-example-background;
+          font-size: 1.4rem;
+          color: white;
+
+          svg {
+            margin-right: 15px;
+          }
+        }
       }
     }
   }

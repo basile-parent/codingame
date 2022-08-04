@@ -1,7 +1,10 @@
 import {FC, useCallback, useContext, useState} from 'react';
-import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsList, UnitTestsActions} from "./components";
+import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsActions, UnitTestsList} from "./components";
 import styles from "./GameEditor.module.scss"
 import {WSContext} from "../../common/context/WSContext";
+import {DisplayMode} from "../../types/DisplayMode";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck} from "@fortawesome/free-solid-svg-icons";
 
 const DEFAULT_CODE = `const [ firstInput ] = inputArray
 // Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
@@ -12,11 +15,11 @@ return "your solution"`
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const { wsState } = useContext(WSContext)
-    const [ code, setCode ] = useState<string>(wsState.game?.topic.defaultCode || DEFAULT_CODE)
+    const {wsState} = useContext(WSContext)
+    const [code, setCode] = useState<string>(wsState.game?.topic.defaultCode || DEFAULT_CODE)
 
     const executeTest = useCallback((args: any[], expectedResult: any) =>
-        runTest(code, args, expectedResult), [ code ])
+        runTest(code, args, expectedResult), [code])
 
     return (
         <article className={styles.gamePage + " page"}>
@@ -24,8 +27,8 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                 <Header/>
 
                 <section className={styles.upperSectionContent}>
-                    <Topic />
-                    <Editor code={code} updateCode={setCode} />
+                    <Topic/>
+                    <Editor code={code} updateCode={setCode}/>
                 </section>
             </section>
 
@@ -33,21 +36,34 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                 <section className={styles.lowerSectionContent}>
                     <section className={styles.output}>
                         <section className={styles.otherPlayers}>
-                            <OtherPlayers />
+                            <OtherPlayers/>
                         </section>
                         <section className={styles.outputConsole}>
-                            <OutputConsole />
+                            <OutputConsole/>
                         </section>
                     </section>
 
-                    <section className={styles.unitTests}>
-                        <section className={styles.unitTestsList}>
-                            <UnitTestsList onPlayTest={executeTest} />
+                    {
+                        wsState.mode === DisplayMode.PLAYER &&
+                        <section className={styles.unitTests}>
+                          <section className={styles.unitTestsList}>
+                            <UnitTestsList onPlayTest={executeTest}/>
+                          </section>
+                          <section className={styles.unitTestsActions}>
+                            <UnitTestsActions/>
+                          </section>
                         </section>
-                        <section className={ styles.unitTestsActions }>
-                            <UnitTestsActions />
+                    }
+
+                    {
+                        wsState.mode === DisplayMode.ADMIN &&
+                        <section className={styles.adminControls}>
+                          <button className={`button is-light ${ styles.unitTestsExecuteAll }`}>
+                            <FontAwesomeIcon icon={faCheck} /> Terminer le sujet
+                          </button>
                         </section>
-                    </section>
+                    }
+
                 </section>
             </section>
         </article>
