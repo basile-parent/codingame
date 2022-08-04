@@ -1,7 +1,7 @@
 let PLAYERS = [];
 
 const getLeaderboard = () => {
-  return PLAYERS.filter(p => p.name).map(p => ({ ...p.data, uuid: undefined } ))
+  return PLAYERS.filter(p => p.data.name).map(p => ({ ...p.data, uuid: undefined } ))
 }
 
 const createWebSocketServer = http => {
@@ -21,25 +21,31 @@ const createWebSocketServer = http => {
   // });
 
   io.on('connection', socket => {
-    PLAYERS.push({ socket, io, data: {} })
-
-    console.log("New user")
+    PLAYERS.push({ socket, io, data: { score: 0 } })
 
     socket.on("setUuid", uuid => {
-      console.log("New uuid", uuid)
+      // Remove duplicates (for development mode)
+      let uuidPlayers = PLAYERS.filter(p => p.socket === socket)
+      while (uuidPlayers.length > 1) {
+        const index = PLAYERS.findIndex(p => p.socket === socket)
+        PLAYERS.splice(index, 1)
+        uuidPlayers = PLAYERS.filter(p => p.socket === socket)
+      }
 
-      const index = PLAYERS.findIndex(u => u.socket === socket)
+      if (!uuidPlayers.length) {
+        console.log(PLAYERS)
+        return;
+      }
+
+      const index = PLAYERS.findIndex(p => p.socket === socket)
       const player = PLAYERS[index]
       player.data.uuid = uuid
-      player.data.points = 0
 
       logPlayers()
     })
 
     socket.on("setName", (uuid, name) => {
-      console.log("New name", uuid, name)
-
-      const index = PLAYERS.findIndex(u => u.data.uuid === uuid)
+      const index = PLAYERS.findIndex(p => p.data.uuid === uuid)
       const player = PLAYERS[index]
       player.data.name = name
 
@@ -48,8 +54,9 @@ const createWebSocketServer = http => {
     })
 
     socket.on('disconnect', () => {
-      const index = PLAYERS.findIndex(u => u.socket === socket)
+      const index = PLAYERS.findIndex(p => p.socket === socket)
       if (index < 0) {
+        console.log("Unfound player disconnected")
         return
       }
       const player = PLAYERS[index]
@@ -63,7 +70,7 @@ const createWebSocketServer = http => {
 };
 
 const logPlayers = () => {
-  console.debug(`There is ${ PLAYERS.length } users : ${ PLAYERS.map(u => u.data.name || u.data.uuid).join(", ") || "-" }`);
+  console.debug(`There is ${ PLAYERS.length } user${ PLAYERS.length > 1 ? "s" : "" } : ${ PLAYERS.map(u => u.data.name || u.data.uuid).join(", ") || "-" }`);
 };
 
 // const sendMessageToUser = (login, topic, message) => {
