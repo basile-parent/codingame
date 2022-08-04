@@ -33,6 +33,7 @@ const UsernameDialog: FC<UsernameDialogProps> = ({ onSetUsername }: UsernameDial
                    onKeyDown={handleKeyDown}
                    disabled={disabled}
                    autoFocus
+                   maxLength={20}
             />
         </div>
     )

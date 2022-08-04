@@ -1,0 +1,39 @@
+.landingPage {
+  display: flex;
+
+  .landingPageContent {
+    margin: auto;
+    text-align: center;
+
+    img {
+      height: 200px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      height: 300px;
+      font-size: 2rem;
+      padding-top: 40px;
+      color: grey;
+    }
+  }
+
+  button {
+    margin-top: 20px;
+  }
+
+  .gameLink {
+    position: absolute;
+    top: 0;
+    right: 10px;
+
+    font-size: 1.5rem;
+
+    span {
+      text-decoration: underline;
+    }
+  }
+}

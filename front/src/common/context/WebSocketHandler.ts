@@ -1,6 +1,6 @@
+import {Dispatch} from "react"
 import io from "socket.io-client"
 import {Socket} from "socket.io-client/build/esm/socket"
-import {Dispatch} from "react"
 import playerUtils from "../../utils/playerUtils"
 
 class WebSocketHandler {
@@ -32,6 +32,9 @@ class WebSocketHandler {
             this.isConnected = false
             this.dispatch({type: "disconnected"})
         })
+        this.socket.on("leaderboard", (players) => {
+            this.dispatch({type: "setPlayers", payload: players})
+        })
     }
 
     setUuid = () => {
@@ -53,6 +56,10 @@ class WebSocketHandler {
         }
         this.socket.emit(channel, ...messages)
         return true
+    }
+
+    close = () => {
+        this.socket.close()
     }
 }
 

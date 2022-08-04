@@ -4,7 +4,8 @@ export enum GamePlayerStatus {
 }
 
 export type GamePlayer = {
-    pseudo: string,
+    name: string,
+    score?: number,
     completion: number | null,
     status: GamePlayerStatus
 }

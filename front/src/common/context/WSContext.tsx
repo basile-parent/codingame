@@ -8,7 +8,7 @@ type WSState = {
 }
 type WSStateAction = {
     type: string,
-    payload: any
+    payload?: any
 }
 
 const INTIAL_STATE: WSState = {
@@ -23,6 +23,12 @@ const wsStateReducer = (state: WSState, action: WSStateAction) => {
         case 'connected': {
             return { ...state, connected: true }
         }
+        case 'disconnect': {
+            if (state.ws) {
+                state.ws.close()
+            }
+            return { ...state, connected: false }
+        }
         case 'disconnected': {
             return { ...state, connected: false }
         }
@@ -33,6 +39,9 @@ const wsStateReducer = (state: WSState, action: WSStateAction) => {
             state.ws?.setName(action.payload)
             return state
         }
+        case 'setPlayers': {
+            return { ...state, players: action.payload }
+        }
         default: {
             throw new Error(`Unhandled action type: ${action.type}`)
         }
@@ -41,11 +50,12 @@ const wsStateReducer = (state: WSState, action: WSStateAction) => {
 
 const WSProvider = ({ children }: PropsWithChildren) => {
     const [state, dispatch] = useReducer(wsStateReducer, INTIAL_STATE)
-    const socket = useMemo(() => new WebSocketHandler("http://localhost:9090", dispatch, ""), [ dispatch ])
 
     useEffect(() => {
+        dispatch({ type: "disconnect" })
+        const socket = new WebSocketHandler("http://localhost:9090", dispatch, "")
         dispatch({ type: "setWs", payload: socket })
-    }, [])
+    }, [ dispatch ])
 
     const value = {state, dispatch}
 

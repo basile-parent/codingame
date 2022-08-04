@@ -15,7 +15,7 @@ const Player: FC<PlayerProps> = ({ player }: PlayerProps) => {
             </span>
             <FontAwesomeIcon icon={faUser} />
             <div className={styles.info}>
-                <div className={styles.name}>{ player.pseudo }</div>
+                <div className={styles.name}>{ player.name }</div>
                 <div className={styles.status}>{ translatePlayerStatus(player.status) }</div>
             </div>
         </>
