@@ -1,4 +1,4 @@
-const {Worker} = require('worker_threads')
+import * as WorkerThread from "worker_threads"
 
 const tests = [
   {args: [1, 2], expectedResult: 3},
@@ -12,7 +12,7 @@ const checkCode = (req, res, next) => {
 
   testUserCode(code)
 
-  res.status(200).json({success: true, message: 'Code submitted'});
+  res.status(200).json({success: true, message: 'Code submitted'})
   next()
 }
 
@@ -23,7 +23,7 @@ const testUserCode = code => {
     tests.map(test =>
       _runTest(code, test.args, test.expectedResult)
         .then(result => {
-          resolvedCount++;
+          resolvedCount++
           return result
         })
     )
@@ -34,7 +34,10 @@ const testUserCode = code => {
 const _runTest = (code, args, expectedResult) => {
   return new Promise((resolve, reject) => {
     let workerTimeout
-    const worker = new Worker("./routes/checkCode-worker.js", {workerData: {code, args, expectedResult}})
+    const worker = new WorkerThread.Worker(
+        "./routes/checkCode-worker.ts",
+        {workerData: {code, args, expectedResult}}
+    )
     worker.on('message', e => {
       const {action, value} = e
       switch (action) {
@@ -46,15 +49,15 @@ const _runTest = (code, args, expectedResult) => {
           } else {
             reject("Bad result")
           }
-          break;
+          break
       }
-    });
+    })
 
-    worker.on('error', reject);
+    worker.on('error', reject)
     worker.on('exit', (code) => {
       if (code !== 0)
-        reject(`Worker stopped with exit code ${code}`);
-    });
+        reject(`Worker stopped with exit code ${code}`)
+    })
 
     workerTimeout = setTimeout(() => {
       reject("timeout")
@@ -64,6 +67,4 @@ const _runTest = (code, args, expectedResult) => {
   })
 }
 
-module.exports = {
-  checkCode
-};
+export default checkCode

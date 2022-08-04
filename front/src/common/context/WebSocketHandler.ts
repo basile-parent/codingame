@@ -17,7 +17,16 @@ class WebSocketHandler {
     constructor(url: string, dispatch: Dispatch<any>, options?: WSOptions) {
         this.isConnected = false
         this.mode = options?.mode || DisplayMode.PLAYER
-        this.socket = io(url, { path: options?.path, reconnection: true, reconnectionDelay: 500, extraHeaders: {"X-mode": this.mode}})
+        this.socket = io(url,
+            {
+                path: options?.path,
+                reconnection: true,
+                reconnectionDelay: 500,
+                extraHeaders: {
+                    "X-mode": this.mode,
+                    "X-UUID": playerUtils.getPlayerUuid()
+                }
+            })
         this.dispatch = dispatch
 
         this._initSocket()
@@ -28,7 +37,6 @@ class WebSocketHandler {
             this.isConnected = true
 
             if (this.mode === DisplayMode.PLAYER) {
-                this.setUuid()
                 const userName = playerUtils.getPlayerName()
                 if (userName) {
                     this.setName(userName)
@@ -51,9 +59,6 @@ class WebSocketHandler {
         })
     }
 
-    setUuid() {
-        this._emit("setUuid", playerUtils.getPlayerUuid())
-    }
     setName(userName: string) {
         if (this.mode !== DisplayMode.PLAYER) {
             return

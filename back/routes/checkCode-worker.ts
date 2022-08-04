@@ -1,4 +1,4 @@
-const {parentPort, workerData} = require("worker_threads");
+import {parentPort, workerData} from "worker_threads"
 
 const quietConsole = `
 console = {};
@@ -30,7 +30,7 @@ console.profileEnd = function(){};
 `
 
 const { code, args, expectedResult } = workerData
-runTest(quietConsole + code, args, expectedResult);
+runTest(quietConsole + code, args, expectedResult)
 
 const debug = () => {
   // Debug don't do anything here
@@ -43,5 +43,5 @@ function runTest (code, args, expectedResult) {
 }
 
 function notify(isSuccess) {
-  parentPort.postMessage({action: "notifyResult", value: isSuccess});
+  parentPort.postMessage({action: "notifyResult", value: isSuccess})
 }
