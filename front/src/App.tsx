@@ -4,12 +4,15 @@ import 'animate.css'
 import GameEditor from "./pages/GameEditor"
 import LandingPage from "./pages/LandingPage";
 import {Screen} from "./types/Screen";
+import {WSProvider} from "./common/context/WSContext";
+import ConnectedIcon from "./common/ConnectedIcon";
 
 const App = () => {
     const [currentScreen, setCurrentScreen] = useState<Screen>(Screen.LANDING_PAGE)
 
     return (
-        <>
+        <WSProvider>
+            <ConnectedIcon />
             <SwitchTransition mode="out-in">
                 <CSSTransition key={currentScreen}
                                in={true}
@@ -21,7 +24,7 @@ const App = () => {
                     <CurrentPage currentScreen={currentScreen} />
                 </CSSTransition>
             </SwitchTransition>
-        </>
+        </WSProvider>
     )
 };
 

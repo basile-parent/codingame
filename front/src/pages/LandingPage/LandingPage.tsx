@@ -12,7 +12,6 @@ const LandingPage: FC<LandingPageProps> = ({}: LandingPageProps) => {
                 reject("Vous devez spécifier un nom")
                 return
             }
-            console.log("new UN")
             setUsername(newUserName)
         })
     }, [])
