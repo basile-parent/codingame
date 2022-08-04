@@ -3,13 +3,12 @@ export type Game = {
     endTimer?: number
 }
 
-enum GameMode {
+export enum GameMode {
     FASTEST = "fastest",
     SHORTEST = "shortest",
 }
 
 type Topic = {
-    timer: number,
     gameMode: GameMode,
     subject: string,
     inputs: string,

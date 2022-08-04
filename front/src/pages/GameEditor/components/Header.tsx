@@ -1,16 +1,19 @@
-import {FC, useEffect, useState} from 'react'
+import {FC, useContext, useEffect, useState} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPuzzlePiece, faHourglass} from '@fortawesome/free-solid-svg-icons'
 import {ReactComponent as AtecnaIcon} from "../../../assets/logo-cube.svg"
 import styles from "./Header.module.scss"
+import {WSContext} from "../../../common/context/WSContext";
+import {GameMode} from "../../../types/Game";
 
 type HeaderProps = {}
 const Header: FC<HeaderProps> = ({}: HeaderProps) => {
     const [timerString, setTimerString] = useState<string>("")
     const [isEnding, setIsEnding] = useState<boolean>(false)
+    const {wsState} = useContext(WSContext)
 
     useEffect(() => {
-        runTimer("2022-08-01T15:00:00", setTimerString, setIsEnding)
+        runTimer(new Date(wsState.game!.endTimer!).toISOString(), setTimerString, setIsEnding)
     }, [])
 
     return (
@@ -21,7 +24,12 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
             </h1>
             <p className={styles.gameMode}>
                 <FontAwesomeIcon icon={faPuzzlePiece}/>
-                Mode de jeu : Le + rapide
+                Mode de jeu : &nbsp;
+                {
+                    wsState.game?.topic.gameMode === GameMode.FASTEST ? "Le + rapide" :
+                        wsState.game?.topic.gameMode === GameMode.SHORTEST ? "Le + court" :
+                            "???"
+                }
             </p>
             <p className={styles.timer}>
                 <FontAwesomeIcon icon={faHourglass}/>

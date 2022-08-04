@@ -29,7 +29,7 @@ class Game {
     let game = null
     if (this.topic) {
       game = {
-        endTimer: new Date().getTime() + 600000,
+        endTimer: new Date("2022-08-04T19:40:00").getTime(),
         topic: {
           ...this.topic,
           timer: undefined,
