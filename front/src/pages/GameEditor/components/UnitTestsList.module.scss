@@ -35,6 +35,10 @@
     color: $ko-test-color !important;
   }
 
+  &.selected {
+    background-color: $highlight-background;
+  }
+
   .button, .button:hover, .button[disabled] {
     background-color: $details-example-background;
     color: white;

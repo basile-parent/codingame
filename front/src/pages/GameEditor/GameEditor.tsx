@@ -39,21 +39,44 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     }, [])
     const executeTest = useCallback((testExecution: UnitTestExecution) => {
         setSelectedUnitTest(testExecution)
-        runTest(code, testExecution.inputs, testExecution.output, (result: boolean, details: string) => {
-            let newExecutionValue: UnitTestExecution = {
-                ...testExecution,
-                status: result ? UnitTestExecutionStatus.SUCCESS : UnitTestExecutionStatus.FAIL,
-                consoleOutput: details
-            };
-            setSelectedUnitTest(newExecutionValue)
-            setUnitTests(unitTests => unitTests.map(unitTest => {
-                if (unitTest.id !== testExecution.id) {
-                    return unitTest
+        return runTest(code, testExecution.inputs, testExecution.output)
+            .then((details: string) => {
+                return {
+                    ...testExecution,
+                    status: UnitTestExecutionStatus.SUCCESS,
+                    consoleOutput: details
+                } as UnitTestExecution
+            })
+            .catch(details => {
+                return {
+                    ...testExecution,
+                    status: UnitTestExecutionStatus.FAIL,
+                    consoleOutput: details
+                } as UnitTestExecution
+            })
+            .then((newExecutionValue: UnitTestExecution) => {
+                setSelectedUnitTest(newExecutionValue)
+                setUnitTests(unitTests => unitTests.map(unitTest => {
+                    if (unitTest.id !== testExecution.id) {
+                        return unitTest
+                    }
+                    return newExecutionValue
+                }))
+
+                if (newExecutionValue.status === UnitTestExecutionStatus.FAIL) {
+                    throw newExecutionValue.consoleOutput
                 }
-                return newExecutionValue
-            }))
-        })
+            })
     }, [code])
+
+    const executeAllTest = useCallback(() => {
+        // Execute sequentially until an error occurred
+        unitTests.reduce(
+            (p, test) =>
+                p.then(_ => executeTest(test)),
+            Promise.resolve()
+        )
+    }, [ unitTests ])
 
     return (
         <>
@@ -85,10 +108,11 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                               <section className={styles.unitTestsList}>
                                 <UnitTestsList unitTests={unitTests}
                                                onPlayTest={executeTest}
+                                               selectedUnitTest={selectedUnitTest}
                                 />
                               </section>
                               <section className={styles.unitTestsActions}>
-                                <UnitTestsActions/>
+                                <UnitTestsActions onPlayAllTest={executeAllTest} />
                               </section>
                             </section>
                         }
@@ -109,35 +133,41 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     )
 };
 
-const runTest = (code: string, args: any[], expectedResult: any, cb: (result: boolean, details: string) => void) => {
-    const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url))
-    let workerTimeout: number | null = null
+const runTest = (code: string, args: any[], expectedResult: any): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url))
+        let workerTimeout: number | null = null
 
-    worker.addEventListener('error', e => {
-        cb(false, e.message)
-        worker.terminate()
-        workerTimeout && clearTimeout(workerTimeout)
+        worker.addEventListener('error', e => {
+            reject(e.message)
+            worker.terminate()
+            workerTimeout && clearTimeout(workerTimeout)
+        })
+        worker.addEventListener('message', e => {
+            switch (e.data.action) {
+                // case "debug":
+                //     console.log(...e.data.value);
+                //     break;
+                case "notifyResult":
+                    const {isSuccess, details} = e.data.value
+                    if (isSuccess) {
+                        resolve(details)
+                    } else {
+                        reject(details)
+                    }
+                    worker.terminate()
+                    workerTimeout && clearTimeout(workerTimeout)
+                    break;
+            }
+        });
+
+        workerTimeout = setTimeout(() => {
+            console.warn("Test terminated by timeout")
+            worker.terminate()
+        }, 3000)
+
+        worker.postMessage({action: "runTest", value: {code, args, expectedResult}})
     })
-    worker.addEventListener('message', e => {
-        switch (e.data.action) {
-            // case "debug":
-            //     console.log(...e.data.value);
-            //     break;
-            case "notifyResult":
-                const {isSuccess, details} = e.data.value
-                cb(isSuccess, details)
-                worker.terminate()
-                workerTimeout && clearTimeout(workerTimeout)
-                break;
-        }
-    });
-
-    workerTimeout = setTimeout(() => {
-        console.log("terminate")
-        worker.terminate()
-    }, 1000)
-
-    worker.postMessage({action: "runTest", value: {code, args, expectedResult}});
 };
 
 
