@@ -6,6 +6,7 @@ import {DisplayMode} from "../../types/DisplayMode";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import InstructionsModal from "./components/InstructionsModal";
+import {UnitTestExecution, UnitTestExecutionStatus} from "../../types/Game";
 
 const DEFAULT_CODE = `const [ firstInput ] = inputArray
 // Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
@@ -16,23 +17,54 @@ return "your solution"`
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const {wsState: { game, mode }} = useContext(WSContext)
+    const {wsState: {game, mode}} = useContext(WSContext)
     const [code, setCode] = useState<string>(game?.topic.defaultCode || DEFAULT_CODE)
     const [dialogOpen, setDialogOpen] = useState<boolean>(true)
 
-    const executeTest = useCallback((args: any[], expectedResult: any) =>
-        runTest(code, args, expectedResult), [code])
+    const [unitTests, setUnitTests] = useState<UnitTestExecution[]>(game!.topic.tests.map((test, index) => ({
+        ...test,
+        id: index,
+        status: UnitTestExecutionStatus.WAIT
+    })))
+    const [selectedUnitTest, setSelectedUnitTest] = useState<UnitTestExecution | null>(null)
+
+    const onCodeChange = useCallback((newCode: string) => {
+        setSelectedUnitTest(null)
+        setUnitTests(unitTests => unitTests.map(unitTest => ({
+            ...unitTest,
+            status: UnitTestExecutionStatus.WAIT,
+            consoleOutput: undefined
+        })))
+        setCode(newCode)
+    }, [])
+    const executeTest = useCallback((testExecution: UnitTestExecution) => {
+        setSelectedUnitTest(testExecution)
+        runTest(code, testExecution.inputs, testExecution.output, (result: boolean, details: string) => {
+            let newExecutionValue: UnitTestExecution = {
+                ...testExecution,
+                status: result ? UnitTestExecutionStatus.SUCCESS : UnitTestExecutionStatus.FAIL,
+                consoleOutput: details
+            };
+            setSelectedUnitTest(newExecutionValue)
+            setUnitTests(unitTests => unitTests.map(unitTest => {
+                if (unitTest.id !== testExecution.id) {
+                    return unitTest
+                }
+                return newExecutionValue
+            }))
+        })
+    }, [code])
 
     return (
         <>
-            <InstructionsModal open={dialogOpen} onClose={() => setDialogOpen(false)} />
+            <InstructionsModal open={dialogOpen} onClose={() => setDialogOpen(false)}/>
             <article className={styles.gamePage + " page"}>
                 <section className={styles.upperSection}>
                     <Header/>
 
                     <section className={styles.upperSectionContent}>
                         <Topic/>
-                        <Editor code={code} updateCode={setCode}/>
+                        <Editor code={code} updateCode={onCodeChange}/>
                     </section>
                 </section>
 
@@ -43,7 +75,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                                 <OtherPlayers/>
                             </section>
                             <section className={styles.outputConsole}>
-                                <OutputConsole/>
+                                <OutputConsole selectedUnitTest={selectedUnitTest}/>
                             </section>
                         </section>
 
@@ -51,7 +83,9 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                             mode === DisplayMode.PLAYER &&
                             <section className={styles.unitTests}>
                               <section className={styles.unitTestsList}>
-                                <UnitTestsList onPlayTest={executeTest}/>
+                                <UnitTestsList unitTests={unitTests}
+                                               onPlayTest={executeTest}
+                                />
                               </section>
                               <section className={styles.unitTestsActions}>
                                 <UnitTestsActions/>
@@ -62,8 +96,8 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                         {
                             mode === DisplayMode.ADMIN &&
                             <section className={styles.adminControls}>
-                              <button className={`button is-light ${ styles.unitTestsExecuteAll }`}>
-                                <FontAwesomeIcon icon={faCheck} /> Terminer le sujet
+                              <button className={`button is-light ${styles.unitTestsExecuteAll}`}>
+                                <FontAwesomeIcon icon={faCheck}/> Terminer le sujet
                               </button>
                             </section>
                         }
@@ -75,17 +109,23 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     )
 };
 
-const runTest = (code: string, args: any[], expectedResult: any) => {
+const runTest = (code: string, args: any[], expectedResult: any, cb: (result: boolean, details: string) => void) => {
     const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url))
     let workerTimeout: number | null = null
 
+    worker.addEventListener('error', e => {
+        cb(false, e.message)
+        worker.terminate()
+        workerTimeout && clearTimeout(workerTimeout)
+    })
     worker.addEventListener('message', e => {
         switch (e.data.action) {
-            case "debug":
-                console.log(...e.data.value);
-                break;
+            // case "debug":
+            //     console.log(...e.data.value);
+            //     break;
             case "notifyResult":
-                console.log("notifyResult", e.data.value);
+                const {isSuccess, details} = e.data.value
+                cb(isSuccess, details)
                 worker.terminate()
                 workerTimeout && clearTimeout(workerTimeout)
                 break;

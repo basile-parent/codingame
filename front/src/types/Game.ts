@@ -27,3 +27,16 @@ type Test = {
     inputs: (string | number)[],
     output: (string | number)
 }
+
+export type UnitTestExecution = Test & {
+    id: number,
+    status: UnitTestExecutionStatus,
+    consoleOutput?: any
+}
+
+export enum UnitTestExecutionStatus {
+    WAIT = "WAIT",
+    IN_PROGRESS = "IN_PROGRESS",
+    FAIL = "FAIL",
+    SUCCESS = "SUCCESS",
+}

@@ -28,18 +28,22 @@
 }
 
 .unitTest {
-  &.isSuccess {
-    color: $ok-test-color
+  &.isSuccess, .isSuccess {
+    color: $ok-test-color !important;
   }
-  &.isFailure {
-    color: $ko-test-color
+  &.isFailure, .isFailure {
+    color: $ko-test-color !important;
   }
 
-  .button, .button:hover {
+  .button, .button:hover, .button[disabled] {
     background-color: $details-example-background;
-    color: $all-test-color;
+    color: white;
     height: 40px;
     width: 40px;
+  }
+
+  .isProgress {
+    cursor: wait;
   }
 
   span {
