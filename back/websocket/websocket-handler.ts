@@ -19,6 +19,7 @@ class WebSocketServerHandler {
             socket.emit("leaderboard", this.userHandler.getAllPlayers())
         } else {
             socket.emit("leaderboard", this.userHandler.getLeaderboard())
+            this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
         }
 
         socket.on("setName", this.setPlayerName)
@@ -29,7 +30,7 @@ class WebSocketServerHandler {
     private disconnectedUser = (socket: Socket) => {
         this.userHandler.disconnectedUser(socket)
 
-        this.broadcast("leaderboard", this.userHandler.getLeaderboard())
+        this.broadcastLeaderboard()
         this.logPlayers()
     }
 
@@ -43,11 +44,16 @@ class WebSocketServerHandler {
         this.userHandler.setPlayerName(uuid, name)
 
         this.logPlayers()
-        this.broadcast("leaderboard", this.userHandler.getLeaderboard())
+        this.broadcastLeaderboard()
     }
 
     private logPlayers = () => {
         console.debug(this.userHandler.toString())
+    }
+
+    private broadcastLeaderboard = () => {
+        this.userHandler.broadcastPlayers("leaderboard", this.userHandler.getLeaderboard())
+        this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
     }
 
     private broadcast = (...args) => {

@@ -73,9 +73,17 @@ class UserHandler {
     }
 
     public toString = (): string => {
-        const adminLabel = this.ADMINS.length > 0 ? `${this.ADMINS.length} admin${this.ADMINS.length > 1 ? "s" : ""}` : ""
-        const playerLabel = this.PLAYERS.length > 0 ? `${this.PLAYERS.length} player${this.PLAYERS.length > 1 ? "s" : ""} : ${this.PLAYERS.map(p => p.toString()).join(", ") || "-"}` : ""
-        const labels = [adminLabel, playerLabel].filter(label => label)
+        const adminLabel = `${this.ADMINS.length} admin${this.ADMINS.length > 1 ? "s" : ""}`
+        const connectedPlayers = this.PLAYERS.filter(p => p.connected)
+        const disconnectedPlayers = this.PLAYERS.filter(p => !p.connected)
+        const connectedPlayerLabel =
+            `${connectedPlayers.length} connected player${connectedPlayers.length > 1 ? "s" : ""} : ` +
+            `${connectedPlayers.map(p => p.toString()).join(", ") || "-"}`
+        const disconnectedPlayerLabel = this.PLAYERS.length > 0 ?
+            `${disconnectedPlayers.length} connected player${disconnectedPlayers.length > 1 ? "s" : ""} : ` +
+            `${disconnectedPlayers.map(p => p.toString()).join(", ") || "-"}`
+            : ""
+        const labels = [adminLabel, connectedPlayerLabel, disconnectedPlayerLabel].filter(label => label)
         if (labels.length) {
             return `There is ${labels.join(", ")}`
         }
@@ -83,14 +91,21 @@ class UserHandler {
         return "There is nobody"
     }
 
-    public broadcast = (...args) => {
+    public broadcastAdmin = (...args): void => {
         // @ts-ignore
         this.ADMINS.forEach(a => a.socket.emit(...args))
+    }
+    public broadcastPlayers = (...args): void => {
         // @ts-ignore
-        this.PLAYERS.forEach(p => p.socket.emit(...args))
+        this.ADMINS.forEach(a => a.socket.emit(...args))
     }
 
-    public sendMessageToUser = (uuid, topic, message) => {
+    public broadcast = (...args): void => {
+        this.broadcastAdmin(...args)
+        this.broadcastPlayers(...args)
+    }
+
+    public sendMessageToPlayer = (uuid, topic, message): void => {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         if (player) {
             console.debug(`Sending message to player [${player.toString()}] on topic [${topic}].`)

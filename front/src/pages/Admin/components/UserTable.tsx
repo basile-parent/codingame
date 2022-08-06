@@ -7,6 +7,8 @@ type UserTableProps = {}
 const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
     const {wsState} = useContext(WSContext)
 
+    console.log("players", wsState.players)
+
     return (
         <table className={`table ${ styles.table }`}>
             <thead>
