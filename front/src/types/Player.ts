@@ -5,6 +5,8 @@ export enum GamePlayerStatus {
 }
 
 export type GamePlayer = {
+    uuid: string,
+    connected: boolean,
     name: string,
     score?: number,
     completion: number | null,

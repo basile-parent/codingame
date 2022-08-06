@@ -1,15 +1,17 @@
 import {FC, useContext} from "react"
 import {WSContext} from "./common/context/WSContext";
-import ConnectedIcon from "./common/ConnectedIcon";
+import ConnectedAppIcon from "./common/ConnectedAppIcon";
 import GameEditor from "./pages/GameEditor"
 import LandingPage from "./pages/LandingPage";
 import {Screen} from "./types/Screen";
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
+    const { wsState } = useContext(WSContext)
+
     return (
         <>
-            <ConnectedIcon />
+            <ConnectedAppIcon connected={wsState.connected} />
             <CurrentPage />
         </>
     )

@@ -1,6 +1,7 @@
 import {Socket} from "socket.io";
+import User from "./User";
 
-class Admin {
+class Admin implements User {
     public socket: Socket
     public uuid: string
     public connected: boolean
@@ -10,6 +11,11 @@ class Admin {
         this.uuid = uuid
         this.connected = connected ?? true
     }
+
+    public isAdmin(): boolean {
+        return true
+    }
+
 }
 
 export default Admin

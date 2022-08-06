@@ -1,0 +1,18 @@
+.table {
+  background-color: transparent;
+
+  thead {
+    text-align: center;
+    font-weight: 500;
+  }
+
+  th, td {
+    border: 1px solid white !important;
+    padding: 3px 10px;
+    color: white !important;
+  }
+
+  .connectedIcon {
+    margin-right: 10px;
+  }
+}

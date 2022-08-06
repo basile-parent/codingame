@@ -2,36 +2,42 @@ import {Socket} from "socket.io";
 import {GamePlayer} from "../types/GamePlayer";
 import Admin from "./Admin";
 import Player from "./Player";
+import User from "./User";
 
 class UserHandler {
     private ADMINS: Admin[] = []
     private PLAYERS: Player[] = []
 
-    public connectPlayer = (socket: Socket) => {
+    public connectUser = (socket: Socket): User => {
         const uuid = <string>socket.handshake.headers["x-uuid"]
 
         const existingAdminIndex = this.ADMINS.findIndex(a => a.uuid === uuid)
         if (existingAdminIndex >= 0) {
             this.ADMINS[existingAdminIndex].socket = socket
             this.ADMINS[existingAdminIndex].connected = true
-            return;
+            return this.ADMINS[existingAdminIndex]
         }
         const existingPlayerIndex = this.PLAYERS.findIndex(a => a.uuid === uuid)
         if (existingPlayerIndex >= 0) {
             this.PLAYERS[existingPlayerIndex].socket = socket
             this.PLAYERS[existingPlayerIndex].connected = true
-            return;
+            return this.PLAYERS[existingPlayerIndex]
         }
 
         const mode = socket.handshake.headers["x-mode"]
 
+        let newUser
         if (mode === "ADMIN") {
             // this.ADMINS.push({socket: socket, data: {uuid, status: GamePlayerStatus.WAITING}})
-            this.ADMINS.push(new Admin(socket, uuid, true))
+            newUser = new Admin(socket, uuid, true)
+            this.ADMINS.push(newUser)
         } else {
             // this.PLAYERS.push({socket: socket, data: {uuid, score: 0, status: GamePlayerStatus.WAITING}})
+            newUser = new Player(socket, uuid, null, true)
             this.PLAYERS.push(new Player(socket, uuid, null, true))
         }
+
+        return newUser
     }
 
     public disconnectedUser = (socket: Socket) => {
@@ -56,6 +62,10 @@ class UserHandler {
         const index = this.PLAYERS.findIndex(p => p.uuid === uuid)
         const player = this.PLAYERS[index]
         player.name = name
+    }
+
+    public getAllPlayers = (): Player[] => {
+        return this.PLAYERS.map(a => a.toAdminPlayer())
     }
 
     public getLeaderboard = (): GamePlayer[] => {

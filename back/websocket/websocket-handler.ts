@@ -12,9 +12,14 @@ class WebSocketServerHandler {
     }
 
     public connect(socket: Socket) {
-        this.userHandler.connectPlayer(socket)
+        const user = this.userHandler.connectUser(socket)
         socket.emit("status", this.GAME.toJson())
-        socket.emit("leaderboard", this.userHandler.getLeaderboard())
+
+        if (user.isAdmin()) {
+            socket.emit("leaderboard", this.userHandler.getAllPlayers())
+        } else {
+            socket.emit("leaderboard", this.userHandler.getLeaderboard())
+        }
 
         socket.on("setName", this.setPlayerName)
         socket.on("disconnect", () => this.disconnectedUser(socket))

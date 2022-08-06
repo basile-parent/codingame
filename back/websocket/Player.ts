@@ -1,7 +1,8 @@
 import {Socket} from "socket.io";
 import {GamePlayer, GamePlayerStatus} from "../types/GamePlayer";
+import User from "./User";
 
-class Player {
+class Player implements User {
     public socket: Socket
     public uuid: string
     public name: string
@@ -18,12 +19,25 @@ class Player {
         this.connected = connected ?? true
     }
 
+    public isAdmin(): boolean {
+        return false
+    }
+
+    public toAdminPlayer(): Player {
+        return {
+            ...this,
+            socket: undefined,
+            toString: undefined,
+        }
+    }
+
     public toPublicPlayer(): GamePlayer {
         return {
-            name: this.name,
-            score: this.score,
-            completion: this.completion,
-            status: this.status
+            ...this,
+            uuid: undefined,
+            socket: undefined,
+            connected: undefined,
+            toString: undefined,
         }
     }
 
