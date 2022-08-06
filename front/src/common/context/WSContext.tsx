@@ -3,12 +3,13 @@ import WebSocketHandler from "./WebSocketHandler"
 import {DisplayMode} from "../../types/DisplayMode";
 import {Screen} from "../../types/Screen";
 import {Game} from "../../types/Game";
+import {GamePlayer} from "../../types/Player";
 
 type WSState = {
     ws: WebSocketHandler | null,
     mode: DisplayMode,
     connected: boolean,
-    players: any[],
+    players: GamePlayer[],
     screen: Screen,
     game: Game | null,
 }

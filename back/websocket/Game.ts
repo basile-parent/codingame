@@ -9,7 +9,6 @@ class Game {
   public topic: Topic | null = null
   public topicIndex: number | null = null
   public endTimer: number | null = null
-  public players: GamePlayer[] = []
 
   constructor() {
     this.screen = GameScreen.LANDING_PAGE
@@ -23,11 +22,10 @@ class Game {
       .map(fileName => JSON.parse(String(fs.readFileSync(`./topics/${fileName}`))))
   }
 
-  startGame(players: GamePlayer[]) {
+  startGame() {
     this.screen = GameScreen.GAME_EDITOR
     this.topic = this.allTopics[this.topicIndex]
     this.endTimer = new Date().getTime() + (this.topic.timer * 1000)
-    this.players = players
   }
 
   toJson() {
@@ -35,7 +33,6 @@ class Game {
     if (this.topic) {
       game = {
         endTimer: this.endTimer,
-        players: this.players,
         topic: {
           ...this.topic,
           points: undefined,

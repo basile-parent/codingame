@@ -1,6 +1,7 @@
 export enum GamePlayerStatus {
-    IN_PROGRESS,
-    FINISHED,
+    WAITING = "WAITING",
+    IN_PROGRESS = "IN_PROGRESS",
+    FINISHED = "FINISHED",
 }
 
 export type GamePlayer = {

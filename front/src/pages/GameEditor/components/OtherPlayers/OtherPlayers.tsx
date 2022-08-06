@@ -17,7 +17,7 @@ const OtherPlayers: FC<OtherPlayersProps> = ({}: OtherPlayersProps) => {
             </h2>
             <ul>
                 {
-                    wsState.game?.players.map(player => (
+                    wsState.players.map(player => (
                         <li key={`player-${ player.name}`} className={styles.player}>
                             <Player player={player} />
                         </li>
