@@ -17,6 +17,8 @@ class Player implements User {
         this.uuid = uuid
         this.name = name
         this.connected = connected ?? true
+        this.score = 0
+        this.status = GamePlayerStatus.WAITING
     }
 
     public isAdmin(): boolean {

@@ -13,7 +13,7 @@ const OtherPlayers: FC<OtherPlayersProps> = ({}: OtherPlayersProps) => {
         <>
             <h2 className={styles.title}>
                 <FontAwesomeIcon icon={faUsers} />
-                Autres joueurs
+                Joueurs
             </h2>
             <ul>
                 {

@@ -97,7 +97,7 @@ class UserHandler {
     }
     public broadcastPlayers = (...args): void => {
         // @ts-ignore
-        this.ADMINS.forEach(a => a.socket.emit(...args))
+        this.PLAYERS.forEach(a => a.socket.emit(...args))
     }
 
     public broadcast = (...args): void => {

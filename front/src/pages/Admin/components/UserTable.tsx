@@ -26,7 +26,7 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
                             <span className={styles.connectedIcon}>
                                 <ConnectedIcon connected={player.connected} />
                             </span>
-                            { player.name }
+                            { player.name || player.uuid }
                         </td>
                         <td>
                             { player.score }

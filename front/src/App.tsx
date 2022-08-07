@@ -7,11 +7,9 @@ import {Screen} from "./types/Screen";
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
-    const { wsState } = useContext(WSContext)
-
     return (
         <>
-            <ConnectedAppIcon connected={wsState.connected} />
+            <ConnectedAppIcon />
             <CurrentPage />
         </>
     )
@@ -19,8 +17,7 @@ const App: FC<AppProps> = ({}) => {
 
 type CurrentPageProps = {}
 const CurrentPage: FC<CurrentPageProps> = () => {
-    const { wsState } = useContext(WSContext)
-    const { screen, mode } = wsState
+    const { wsState: { screen, mode } } = useContext(WSContext)
 
     if (screen === Screen.GAME_EDITOR) {
         return <GameEditor />

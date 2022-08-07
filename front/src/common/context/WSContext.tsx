@@ -28,7 +28,14 @@ const INTIAL_STATE: WSState = {
 }
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
-const wsStateReducer = (state: WSState, action: WSStateAction) => {
+const logWsStateReducer = (state: WSState, action: WSStateAction): WSState => {
+    console.debug("State before", state)
+    console.log("Receive message", action)
+    const stateAfter = wsStateReducer(state, action)
+    console.debug("State before", stateAfter)
+    return stateAfter
+}
+const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
     switch (action.type) {
         case 'connected': {
             return { ...state, connected: true }
@@ -57,7 +64,6 @@ const wsStateReducer = (state: WSState, action: WSStateAction) => {
             return state
         }
         case 'status': {
-            console.log("New State", { ...state, ...action.payload })
             return { ...state, ...action.payload }
         }
         default: {
@@ -72,7 +78,7 @@ type WSProviderProps = {
     children: any,
 }
 const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
-    const [wsState, dispatch] = useReducer(wsStateReducer, { ...INTIAL_STATE, mode })
+    const [wsState, dispatch] = useReducer(logWsStateReducer, { ...INTIAL_STATE, mode })
 
     useEffect(() => {
         dispatch({ type: "disconnect" })

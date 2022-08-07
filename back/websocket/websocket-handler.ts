@@ -22,6 +22,8 @@ class WebSocketServerHandler {
             this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
         }
 
+        this.logPlayers()
+
         socket.on("setName", this.setPlayerName)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
