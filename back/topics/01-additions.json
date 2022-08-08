@@ -1,4 +1,6 @@
 {
+  "id": 1,
+  "summary": "Adition simple",
   "timer": 300,
   "points": 5000,
   "maxPointsTimer": 60,

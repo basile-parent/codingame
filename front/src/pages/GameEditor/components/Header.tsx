@@ -4,7 +4,6 @@ import {faHourglass, faPuzzlePiece} from '@fortawesome/free-solid-svg-icons'
 import {ReactComponent as AtecnaIcon} from "../../../assets/logo-cube.svg"
 import styles from "./Header.module.scss"
 import {WSContext} from "../../../common/context/WSContext";
-import {GameMode} from "../../../types/Game";
 import Timer from "../../../common/Timer";
 import gameModeUtils from "../../../utils/gameModeUtils";
 
@@ -27,7 +26,7 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
             </p>
             <p className={styles.timer}>
                 <FontAwesomeIcon icon={faHourglass}/>
-                Timer: <Timer />
+                Timer: <Timer endTimer={wsState.game?.endTimer ? wsState.game.endTimer + 2000 : undefined} />
             </p>
         </header>
     )

@@ -1,5 +1,8 @@
 type Topic = {
+    id: number,
+    summary: string,
     timer: number,
+    isFinished: boolean,
     points: number,
     maxPointsTimer: number,
     gameMode: GameMode,

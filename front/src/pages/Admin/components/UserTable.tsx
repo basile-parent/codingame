@@ -7,14 +7,12 @@ type UserTableProps = {}
 const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
     const {wsState} = useContext(WSContext)
 
-    console.log("players", wsState.players)
-
     return (
         <table className={`table ${ styles.table }`}>
             <thead>
                 <tr>
                     <th>Joueur</th>
-                    <th>Score</th>
+                    <th>Total</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -22,13 +20,13 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
             {
                 wsState.players.map((player) => (
                     <tr key={`player-${player.name}`}>
-                        <td>
+                        <td className={styles.player}>
                             <span className={styles.connectedIcon}>
                                 <ConnectedIcon connected={player.connected} />
                             </span>
                             { player.name || player.uuid }
                         </td>
-                        <td>
+                        <td className={styles.score}>
                             { player.score }
                         </td>
                         <td>

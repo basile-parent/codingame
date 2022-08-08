@@ -1,15 +1,17 @@
-import {FC, useContext, useEffect, useState} from 'react'
-import {WSContext} from "./context/WSContext"
+import {FC, useEffect, useState} from 'react'
 import styles from "./Timer.module.scss"
 
-type TimerProps = {}
-const Timer: FC<TimerProps> = ({}: TimerProps) => {
-    const [timerString, setTimerString] = useState<string>("")
+type TimerProps = {
+    endTimer?: number
+}
+const Timer: FC<TimerProps> = ({ endTimer }: TimerProps) => {
+    const [timerString, setTimerString] = useState<string>("--:--")
     const [isEnding, setIsEnding] = useState<boolean>(false)
-    const {wsState} = useContext(WSContext)
 
     useEffect(() => {
-        runTimer(new Date(wsState.game!.endTimer! + 2000).toISOString(), setTimerString, setIsEnding)
+        if (endTimer) {
+            runTimer(new Date(endTimer + 2000).toISOString(), setTimerString, setIsEnding)
+        }
     }, [])
 
     return (

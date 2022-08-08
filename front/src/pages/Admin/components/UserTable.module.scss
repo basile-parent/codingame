@@ -6,6 +6,10 @@
     font-weight: 500;
   }
 
+  th {
+    text-align: center !important;
+  }
+
   th, td {
     border: 1px solid white !important;
     padding: 3px 10px;
@@ -14,5 +18,13 @@
 
   .connectedIcon {
     margin-right: 10px;
+  }
+
+  td.player {
+    min-width: 200px;
+  }
+  td.score {
+    min-width: 100px;
+    text-align: right;
   }
 }
