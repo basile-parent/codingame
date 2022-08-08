@@ -15,10 +15,11 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
                 <ul>
                     <li><label>Ecran: </label>{ wsState.screen }</li>
                     {
-                        wsState.game && (
+                        wsState.game?.topic && (
                             <>
-                                <li><label>Timer: </label><Timer endTimer={ wsState.game.endTimer } /></li>
                                 <li><label>Exercice: </label> ({ wsState.game.topic.gameMode }) #{ wsState.game.topic.id }: { wsState.game.topic.summary }</li>
+                                <li><label>Statut: </label> { !wsState.game.topic.isFinished ? "En cours": "Terminé" }</li>
+                                <li><label>Timer: </label><Timer endTimer={ wsState.game.endTimer } /></li>
                             </>
                         )
                     }

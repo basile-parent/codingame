@@ -29,10 +29,10 @@ const INTIAL_STATE: WSState = {
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
 const logWsStateReducer = (state: WSState, action: WSStateAction): WSState => {
+    console.groupCollapsed("Receive message", action)
     console.debug("State before", state)
-    console.log("Receive message", action)
     const stateAfter = wsStateReducer(state, action)
-    console.debug("State before", stateAfter)
+    console.debug("State after", stateAfter)
     return stateAfter
 }
 const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {

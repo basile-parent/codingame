@@ -4,12 +4,12 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {GamePlayer, GamePlayerStatus} from "../../../../types/Player";
 import styles from "./OtherPlayers.module.scss"
 
-type PlayerProps = {
+type PlayerWithCompletionProps = {
     player: GamePlayer
 }
-const Player: FC<PlayerProps> = ({ player }: PlayerProps) => {
+const PlayerWithCompletion: FC<PlayerWithCompletionProps> = ({ player }: PlayerWithCompletionProps) => {
     return (
-        <>
+        <div className={styles.player}>
             <span className={styles.completion}>
                 { player.completion ? `${ player.completion }%` : "N/A" }
             </span>
@@ -18,11 +18,11 @@ const Player: FC<PlayerProps> = ({ player }: PlayerProps) => {
                 <div className={styles.name}>{ player.name }</div>
                 <div className={styles.status}>{ translatePlayerStatus(player.status) }</div>
             </div>
-        </>
+        </div>
     )
 }
 
 const translatePlayerStatus = (status: GamePlayerStatus): string =>
     status === GamePlayerStatus.FINISHED ? "Terminé": "En cours"
 
-export default Player
+export default PlayerWithCompletion

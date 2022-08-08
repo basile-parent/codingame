@@ -10,7 +10,7 @@ const Timer: FC<TimerProps> = ({ endTimer }: TimerProps) => {
 
     useEffect(() => {
         if (endTimer) {
-            runTimer(new Date(endTimer + 2000).toISOString(), setTimerString, setIsEnding)
+            runTimer(new Date(endTimer).toISOString(), setTimerString, setIsEnding)
         }
     }, [])
 

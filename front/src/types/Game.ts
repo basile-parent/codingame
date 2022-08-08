@@ -1,7 +1,7 @@
 import {GamePlayer} from "./Player";
 
 export type Game = {
-    topic: Topic,
+    topic: Topic | null,
     endTimer?: number;
     players: GamePlayer[],
 }

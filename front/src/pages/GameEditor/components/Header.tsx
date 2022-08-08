@@ -21,12 +21,12 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
                 <FontAwesomeIcon icon={faPuzzlePiece}/>
                 Mode de jeu : &nbsp;
                 {
-                    gameModeUtils.informations[wsState.game?.topic.gameMode || ""]?.title || "???"
+                    gameModeUtils.informations[wsState.game?.topic?.gameMode || ""]?.title || "???"
                 }
             </p>
             <p className={styles.timer}>
                 <FontAwesomeIcon icon={faHourglass}/>
-                Timer: <Timer endTimer={wsState.game?.endTimer ? wsState.game.endTimer + 2000 : undefined} />
+                Timer: <Timer endTimer={wsState.game?.endTimer} />
             </p>
         </header>
     )

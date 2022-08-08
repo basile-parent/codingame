@@ -16,13 +16,13 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
             </button>
 
             <button className={`button is-small is-primary`}
-                    disabled={!game || screen !== Screen.GAME_EDITOR}
+                    disabled={!game || screen !== Screen.GAME_EDITOR || game.topic?.isFinished}
                     // onClick={() => dispatch({ type: "startGame" })}
             >
                 Add time
             </button>
             <button className={`button is-small is-primary`}
-                    disabled={!game || screen !== Screen.GAME_EDITOR || game.topic.isFinished}
+                    disabled={!game || screen !== Screen.GAME_EDITOR || game.topic?.isFinished}
                     // onClick={() => dispatch({ type: "startGame" })}
             >
                 Finish topic

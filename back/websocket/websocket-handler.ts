@@ -37,8 +37,8 @@ class WebSocketServerHandler {
     }
 
     private startGame = () => {
-        this.GAME.startGame()
-        this.broadcast("status", this.GAME.toJson())
+        this.GAME.startGame(() => this.broadcastStatus())
+        this.broadcastStatus()
         console.log("Partie démarrée")
     }
 
@@ -53,6 +53,9 @@ class WebSocketServerHandler {
         console.debug(this.userHandler.toString())
     }
 
+    private broadcastStatus = () => {
+        this.broadcast("status", this.GAME.toJson())
+    }
     private broadcastLeaderboard = () => {
         this.userHandler.broadcastPlayers("leaderboard", this.userHandler.getLeaderboard())
         this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
