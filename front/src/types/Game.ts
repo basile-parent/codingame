@@ -2,8 +2,9 @@ import {GamePlayer} from "./Player";
 
 export type Game = {
     topic: Topic | null,
-    endTimer?: number;
+    endTimer?: number,
     players: GamePlayer[],
+    transitionTimeout: number,
 }
 
 export enum GameMode {

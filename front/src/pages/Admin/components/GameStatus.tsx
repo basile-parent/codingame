@@ -23,6 +23,13 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
                             </>
                         )
                     }
+                    {
+                        wsState.transitionTimeout > 0 && (
+                            <>
+                                <li><label>Countdown: </label><Timer endTimer={ new Date().getTime() + wsState.transitionTimeout } /></li>
+                            </>
+                        )
+                    }
                 </ul>
             </section>
             <section className={styles.actions}>

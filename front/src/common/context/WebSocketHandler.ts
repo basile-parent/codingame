@@ -50,11 +50,10 @@ class WebSocketHandler {
             this.dispatch({type: "disconnected"})
         })
         this.socket.on("leaderboard", (players) => {
-            console.debug("leaderboard", players)
             this.dispatch({type: "setPlayers", payload: players})
         })
         this.socket.on("status", (gameStatus) => {
-            console.debug("status", gameStatus)
+            console.log("STATUS", gameStatus)
             this.dispatch({type: "status", payload: gameStatus})
         })
     }
@@ -68,6 +67,9 @@ class WebSocketHandler {
 
     startGame() {
         this._emit("startGame")
+    }
+    resetGame() {
+        this._emit("resetGame")
     }
 
     // _on = (channel: string, cb: () => {}) => {

@@ -14,7 +14,7 @@ const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
             <ul className={styles.playerList}>
                 {
                     players.map((player, index) => (
-                        <li className={styles.player}>
+                        <li className={styles.player} key={`player-${ player.name }`}>
                             <span className={styles.position}>{ index + 1}</span>
                             <PlayerWithCompletion player={player} />
                         </li>

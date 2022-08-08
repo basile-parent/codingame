@@ -28,6 +28,12 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                 Finish topic
             </button>
 
+            <button className={`button is-small is-danger`}
+                    onClick={() => dispatch({ type: "resetGame" })}
+            >
+                Reset
+            </button>
+
         </aside>
     )
 }

@@ -12,6 +12,8 @@ type WSState = {
     players: GamePlayer[],
     screen: Screen,
     game: Game | null,
+    transitionTimeout: number,
+    delayedState: WSState | null,
 }
 type WSStateAction = {
     type: string,
@@ -25,6 +27,8 @@ const INTIAL_STATE: WSState = {
     players: [],
     screen: Screen.LANDING_PAGE,
     game: null,
+    transitionTimeout: 0,
+    delayedState: null,
 }
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
@@ -33,6 +37,7 @@ const logWsStateReducer = (state: WSState, action: WSStateAction): WSState => {
     console.debug("State before", state)
     const stateAfter = wsStateReducer(state, action)
     console.debug("State after", stateAfter)
+    console.groupEnd()
     return stateAfter
 }
 const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
@@ -63,8 +68,20 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.startGame()
             return state
         }
+        case 'resetGame': {
+            state.ws?.resetGame()
+            return state
+        }
         case 'status': {
-            return { ...state, ...action.payload }
+            const newState = action.payload
+            if (newState.game?.transitionTimeout) {
+                return {
+                    ...state,
+                    transitionTimeout: newState.game?.transitionTimeout,
+                    delayedState: {...newState, game: newState.game ? {...newState.game, transitionTimeout: 0} : null}
+                }
+            }
+            return { ...state, ...newState }
         }
         default: {
             console.error(`Unhandled action type: ${action.type}`, action.payload)
@@ -79,6 +96,29 @@ type WSProviderProps = {
 }
 const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
     const [wsState, dispatch] = useReducer(logWsStateReducer, { ...INTIAL_STATE, mode })
+
+    // Set the delayed state
+    useEffect(() => {
+        let timeout: number | null = null
+        const transitionTimeout = wsState.transitionTimeout
+        if (transitionTimeout && wsState.delayedState) {
+            timeout = setTimeout(() => {
+                return dispatch({
+                    type: "status",
+                    payload: {
+                        ...wsState.delayedState,
+                        transitionTimeout: 0,
+                        delayedState: null
+                    }
+                })
+            }, transitionTimeout)
+        }
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout)
+            }
+        }
+    }, [ wsState.delayedState ])
 
     useEffect(() => {
         dispatch({ type: "disconnect" })

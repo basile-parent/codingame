@@ -27,6 +27,7 @@ class WebSocketServerHandler {
         socket.on("setName", this.setPlayerName)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
+        socket.on("resetGame", this.resetGame)
     }
 
     private disconnectedUser = (socket: Socket) => {
@@ -38,8 +39,13 @@ class WebSocketServerHandler {
 
     private startGame = () => {
         this.GAME.startGame(() => this.broadcastStatus())
-        this.broadcastStatus()
         console.log("Partie démarrée")
+    }
+
+    private resetGame = () => {
+        this.GAME = new Game()
+        this.broadcastStatus()
+        console.log("Partie réinitialisée")
     }
 
     private setPlayerName = (uuid, name) => {
