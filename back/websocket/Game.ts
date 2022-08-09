@@ -32,7 +32,7 @@ class Game {
         this._setTransitionTimeout(3000)
         this.screen = GameScreen.GAME_EDITOR
         this.startTopic(this.allTopics[0].id, updateCb)
-        this.players.map(player => (
+        this.players = players.map(player => (
             {
                 ...player,
                 topics: this.allTopics.map(topic => ({ topicId: topic.id, status: GamePlayerStatus.WAITING }))
@@ -75,7 +75,7 @@ class Game {
     }
 
     toAdminJson() {
-        return { ...this }
+        return { ...this, timerTimeout: undefined }
     }
 
     _setTransitionTimeout(timeout: number) {

@@ -77,7 +77,7 @@ class WebSocketHandler {
     // }
 
     _emit(channel: string, ...messages: any) {
-        console.debug("Emit message :", channel, ">", messages)
+        console.warn("Emit message :", channel, ">", messages)
         if (!this.isConnected) {
             console.error("Cannot emit message : WebSocket is disconnected.")
             return false
