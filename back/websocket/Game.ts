@@ -1,10 +1,12 @@
 import Topic from "../types/Topic";
 import * as fs from "fs"
 import GameScreen from "../types/GameScreen"
+import {GamePlayer, GamePlayerStatus} from "../types/GamePlayer";
 
 class Game {
     public screen: GameScreen
     public allTopics: Topic[]
+    public players: GamePlayer[] | null
     public topic: Topic | null = null
     public topicIndex: number | null = null
     public endTimer: number | null = null
@@ -16,6 +18,7 @@ class Game {
         this.screen = GameScreen.LANDING_PAGE
         this.topicIndex = 0
         this.allTopics = this._initTopics()
+        this.players = null
     }
 
     _initTopics(): Topic[] {
@@ -25,10 +28,16 @@ class Game {
             .sort((t1, t2) => t1.id - t2.id)
     }
 
-    startGame(updateCb: () => void) {
-        this.transitionTimeout = 3000
+    startGame(players: GamePlayer[], updateCb: () => void) {
+        this._setTransitionTimeout(3000)
         this.screen = GameScreen.GAME_EDITOR
         this.startTopic(this.allTopics[0].id, updateCb)
+        this.players.map(player => (
+            {
+                ...player,
+                topics: this.allTopics.map(topic => ({ topicId: topic.id, status: GamePlayerStatus.WAITING }))
+            }))
+
         updateCb()
     }
 
@@ -39,7 +48,6 @@ class Game {
         this.endTimer = new Date().getTime() + topicDuration
         this.timerTimeout = setTimeout(() => {
             this.topic.isFinished = true
-            this.transitionTimeout = 0
             this.screen = GameScreen.AFTER_GAME
             console.log(`Timer finished for topic ${ this.topic.id } ${ this.topic.summary }.`)
             updateCb()
@@ -48,7 +56,7 @@ class Game {
         }, topicDuration + 1000)
     }
 
-    toJson() {
+    toPublicJson() {
         let game = null
         if (this.topic) {
             game = {
@@ -63,10 +71,18 @@ class Game {
             }
         }
 
-        return {
-            screen: this.screen,
-            game
-        }
+        return game
+    }
+
+    toAdminJson() {
+        return { ...this }
+    }
+
+    _setTransitionTimeout(timeout: number) {
+        this.transitionTimeout = timeout
+        setTimeout(() => {
+            this.transitionTimeout = 0
+        }, timeout)
     }
 }
 

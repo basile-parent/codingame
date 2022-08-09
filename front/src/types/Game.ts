@@ -4,6 +4,7 @@ export type Game = {
     topic: Topic | null,
     endTimer?: number,
     players: GamePlayer[],
+    allTopics: Topic[],
     transitionTimeout: number,
 }
 

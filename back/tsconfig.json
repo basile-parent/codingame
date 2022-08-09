@@ -3,8 +3,11 @@
     "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": ".",
   },
-  "lib": ["es2015"]
+  "lib": ["es2015"],
+  "include": [
+    "**/*.ts",
+  ]
 }

@@ -74,10 +74,10 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
         }
         case 'status': {
             const newState = action.payload
-            if (newState.game?.transitionTimeout) {
+            if (newState.transitionTimeout) {
                 return {
                     ...state,
-                    transitionTimeout: newState.game?.transitionTimeout,
+                    transitionTimeout: newState.transitionTimeout,
                     delayedState: {...newState, game: newState.game ? {...newState.game, transitionTimeout: 0} : null}
                 }
             }
@@ -97,7 +97,7 @@ type WSProviderProps = {
 const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
     const [wsState, dispatch] = useReducer(logWsStateReducer, { ...INTIAL_STATE, mode })
 
-    // Set the delayed state
+    // Set the delayed state after the timeout
     useEffect(() => {
         let timeout: number | null = null
         const transitionTimeout = wsState.transitionTimeout

@@ -8,6 +8,14 @@ export type GamePlayer = {
     uuid?: string,
     name?: string,
     score?: number,
+    topics?: PlayerTopic[]
+}
+
+export type PlayerTopic = {
+    topicId: string,
+    code?: string,
+    tempCode?: string,
     completion?: number,
+    score?: number,
     status: GamePlayerStatus
 }

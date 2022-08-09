@@ -24,7 +24,11 @@
     min-width: 200px;
   }
   td.score {
-    min-width: 100px;
+    width: 100px;
+    text-align: right;
+  }
+  td.scoreTopic {
+    width: 60px;
     text-align: right;
   }
 }

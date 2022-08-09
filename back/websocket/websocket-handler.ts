@@ -1,6 +1,7 @@
 import {Socket} from "socket.io"
 import Game from "./Game"
 import UserHandler from "./UserHandler";
+import WSStatus from "../types/WSStatus";
 
 class WebSocketServerHandler {
     private GAME: Game
@@ -13,12 +14,13 @@ class WebSocketServerHandler {
 
     public connect(socket: Socket) {
         const user = this.userHandler.connectUser(socket)
-        socket.emit("status", this.GAME.toJson())
 
         if (user.isAdmin()) {
-            socket.emit("leaderboard", this.userHandler.getAllPlayers())
+            // socket.emit("leaderboard", this.userHandler.getAllPlayers())
+            socket.emit("status", this.getStatus(true))
         } else {
-            socket.emit("leaderboard", this.userHandler.getLeaderboard())
+            // socket.emit("leaderboard", this.userHandler.getLeaderboard())
+            socket.emit("status", this.getStatus(false))
             this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
         }
 
@@ -38,7 +40,7 @@ class WebSocketServerHandler {
     }
 
     private startGame = () => {
-        this.GAME.startGame(() => this.broadcastStatus())
+        this.GAME.startGame(this.userHandler.getLeaderboard(), () => this.broadcastStatus())
         console.log("Partie démarrée")
     }
 
@@ -60,8 +62,21 @@ class WebSocketServerHandler {
     }
 
     private broadcastStatus = () => {
-        this.broadcast("status", this.GAME.toJson())
+        this.userHandler.broadcastPlayers("status", this.getStatus(false))
+        this.userHandler.broadcastAdmin("status", this.getStatus(true))
     }
+
+    private getStatus = (isAdmin: boolean): WSStatus => {
+        const status = {
+            screen: this.GAME.screen,
+            game: isAdmin ? this.GAME.toAdminJson() : this.GAME.toPublicJson(),
+            players: isAdmin ? this.userHandler.getAllPlayers() : this.userHandler.getLeaderboard(),
+            transitionTimeout: this.GAME.transitionTimeout
+        }
+
+        return status
+    }
+
     private broadcastLeaderboard = () => {
         this.userHandler.broadcastPlayers("leaderboard", this.userHandler.getLeaderboard())
         this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())

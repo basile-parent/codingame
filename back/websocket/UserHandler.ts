@@ -28,11 +28,9 @@ class UserHandler {
 
         let newUser
         if (mode === "ADMIN") {
-            // this.ADMINS.push({socket: socket, data: {uuid, status: GamePlayerStatus.WAITING}})
             newUser = new Admin(socket, uuid, true)
             this.ADMINS.push(newUser)
         } else {
-            // this.PLAYERS.push({socket: socket, data: {uuid, score: 0, status: GamePlayerStatus.WAITING}})
             newUser = new Player(socket, uuid, null, true)
             this.PLAYERS.push(new Player(socket, uuid, null, true))
         }

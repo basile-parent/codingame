@@ -9,6 +9,14 @@ export type GamePlayer = {
     connected: boolean,
     name: string,
     score?: number,
-    completion: number | null,
+    topics?: PlayerTopic[]
+}
+
+export type PlayerTopic = {
+    topicId: number,
+    code?: string,
+    tempCode?: string,
+    completion?: number,
+    score?: number,
     status: GamePlayerStatus
 }
