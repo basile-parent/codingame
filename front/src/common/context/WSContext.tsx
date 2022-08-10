@@ -1,4 +1,4 @@
-import {createContext, Dispatch, FC, useEffect, useReducer} from "react"
+import {createContext, Dispatch, FC, ReactElement, useEffect, useReducer} from "react"
 import WebSocketHandler from "./WebSocketHandler"
 import {DisplayMode} from "../../types/DisplayMode";
 import {Screen} from "../../types/Screen";
@@ -96,7 +96,7 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
 
 type WSProviderProps = {
     mode: DisplayMode,
-    children: any,
+    children: ReactElement,
 }
 const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
     const [wsState, dispatch] = useReducer(logWsStateReducer, { ...INTIAL_STATE, mode })

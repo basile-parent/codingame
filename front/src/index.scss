@@ -27,19 +27,48 @@ p {
 }
 
 
-
-.page {
-  opacity: 0;
-  animation-name: revealPage;
-  animation-duration: 0s;
-  animation-delay: 0.3s;
-  animation-fill-mode: forwards;
+/* ---- Override Bulma settings ---- */
+pre {
+  background-color: transparent;
+  color: unset;
 }
 
-@keyframes revealPage {
-  from { opacity: 0; }
-  to { opacity: 1; }
+h1 {
+  font-size: 1.5rem;
 }
+h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+hr {
+  height: 1px;
+  background-color: $lowlight;
+}
+
+.notification.is-success.is-light {
+  background-color: #d1ffea;
+}
+.notification.is-danger.is-light {
+  background-color: #ffe0e7;
+}
+
+.number {
+  align-items: unset;
+  background-color: unset;
+  border-radius: unset;
+  display: unset;
+  font-size: unset;
+  height: unset;
+  justify-content: unset;
+  margin-right: unset;
+  min-width: unset;
+  padding: unset;
+  text-align: unset;
+  vertical-align: unset;
+}
+/* ---- END Override Bulma settings ---- */
+
 
 /*.page {*/
 /*  position: absolute;*/

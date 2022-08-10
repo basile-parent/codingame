@@ -1,11 +1,10 @@
 import {FC, useContext} from 'react'
-import {WSContext} from "../../../common/context/WSContext"
+import {WSContext} from "../../../../common/context/WSContext"
+import ConnectedIcon from "../../../../common/ConnectedIcon"
+import {GamePlayer} from "../../../../types/Player"
+import {Topic} from "../../../../types/Game"
+import TopicStatus from "./TopicStatus"
 import styles from "./UserTable.module.scss"
-import ConnectedIcon from "../../../common/ConnectedIcon";
-import {GamePlayer, GamePlayerStatus} from "../../../types/Player";
-import {Topic} from "../../../types/Game";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner, faPen} from "@fortawesome/free-solid-svg-icons";
 
 type UserTableProps = {}
 
@@ -64,33 +63,6 @@ const UserRow: FC<UserRowProps> = ({player, allTopics}) => {
                 {/*Actions*/}
             </td>
         </tr>
-    )
-}
-
-type TopicStatusProps = {
-    player: GamePlayer,
-    topic: Topic
-}
-const TopicStatus: FC<TopicStatusProps> = ({ player, topic }) => {
-    const playerTopic = player.topics?.find(t => t.topicId === topic.id)
-    console.warn("TOPICS", player.topics)
-    if (!playerTopic) {
-        return (
-            <td className={styles.scoreTopic}>
-                /
-            </td>
-        )
-    }
-    return (
-        <td className={styles.scoreTopic}>
-            {
-                playerTopic.status === GamePlayerStatus.IN_PROGRESS ?
-                    <FontAwesomeIcon icon={faPen} /> :
-                    playerTopic.status === GamePlayerStatus.FINISHED ?
-                        playerTopic.score ?? <FontAwesomeIcon icon={faSpinner} />
-                    : "/"
-            }
-        </td>
     )
 }
 

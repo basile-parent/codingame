@@ -105,7 +105,6 @@ class UserHandler {
         playerTopic.status = GamePlayerStatus.FINISHED
         playerTopic.endTime = new Date().getTime()
         playerTopic.duration = playerTopic.endTime - topic.startTime
-        console.log("code commited")
     }
 
     public toString = (): string => {
