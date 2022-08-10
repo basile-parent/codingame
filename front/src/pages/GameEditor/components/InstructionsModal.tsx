@@ -9,22 +9,23 @@ type InstructionsModalProps = {
     onClose: () => void
 }
 const InstructionsModal: FC<InstructionsModalProps> = ({open, onClose}: InstructionsModalProps) => {
-    const {wsState} = useContext(WSContext)
-
+    const {wsState: { game }} = useContext(WSContext)
+    const topic = game!.topic!
+    
     return (
         <div className={`modal ${open ? "is-active" : ""} ${styles.modal}`}>
             <div className="modal-background"></div>
             <div className={`modal-content ${styles.modalContent}`}>
                 <p className={styles.gameMode}>Mode de
-                    jeu: {gameModeUtils.informations[wsState.game?.topic.gameMode || ""]?.title || "???"}</p>
+                    jeu: {gameModeUtils.informations[topic.gameMode || ""]?.title || "???"}</p>
                 <p className={styles.instructions}>
-                    {gameModeUtils.informations[wsState.game?.topic.gameMode || ""]?.instructions || "???"}
+                    {gameModeUtils.informations[topic.gameMode || ""]?.instructions || "???"}
                 </p>
 
                 {
-                    wsState.game?.topic.timer &&
+                    topic.timer &&
                     <p className={styles.timer}>
-                      Limite de temps: {dateUtils.timeToString(wsState.game?.topic.timer)}
+                      Limite de temps: {dateUtils.timeToString(topic.timer)}
                     </p>
                 }
 

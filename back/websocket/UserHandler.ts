@@ -1,8 +1,10 @@
 import {Socket} from "socket.io";
-import {GamePlayer} from "../types/GamePlayer";
+import {GamePlayer, GamePlayerStatus} from "../types/GamePlayer";
 import Admin from "./Admin";
 import Player from "./Player";
 import User from "./User";
+import Game from "./Game";
+import Topic from "../types/Topic";
 
 class UserHandler {
     private ADMINS: Admin[] = []
@@ -62,12 +64,48 @@ class UserHandler {
         player.name = name
     }
 
+    public updateTopicForAllPlayers = (topic: Topic) => {
+        this.PLAYERS.forEach(player => {
+            const playerTopicIndex = player.topics.findIndex(t => t.topicId === topic.id)
+            const playerTopic = player.topics[playerTopicIndex]
+            playerTopic.status = topic.status
+            if (topic.status === GamePlayerStatus.FINISHED && !playerTopic.endTime) {
+                playerTopic.endTime = new Date().getTime()
+                playerTopic.duration = playerTopic.endTime - topic.startTime
+            }
+
+            player.topics[playerTopicIndex] = playerTopic
+        })
+    }
+
+    public setGameToPlayer = (game: Game): void => {
+        this.PLAYERS.forEach(player => {
+            player.topics = game.allTopics.map(topic => ({ topicId: topic.id, status: GamePlayerStatus.WAITING }))
+        })
+    }
+    public resetGameOnPlayer = (): void => {
+        this.PLAYERS.forEach(player => {
+            player.topics = undefined
+        })
+    }
+
     public getAllPlayers = (): Player[] => {
         return this.PLAYERS.map(a => a.toAdminPlayer())
     }
 
     public getLeaderboard = (): GamePlayer[] => {
         return this.PLAYERS.filter(p => p.name).map(p => p.toPublicPlayer())
+    }
+
+    public setPlayerFinalCode(uuid: string, code: string, topic: Topic) {
+        const player = this.PLAYERS.find(p => p.uuid === uuid)
+        const playerTopic = player.topics.find(t => t.topicId === topic.id)
+        playerTopic.score = 1000
+        playerTopic.code = code
+        playerTopic.status = GamePlayerStatus.FINISHED
+        playerTopic.endTime = new Date().getTime()
+        playerTopic.duration = playerTopic.endTime - topic.startTime
+        console.log("code commited")
     }
 
     public toString = (): string => {

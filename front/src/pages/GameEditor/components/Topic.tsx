@@ -8,30 +8,32 @@ type TopicProps = {}
 const Topic: FC<TopicProps> = ({}: TopicProps) => {
     const {wsState: {game}} = useContext(WSContext)
 
+    const topic = game!.topic!
+
     return (
         <section className={styles.topic}>
             <h2>
                 <FontAwesomeIcon icon={faPaperPlane}/>
                 Sujet
             </h2>
-            <p dangerouslySetInnerHTML={{__html: game?.topic.subject || ""}}/>
+            <p dangerouslySetInnerHTML={{__html: topic.subject || ""}}/>
             <div className={styles.details}>
                 <h3>Entrées:</h3>
-                <p dangerouslySetInnerHTML={{__html: game?.topic.inputs || ""}}/>
+                <p dangerouslySetInnerHTML={{__html: topic.inputs || ""}}/>
 
                 <hr/>
                 <h3>Sortie:</h3>
-                <p dangerouslySetInnerHTML={{__html: game?.topic.output || ""}}/>
+                <p dangerouslySetInnerHTML={{__html: topic.output || ""}}/>
 
                 <hr/>
 
                 {
-                    game?.topic.constraints?.length &&
+                    topic.constraints?.length &&
                     <>
                       <h3>Contraintes:</h3>
                       <ul>
                           {
-                              game.topic.constraints.map((constraint, index) => (
+                              topic.constraints.map((constraint, index) => (
                                   <li key={`constraint-${index}`}
                                       dangerouslySetInnerHTML={{__html: constraint}}
                                   />
@@ -44,11 +46,11 @@ const Topic: FC<TopicProps> = ({}: TopicProps) => {
                 <hr/>
 
                 {
-                    game?.topic.examples?.length &&
+                    topic.examples?.length &&
                     <>
                       <h3>Exemples:</h3>
                         {
-                            game.topic.examples.map((example, index) => (
+                            topic.examples.map((example, index) => (
                                 <div className={styles.example} key={`example-${index}`}>
                                     <div className={styles.exampleInput}>
                                         <p className={styles.exampleTitle}>Entrée</p>

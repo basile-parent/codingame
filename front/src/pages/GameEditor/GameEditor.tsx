@@ -17,11 +17,11 @@ return "your solution"`
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const {wsState: {game, mode}} = useContext(WSContext)
-    const [code, setCode] = useState<string>(game?.topic.defaultCode || DEFAULT_CODE)
+    const {wsState: {game, mode}, dispatch} = useContext(WSContext)
+    const [code, setCode] = useState<string>(game!.topic!.defaultCode || DEFAULT_CODE)
     const [dialogOpen, setDialogOpen] = useState<boolean>(true)
 
-    const [unitTests, setUnitTests] = useState<UnitTestExecution[]>(game!.topic.tests.map((test, index) => ({
+    const [unitTests, setUnitTests] = useState<UnitTestExecution[]>(game!.topic!.tests.map((test, index) => ({
         ...test,
         id: index,
         status: UnitTestExecutionStatus.WAIT
@@ -78,6 +78,10 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
         )
     }, [ unitTests ])
 
+    const commitCode = useCallback(() => {
+        dispatch({ type: "commitCode", payload: code})
+    }, [ code ])
+
     return (
         <>
             <InstructionsModal open={dialogOpen} onClose={() => setDialogOpen(false)}/>
@@ -112,7 +116,9 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                                 />
                               </section>
                               <section className={styles.unitTestsActions}>
-                                <UnitTestsActions onPlayAllTest={executeAllTest} />
+                                <UnitTestsActions onPlayAllTest={executeAllTest}
+                                                  onCommitCode={commitCode}
+                                />
                               </section>
                             </section>
                         }

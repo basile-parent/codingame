@@ -71,6 +71,9 @@ class WebSocketHandler {
     resetGame() {
         this._emit("resetGame")
     }
+    commitCode(code: string) {
+        this._emit("commitCode", playerUtils.getPlayerUuid(), code)
+    }
 
     // _on = (channel: string, cb: () => {}) => {
     //     this.socket.on(channel, cb)

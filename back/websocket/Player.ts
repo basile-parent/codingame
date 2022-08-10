@@ -1,5 +1,5 @@
 import {Socket} from "socket.io";
-import {GamePlayer, GamePlayerStatus} from "../types/GamePlayer";
+import {GamePlayer, GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
 import User from "./User";
 
 class Player implements User {
@@ -8,9 +8,7 @@ class Player implements User {
     public name: string
     public connected: boolean
     public score?: number
-    public completion?: number
-    public status: GamePlayerStatus
-    // TODO topic results
+    public topics?: PlayerTopic[]
 
     constructor(socket: Socket, uuid: string, name?: string, connected?: boolean) {
         this.socket = socket
@@ -18,7 +16,6 @@ class Player implements User {
         this.name = name
         this.connected = connected ?? true
         this.score = 0
-        this.status = GamePlayerStatus.WAITING
     }
 
     public isAdmin(): boolean {

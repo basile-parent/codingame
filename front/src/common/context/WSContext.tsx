@@ -61,6 +61,10 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.setName(action.payload)
             return state
         }
+        case 'commitCode': {
+            state.ws?.commitCode(action.payload)
+            return state
+        }
         case 'setPlayers': {
             return { ...state, players: action.payload }
         }

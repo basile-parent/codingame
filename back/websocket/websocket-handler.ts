@@ -27,6 +27,7 @@ class WebSocketServerHandler {
         this.logPlayers()
 
         socket.on("setName", this.setPlayerName)
+        socket.on("commitCode", this.setPlayerFinalCode)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
         socket.on("resetGame", this.resetGame)
@@ -40,12 +41,16 @@ class WebSocketServerHandler {
     }
 
     private startGame = () => {
-        this.GAME.startGame(this.userHandler.getLeaderboard(), () => this.broadcastStatus())
+        this.userHandler.setGameToPlayer(this.GAME)
+        this.GAME.startGame(this.broadcastStatus, this.userHandler.updateTopicForAllPlayers)
+
+        this.broadcastStatus()
         console.log("Partie démarrée")
     }
 
     private resetGame = () => {
         this.GAME = new Game()
+        this.userHandler.resetGameOnPlayer()
         this.broadcastStatus()
         console.log("Partie réinitialisée")
     }
@@ -55,6 +60,15 @@ class WebSocketServerHandler {
 
         this.logPlayers()
         this.broadcastLeaderboard()
+    }
+
+    private setPlayerFinalCode = (uuid, code) => {
+        this.userHandler.setPlayerFinalCode(uuid, code, this.GAME.topic)
+        this.broadcastStatus()
+    }
+
+    private setPlayerTempCode = (uuid, code) => {
+        // this.GAME.setPlayerTempCode(uuid, code)
     }
 
     private logPlayers = () => {
@@ -67,14 +81,12 @@ class WebSocketServerHandler {
     }
 
     private getStatus = (isAdmin: boolean): WSStatus => {
-        const status = {
+        return {
             screen: this.GAME.screen,
             game: isAdmin ? this.GAME.toAdminJson() : this.GAME.toPublicJson(),
             players: isAdmin ? this.userHandler.getAllPlayers() : this.userHandler.getLeaderboard(),
             transitionTimeout: this.GAME.transitionTimeout
         }
-
-        return status
     }
 
     private broadcastLeaderboard = () => {

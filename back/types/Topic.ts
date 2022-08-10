@@ -1,8 +1,11 @@
+import {GamePlayerStatus} from "./GamePlayer";
+
 type Topic = {
     id: number,
     summary: string,
     timer: number,
-    isFinished: boolean,
+    startTime?: number,
+    status: GamePlayerStatus,
     points: number,
     maxPointsTimer: number,
     gameMode: GameMode,

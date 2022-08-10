@@ -1,9 +1,6 @@
-import {GamePlayer} from "./Player";
-
 export type Game = {
     topic: Topic | null,
     endTimer?: number,
-    players: GamePlayer[],
     allTopics: Topic[],
     transitionTimeout: number,
 }
@@ -13,7 +10,7 @@ export enum GameMode {
     SHORTEST = "shortest",
 }
 
-type Topic = {
+export type Topic = {
     id: number,
     summary: string,
     timer: number,

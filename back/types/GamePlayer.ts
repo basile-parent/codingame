@@ -17,5 +17,7 @@ export type PlayerTopic = {
     tempCode?: string,
     completion?: number,
     score?: number,
-    status: GamePlayerStatus
+    status: GamePlayerStatus,
+    endTime?: number,
+    duration?: number,
 }
