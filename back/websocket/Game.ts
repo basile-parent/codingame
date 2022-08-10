@@ -2,9 +2,16 @@ import Topic from "../types/Topic";
 import * as fs from "fs"
 import GameScreen from "../types/GameScreen"
 import {GamePlayerStatus} from "../types/GamePlayer";
+import Player from "./Player";
+
+interface StartTopicOptions {
+    updateCb: () => void,
+    updateTopicCb: (topic: Topic) => void,
+    updatePropsCb: (player: Player) => void,
+}
 
 class Game {
-    public screen: GameScreen
+    public currentScreen: GameScreen
     public allTopics: Topic[]
     public topic: Topic | null = null
     public topicIndex: number | null = null
@@ -14,7 +21,7 @@ class Game {
     private timerTimeout: ReturnType<typeof setTimeout> | null = null
 
     constructor() {
-        this.screen = GameScreen.LANDING_PAGE
+        this.currentScreen = GameScreen.LANDING_PAGE
         this.topicIndex = 0
         this.allTopics = this._initTopics()
     }
@@ -30,29 +37,34 @@ class Game {
             .sort((t1, t2) => t1.id - t2.id)
     }
 
-    startGame(updateCb: () => void, onUpdateTopic: (topic: Topic) => void) {
-        this._setTransitionTimeout(3000)
-        this.screen = GameScreen.GAME_EDITOR
-        this.startTopic(this.allTopics[0].id, updateCb, onUpdateTopic)
+    startGame() {
+        this.currentScreen = GameScreen.GAME_EDITOR
     }
 
-    startTopic(id: number, updateCb: () => void, onUpdateTopic: (topic: Topic) => void) {
+    startTopic(id: number, options: StartTopicOptions) {
+        const {updateCb, updateTopicCb, updatePropsCb } = options
+        this._setTransitionTimeout(3000)
+
         this.allTopics[this.topicIndex].startTime = new Date().getTime()
         this.topic = this.allTopics[this.topicIndex]
         this.topic.status = GamePlayerStatus.IN_PROGRESS
-        onUpdateTopic(this.topic)
+        updatePropsCb({ screen: this.currentScreen } as Player)
+        updateTopicCb(this.topic)
+        updateCb()
 
         // 2s of margin (instruction display) + 3s of transition countdown
         const topicDuration = (this.topic.timer * 1000) + 2000 + this.transitionTimeout
         this.endTimer = new Date().getTime() + topicDuration
         this.timerTimeout = setTimeout(() => {
             this.topic.status = GamePlayerStatus.FINISHED
-            this.screen = GameScreen.AFTER_GAME
+            this.currentScreen = GameScreen.AFTER_GAME
             console.log(`Timer finished for topic ${ this.topic.id } ${ this.topic.summary }.`)
-            updateCb()
-            onUpdateTopic(this.topic)
 
-        // Setup 2s later to avoid the conflicts with player's local clock
+            updatePropsCb({ screen: this.currentScreen } as Player)
+            updateTopicCb(this.topic)
+            updateCb()
+
+        // Setup 1s later to avoid the conflicts with player's local clock
         }, topicDuration + 1000)
     }
 

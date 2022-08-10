@@ -1,7 +1,7 @@
-import GameScreen from "./GameScreen";
-import {GamePlayer} from "./GamePlayer";
-import Player from "../websocket/Player";
-import Game from "../websocket/Game";
+import GameScreen from "./GameScreen"
+import {GamePlayer} from "./GamePlayer"
+import Player from "../websocket/Player"
+import Game from "../websocket/Game"
 
 type WSStatus = {
     screen: GameScreen,

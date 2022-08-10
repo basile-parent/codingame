@@ -5,6 +5,7 @@ import Player from "./Player";
 import User from "./User";
 import Game from "./Game";
 import Topic from "../types/Topic";
+import GameScreen from "../types/GameScreen";
 
 class UserHandler {
     private ADMINS: Admin[] = []
@@ -78,6 +79,14 @@ class UserHandler {
         })
     }
 
+    public updatePropsForAllPlayers = (playerProps: Player) => {
+        this.PLAYERS.forEach(player => {
+            for (let [prop, value] of Object.entries(playerProps)) {
+                player[prop] = value
+            }
+        })
+    }
+
     public setGameToPlayer = (game: Game): void => {
         this.PLAYERS.forEach(player => {
             player.topics = game.allTopics.map(topic => ({ topicId: topic.id, status: GamePlayerStatus.WAITING }))
@@ -99,12 +108,19 @@ class UserHandler {
 
     public setPlayerFinalCode(uuid: string, code: string, topic: Topic) {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
+        player.screen = GameScreen.AFTER_GAME
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
         playerTopic.score = 1000
         playerTopic.code = code
         playerTopic.status = GamePlayerStatus.FINISHED
         playerTopic.endTime = new Date().getTime()
         playerTopic.duration = playerTopic.endTime - topic.startTime
+    }
+
+    public setPlayerTempCode(uuid: string, code: string, topic: Topic) {
+        const player = this.PLAYERS.find(p => p.uuid === uuid)
+        const playerTopic = player.topics.find(t => t.topicId === topic.id)
+        playerTopic.tempCode = code
     }
 
     public toString = (): string => {
@@ -126,18 +142,21 @@ class UserHandler {
         return "There is nobody"
     }
 
-    public broadcastAdmin = (...args): void => {
+    public broadcastAdmin = (topic, ...args): void => {
         // @ts-ignore
-        this.ADMINS.forEach(a => a.socket.emit(...args))
+        this.ADMINS.forEach(admin => admin.socket.emit(topic, ...args))
     }
-    public broadcastPlayers = (...args): void => {
+    public broadcastPlayers = (topic, ...args): void => {
         // @ts-ignore
-        this.PLAYERS.forEach(a => a.socket.emit(...args))
+        this.PLAYERS.forEach(player => player.socket.emit(topic, ...args))
+    }
+    public broadcastEachPlayers = (topic, computePlayerMessage: (player: Player) => any[]): void => {
+        this.PLAYERS.forEach(player => player.socket.emit(topic, ...computePlayerMessage(player)))
     }
 
-    public broadcast = (...args): void => {
-        this.broadcastAdmin(...args)
-        this.broadcastPlayers(...args)
+    public broadcast = (topic, ...args): void => {
+        this.broadcastAdmin(topic, ...args)
+        this.broadcastPlayers(topic, ...args)
     }
 
     public sendMessageToPlayer = (uuid, topic, message): void => {

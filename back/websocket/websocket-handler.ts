@@ -2,6 +2,7 @@ import {Socket} from "socket.io"
 import Game from "./Game"
 import UserHandler from "./UserHandler";
 import WSStatus from "../types/WSStatus";
+import Player from "./Player";
 
 class WebSocketServerHandler {
     private GAME: Game
@@ -16,11 +17,9 @@ class WebSocketServerHandler {
         const user = this.userHandler.connectUser(socket)
 
         if (user.isAdmin()) {
-            // socket.emit("leaderboard", this.userHandler.getAllPlayers())
-            socket.emit("status", this.getStatus(true))
+            socket.emit("status", this.getAdminStatus())
         } else {
-            // socket.emit("leaderboard", this.userHandler.getLeaderboard())
-            socket.emit("status", this.getStatus(false))
+            socket.emit("status", this.getPlayerStatus(user as Player))
             this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
         }
 
@@ -28,6 +27,7 @@ class WebSocketServerHandler {
 
         socket.on("setName", this.setPlayerName)
         socket.on("commitCode", this.setPlayerFinalCode)
+        socket.on("tempCode", this.setPlayerTempCode)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
         socket.on("resetGame", this.resetGame)
@@ -42,7 +42,12 @@ class WebSocketServerHandler {
 
     private startGame = () => {
         this.userHandler.setGameToPlayer(this.GAME)
-        this.GAME.startGame(this.broadcastStatus, this.userHandler.updateTopicForAllPlayers)
+        this.GAME.startGame()
+        this.GAME.startTopic(this.GAME.allTopics[0].id, {
+            updateCb: this.broadcastStatus,
+            updateTopicCb: this.userHandler.updateTopicForAllPlayers,
+            updatePropsCb: this.userHandler.updatePropsForAllPlayers
+        })
 
         this.broadcastStatus()
         console.log("Partie démarrée")
@@ -68,7 +73,7 @@ class WebSocketServerHandler {
     }
 
     private setPlayerTempCode = (uuid, code) => {
-        // this.GAME.setPlayerTempCode(uuid, code)
+        this.userHandler.setPlayerTempCode(uuid, code, this.GAME.topic)
     }
 
     private logPlayers = () => {
@@ -76,15 +81,24 @@ class WebSocketServerHandler {
     }
 
     private broadcastStatus = () => {
-        this.userHandler.broadcastPlayers("status", this.getStatus(false))
-        this.userHandler.broadcastAdmin("status", this.getStatus(true))
+        this.userHandler.broadcastEachPlayers("status", p => [ this.getPlayerStatus(p) ])
+        this.userHandler.broadcastAdmin("status", this.getAdminStatus())
     }
 
-    private getStatus = (isAdmin: boolean): WSStatus => {
+    private getAdminStatus = (): WSStatus => {
         return {
-            screen: this.GAME.screen,
-            game: isAdmin ? this.GAME.toAdminJson() : this.GAME.toPublicJson(),
-            players: isAdmin ? this.userHandler.getAllPlayers() : this.userHandler.getLeaderboard(),
+            screen: this.GAME.currentScreen,
+            game: this.GAME.toAdminJson(),
+            players: this.userHandler.getAllPlayers(),
+            transitionTimeout: this.GAME.transitionTimeout
+        }
+    }
+
+    private getPlayerStatus = (player: Player): WSStatus => {
+        return {
+            screen: player.screen,
+            game: this.GAME.toPublicJson(),
+            players: this.userHandler.getLeaderboard(),
             transitionTimeout: this.GAME.transitionTimeout
         }
     }
@@ -94,8 +108,8 @@ class WebSocketServerHandler {
         this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
     }
 
-    private broadcast = (...args) => {
-        this.userHandler.broadcast(...args)
+    private broadcast = (topic, ...args) => {
+        this.userHandler.broadcast(topic, ...args)
     }
 
 }

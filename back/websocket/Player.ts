@@ -1,11 +1,13 @@
 import {Socket} from "socket.io";
-import {GamePlayer, GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
+import {GamePlayer, PlayerTopic} from "../types/GamePlayer";
 import User from "./User";
+import GameScreen from "../types/GameScreen";
 
 class Player implements User {
     public socket: Socket
     public uuid: string
     public name: string
+    public screen: GameScreen
     public connected: boolean
     public score?: number
     public topics?: PlayerTopic[]
@@ -16,6 +18,7 @@ class Player implements User {
         this.name = name
         this.connected = connected ?? true
         this.score = 0
+        this.screen = GameScreen.LANDING_PAGE
     }
 
     public isAdmin(): boolean {

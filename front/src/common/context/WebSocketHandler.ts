@@ -53,7 +53,6 @@ class WebSocketHandler {
             this.dispatch({type: "setPlayers", payload: players})
         })
         this.socket.on("status", (wsStatus) => {
-            console.warn("NEW STATUS", wsStatus)
             this.dispatch({type: "status", payload: wsStatus})
         })
     }

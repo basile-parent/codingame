@@ -16,6 +16,7 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
             <thead>
             <tr>
                 <th>Joueur</th>
+                <th>Ecran</th>
                 <th>Total</th>
                 {
                     game?.allTopics.map(topic =>
@@ -51,6 +52,9 @@ const UserRow: FC<UserRowProps> = ({player, allTopics}) => {
                     <ConnectedIcon connected={player.connected}/>
                 </span>
                 {player.name || player.uuid}
+            </td>
+            <td>
+                {player.screen}
             </td>
             <td className={styles.score}>
                 {player.score}
