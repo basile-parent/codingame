@@ -32,6 +32,7 @@ class WebSocketServerHandler {
         socket.on("calculateTopicScore", this.calculateScores)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
+        socket.on("addTime", this.addTime)
         socket.on("finishTopic", this.finishTopic)
         socket.on("resetGame", this.resetGame)
     }
@@ -58,6 +59,11 @@ class WebSocketServerHandler {
 
     private finishTopic = () => {
         this.GAME.finishTopic(this.gameUpdateCb)
+    }
+
+    private addTime = (time: number) => {
+        this.GAME.addTimeToTopic(time)
+        this.broadcast("newEndTime", this.GAME.endTimer)
     }
 
     private gameUpdateCb = (options: GameUpdateOptions) => {

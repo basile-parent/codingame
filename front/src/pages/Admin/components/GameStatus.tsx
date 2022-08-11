@@ -1,4 +1,4 @@
-import {FC, useContext} from 'react'
+import {FC, useCallback, useContext} from 'react'
 import {WSContext} from "../../../common/context/WSContext"
 import GameActions from "./GameActions"
 import styles from "./GameStatus.module.scss"
@@ -6,8 +6,11 @@ import Timer from "../../../common/Timer";
 
 type GameStatusProps = {}
 const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
-    const { wsState } = useContext(WSContext)
-    console.log(wsState)
+    const { wsState, dispatch } = useContext(WSContext)
+
+    const handleEndTimer = useCallback(() => {
+        dispatch({ type: "finishTopic" })
+    }, [])
 
     return (
         <article className={styles.wrapper}>
@@ -19,7 +22,7 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
                             <>
                                 <li><label>Exercice: </label> ({ wsState.game.topic.gameMode }) #{ wsState.game.topic.id }: { wsState.game.topic.summary }</li>
                                 <li><label>Statut: </label> { !wsState.game.topic.isFinished ? "En cours": "Terminé" }</li>
-                                <li><label>Timer: </label><Timer endTimer={ wsState.game.endTimer } /></li>
+                                <li><label>Timer: </label><Timer endTimer={ wsState.game.endTimer! } onEndTimer={handleEndTimer} /></li>
                             </>
                         )
                     }
@@ -32,9 +35,9 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
                     }
                 </ul>
             </section>
-            <section className={styles.actions}>
+            <aside className={styles.actions}>
                 <GameActions />
-            </section>
+            </aside>
         </article>
     )
 }

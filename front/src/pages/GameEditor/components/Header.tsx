@@ -1,4 +1,4 @@
-import {FC, useContext} from 'react'
+import {FC, useContext, useEffect, useState} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faHourglass, faPuzzlePiece} from '@fortawesome/free-solid-svg-icons'
 import {ReactComponent as AtecnaIcon} from "../../../assets/logo-cube.svg"
@@ -9,7 +9,12 @@ import gameModeUtils from "../../../utils/gameModeUtils";
 
 type HeaderProps = {}
 const Header: FC<HeaderProps> = ({}: HeaderProps) => {
-    const {wsState} = useContext(WSContext)
+    const {wsState: { game }} = useContext(WSContext)
+    const [ endTimer, setEndTimer ] = useState<number>(game!.endTimer!)
+
+    useEffect(() => {
+        setEndTimer(game!.endTimer!)
+    }, [ game!.endTimer ])
 
     return (
         <header className={styles.header}>
@@ -21,12 +26,12 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
                 <FontAwesomeIcon icon={faPuzzlePiece}/>
                 Mode de jeu : &nbsp;
                 {
-                    gameModeUtils.informations[wsState.game?.topic?.gameMode || ""]?.title || "???"
+                    gameModeUtils.informations[game!.topic!.gameMode || ""]?.title || "???"
                 }
             </p>
             <p className={styles.timer}>
                 <FontAwesomeIcon icon={faHourglass}/>
-                Timer: <Timer endTimer={wsState.game?.endTimer} />
+                Timer: <Timer endTimer={endTimer} />
             </p>
         </header>
     )

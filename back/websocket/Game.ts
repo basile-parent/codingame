@@ -2,11 +2,9 @@ import Topic, {GameMode, Test} from "../types/Topic";
 import * as fs from "fs"
 import GameScreen from "../types/GameScreen"
 import {GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
-import Player from "../model/Player";
 import testRunner from "./testRunner";
 import {GameUpdateOptions} from "./websocket-handler";
 import TopicShortest from "../model/TopicShortest";
-import {json} from "express";
 import TopicFastest from "../model/TopicFastest";
 
 class Game {
@@ -16,8 +14,6 @@ class Game {
     public topicIndex: number | null = null
     public endTimer: number | null = null
     public transitionTimeout: number = 0
-
-    private timerTimeout: ReturnType<typeof setTimeout> | null = null
 
     constructor() {
         this.currentScreen = GameScreen.LANDING_PAGE
@@ -58,17 +54,16 @@ class Game {
         // 2s of margin (instruction display) + 3s of transition countdown
         const topicDuration = (this.topic.timer * 1000) + 2000 + this.transitionTimeout
         this.endTimer = new Date().getTime() + topicDuration
-        this.timerTimeout = setTimeout(() => {
-            this.finishTopic(updateCb)
-        // Setup 1s later to avoid the conflicts with player's local clock
-        }, topicDuration + 1000)
     }
 
     finishTopic(updateCb: (options: GameUpdateOptions) => void) {
         this.topic.status = GamePlayerStatus.FINISHED
         this.currentScreen = GameScreen.AFTER_GAME
         updateCb({ topic: this.topic, isFinishCb: true})
-        clearTimeout(this.timerTimeout)
+    }
+
+    addTimeToTopic(time: number) {
+        this.endTimer += time * 1000
     }
 
     calculateCompletion(code: string): Promise<number> {
@@ -133,7 +128,7 @@ class Game {
     }
 
     toAdminJson() {
-        return { ...this, timerTimeout: undefined }
+        return { ...this }
     }
 
     _setTransitionTimeout(timeout: number) {

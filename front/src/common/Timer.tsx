@@ -2,17 +2,17 @@ import {FC, useEffect, useState} from 'react'
 import styles from "./Timer.module.scss"
 
 type TimerProps = {
-    endTimer?: number
+    endTimer: number,
+    onEndTimer?: () => void
 }
-const Timer: FC<TimerProps> = ({ endTimer }: TimerProps) => {
+const Timer: FC<TimerProps> = ({ endTimer, onEndTimer }: TimerProps) => {
     const [timerString, setTimerString] = useState<string>("--:--")
     const [isEnding, setIsEnding] = useState<boolean>(false)
 
     useEffect(() => {
-        if (endTimer) {
-            runTimer(new Date(endTimer).toISOString(), setTimerString, setIsEnding)
-        }
-    }, [])
+        const worker = runTimer(new Date(endTimer).toISOString(), setTimerString, setIsEnding, onEndTimer)
+        return () => worker.terminate()
+    }, [ endTimer ])
 
     return (
         <time className={isEnding ? styles.ending : undefined}>{timerString}</time>
@@ -21,7 +21,8 @@ const Timer: FC<TimerProps> = ({ endTimer }: TimerProps) => {
 
 const runTimer = (date: string,
                   setTimerString: (s: string) => void,
-                  setIsEnding: (b: boolean) => void) => {
+                  setIsEnding: (b: boolean) => void,
+                  onEndTimer?: () => void): Worker => {
     const worker = new Worker(new URL('./Timer.worker.js', import.meta.url))
 
     worker.addEventListener('message', e => {
@@ -33,14 +34,15 @@ const runTimer = (date: string,
                 setIsEnding(remainingInSeconds < 60)
                 break;
             case "endCountdown":
-                console.log("End countdown")
-                // showEndOfTime();
+                onEndTimer && onEndTimer()
                 break;
         }
     });
 
     worker.postMessage({action: "setupEndDate", date})
     worker.postMessage({action: "startCountdown"})
+
+    return worker
 };
 
 export default Timer

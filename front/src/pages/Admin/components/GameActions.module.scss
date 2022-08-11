@@ -1,9 +1,42 @@
+@import "../../../variables";
+
 .container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 
-  button {
+  .button {
     flex: 1;
+  }
+
+  .buttonWithDropDown {
+    flex: 1;
+
+    .dropDownTrigger {
+      display: inline-block;
+      width: 100%;
+
+      button {
+        display: inline-block;
+        width: 100%;
+      }
+    }
+  }
+
+  .addTimeDropDown .dropDownContent {
+    input {
+      display: inline-block;
+      width: 60px;
+      margin-right: 5px;
+    }
+    button {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $lowlight;
+      }
+    }
   }
 }

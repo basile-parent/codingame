@@ -77,6 +77,13 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.startGame()
             return state
         }
+        case 'addTime': {
+            state.ws?.addTime(action.payload)
+            return state
+        }
+        case 'newEndTime': {
+            return { ...state, game: { ...state.game, endTimer: action.payload } as Game}
+        }
         case 'finishTopic': {
             state.ws?.finishTopic()
             return state

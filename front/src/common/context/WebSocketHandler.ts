@@ -58,6 +58,9 @@ class WebSocketHandler {
         this.socket.on("forceSubmit", () => {
             this.dispatch({type: "forceSubmit" })
         })
+        this.socket.on("newEndTime", (endTimer: number) => {
+            this.dispatch({type: "newEndTime", payload: endTimer })
+        })
     }
 
     setName(userName: string) {
@@ -69,6 +72,9 @@ class WebSocketHandler {
 
     startGame() {
         this._emit("startGame")
+    }
+    addTime(time: number) {
+        this._emit("addTime", time)
     }
     finishTopic() {
         this._emit("finishTopic")
