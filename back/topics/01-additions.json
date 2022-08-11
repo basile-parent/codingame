@@ -1,7 +1,7 @@
 {
   "id": 1,
   "summary": "Addition simple",
-  "timer": 10,
+  "timer": 120,
   "points": 5000,
   "maxPointsTimer": 60,
   "gameMode": "fastest",

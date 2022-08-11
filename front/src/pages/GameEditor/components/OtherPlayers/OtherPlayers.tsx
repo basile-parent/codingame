@@ -6,10 +6,11 @@ import PlayerWithCompletion from "./PlayerWithCompletion";
 import {WSContext} from "../../../../common/context/WSContext";
 import {GamePlayer} from "../../../../types/Player";
 import {Game} from "../../../../types/Game";
+import {_completionComparator} from "../../../AfterGame/AfterGame";
 
 type OtherPlayersProps = {}
 const OtherPlayers: FC<OtherPlayersProps> = ({}: OtherPlayersProps) => {
-    const {wsState} = useContext(WSContext)
+    const {wsState: { game, players }} = useContext(WSContext)
 
     return (
         <>
@@ -19,9 +20,11 @@ const OtherPlayers: FC<OtherPlayersProps> = ({}: OtherPlayersProps) => {
             </h2>
             <ul>
                 {
-                    wsState.players.map(player =>
+                    players
+                        .sort(_completionComparator(game!))
+                        .map(player =>
                         <OtherPlayerItem player={player}
-                                         game={wsState.game!}
+                                         game={game!}
                                          key={`player-${player.name}`}
                         />
                     )

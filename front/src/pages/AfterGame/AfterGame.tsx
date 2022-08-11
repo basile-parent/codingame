@@ -37,7 +37,7 @@ type AfterGamePlayerItemProps = {
     player: GamePlayer
 }
 
-const _completionComparator = (game: Game) => (p1: GamePlayer, p2: GamePlayer): number => {
+export const _completionComparator = (game: Game) => (p1: GamePlayer, p2: GamePlayer): number => {
     const playerTopic1 = _getPlayerTopic(p1, game)
     const playerTopic2 = _getPlayerTopic(p2, game)
 
