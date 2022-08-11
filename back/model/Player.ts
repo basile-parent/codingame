@@ -36,7 +36,6 @@ class Player implements User {
     public toPublicPlayer(): GamePlayer {
         return {
             ...this,
-            uuid: undefined,
             socket: undefined,
             connected: undefined,
             toString: undefined,

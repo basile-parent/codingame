@@ -1,14 +1,13 @@
-import Topic from "../types/Topic";
+import Topic, {GameMode, Test} from "../types/Topic";
 import * as fs from "fs"
 import GameScreen from "../types/GameScreen"
-import {GamePlayerStatus} from "../types/GamePlayer";
-import Player from "./Player";
-
-interface StartTopicOptions {
-    updateCb: () => void,
-    updateTopicCb: (topic: Topic) => void,
-    updatePropsCb: (player: Player) => void,
-}
+import {GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
+import Player from "../model/Player";
+import testRunner from "./testRunner";
+import {GameUpdateOptions} from "./websocket-handler";
+import TopicShortest from "../model/TopicShortest";
+import {json} from "express";
+import TopicFastest from "../model/TopicFastest";
 
 class Game {
     public currentScreen: GameScreen
@@ -30,10 +29,17 @@ class Game {
         const allFiles = fs.readdirSync("./topics")
         return allFiles.filter(fileName => fileName.endsWith(".json"))
             .map(fileName => JSON.parse(String(fs.readFileSync(`./topics/${fileName}`))))
-            .map(topic => ({
-                ...topic,
-                status: GamePlayerStatus.WAITING
-            }))
+            .map((jsonTopic: Topic) => {
+                let topic
+                if (jsonTopic.gameMode === GameMode.SHORTEST) {
+                    topic = new TopicShortest(jsonTopic)
+                } else {
+                    topic = new TopicFastest(jsonTopic)
+                }
+
+                topic.status = GamePlayerStatus.WAITING
+                return topic
+            })
             .sort((t1, t2) => t1.id - t2.id)
     }
 
@@ -41,16 +47,13 @@ class Game {
         this.currentScreen = GameScreen.GAME_EDITOR
     }
 
-    startTopic(id: number, options: StartTopicOptions) {
-        const {updateCb, updateTopicCb, updatePropsCb } = options
+    startTopic(id: number, updateCb: (options: GameUpdateOptions) => void) {
         this._setTransitionTimeout(3000)
 
         this.allTopics[this.topicIndex].startTime = new Date().getTime()
         this.topic = this.allTopics[this.topicIndex]
         this.topic.status = GamePlayerStatus.IN_PROGRESS
-        updatePropsCb({ screen: this.currentScreen } as Player)
-        updateTopicCb(this.topic)
-        updateCb()
+        updateCb({ topic: this.topic, playerProps: { screen: this.currentScreen } as Player })
 
         // 2s of margin (instruction display) + 3s of transition countdown
         const topicDuration = (this.topic.timer * 1000) + 2000 + this.transitionTimeout
@@ -60,12 +63,53 @@ class Game {
             this.currentScreen = GameScreen.AFTER_GAME
             console.log(`Timer finished for topic ${ this.topic.id } ${ this.topic.summary }.`)
 
-            updatePropsCb({ screen: this.currentScreen } as Player)
-            updateTopicCb(this.topic)
-            updateCb()
+            updateCb({ topic: this.topic, playerProps: { screen: this.currentScreen } as Player, isFinishCb: true})
 
         // Setup 1s later to avoid the conflicts with player's local clock
         }, topicDuration + 1000)
+    }
+
+    calculateCompletion(code: string): Promise<number> {
+        return new Promise(resolve => {
+            let resolvedCount = 0
+
+            Promise.allSettled(
+                this.topic.tests.map((test: Test) =>
+                    testRunner.runTest(code, test.inputs, test.output)
+                        .then(result => {
+                            resolvedCount++
+                            return result
+                        })
+                )
+            ).then((_) => {
+                resolve(resolvedCount / this.topic.tests.length)
+            })
+        })
+    }
+
+    calculateScore(playerTopic: PlayerTopic): number {
+        const completion = playerTopic.completion
+        if (completion === 0) {
+            return 0
+        }
+
+        const maxPoints = completion === 1 ? this.topic.points : this.topic.points / 1.5
+        const pointRange = maxPoints / 2
+
+        const maxTimeWithDelay = this.topic.timer
+        const maxTime = maxTimeWithDelay - this.topic.maxPointsTimer
+
+        const maxScoreDelay = this.topic.maxPointsTimer
+        const duration = playerTopic.duration / 1000
+        const durationSinceMaxScore = duration - maxScoreDelay
+
+        const substractedPpoints =
+            durationSinceMaxScore <= 0 ?
+                0 :
+                (durationSinceMaxScore / maxTime) * pointRange
+
+        const baseScore = maxPoints - substractedPpoints
+        return Math.round(baseScore * completion)
     }
 
     toPublicJson() {

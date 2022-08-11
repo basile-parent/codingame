@@ -1,4 +1,4 @@
-import * as WorkerThread from "worker_threads"
+import { Worker } from "worker_threads";
 
 const tests = [
   {args: [1, 2], expectedResult: 3},
@@ -34,11 +34,12 @@ const testUserCode = code => {
 const _runTest = (code, args, expectedResult) => {
   return new Promise((resolve, reject) => {
     let workerTimeout
-    const worker = new WorkerThread.Worker(
-        "./routes/checkCode-worker.ts",
+    const worker = new Worker(
+        __dirname + "/checkCode-worker.js",
         {workerData: {code, args, expectedResult}}
     )
     worker.on('message', e => {
+      console.log("Worker get message", e)
       const {action, value} = e
       switch (action) {
         case "notifyResult":
@@ -62,7 +63,7 @@ const _runTest = (code, args, expectedResult) => {
     workerTimeout = setTimeout(() => {
       reject("timeout")
       worker.terminate()
-    }, 1000)
+    }, 2000)
 
   })
 }

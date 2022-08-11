@@ -29,7 +29,16 @@ const TopicStatus: FC<TopicStatusProps> = ({ player, topic }) => {
                     </SelectTopicButton> :
                     playerTopic.status === GamePlayerStatus.FINISHED ?
                       <SelectTopicButton playerTopic={playerTopic} hasScore={playerTopic.score !== undefined}>
-                          <>{ playerTopic.score ?? <FontAwesomeIcon icon={faSpinner}/> }</>
+                          <>
+                              {
+                                  playerTopic.score ??
+                                  (
+                                      playerTopic.completion ?
+                                          `${Math.round(playerTopic.completion * 100)}%` :
+                                          <FontAwesomeIcon icon={faSpinner}/>
+                                  )
+                              }
+                          </>
                       </SelectTopicButton> :
                         "/"
             }

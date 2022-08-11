@@ -21,26 +21,32 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                     disabled={screen !== Screen.LANDING_PAGE}
                     onClick={() => dispatch({ type: "startGame" })}
             >
-                Start
+                Démarrer
             </button>
 
             <button className={`button is-small is-primary`}
                     disabled={!game || screen !== Screen.GAME_EDITOR || game.topic?.isFinished}
                     // onClick={() => dispatch({ type: "startGame" })}
             >
-                Add time
+                Ajouter du temps
             </button>
             <button className={`button is-small is-primary`}
                     disabled={!game || screen !== Screen.GAME_EDITOR || game.topic?.isFinished}
                     // onClick={() => dispatch({ type: "startGame" })}
             >
-                Finish topic
+                Terminer topic
+            </button>
+            <button className={`button is-small is-primary`}
+                    disabled={!game || screen !== Screen.AFTER_GAME}
+                    onClick={() => dispatch({ type: "calculateScore" })}
+            >
+                Calcul score
             </button>
 
             <button className={`button is-small is-danger`}
                     onClick={handleReset}
             >
-                Reset
+                Réinit
             </button>
 
         </aside>

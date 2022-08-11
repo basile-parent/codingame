@@ -12,7 +12,7 @@ const PlayerWithCompletion: FC<PlayerWithCompletionProps> = ({ player, playerTop
     return (
         <div className={styles.player}>
             <span className={styles.completion}>
-                { playerTopic.completion ? `${ playerTopic.completion }%` : "N/A" }
+                { playerTopic.completion ? `${ Math.round(playerTopic.completion * 100) }%` : "N/A" }
             </span>
             <FontAwesomeIcon icon={faUser} />
             <div className={styles.info}>
@@ -23,7 +23,7 @@ const PlayerWithCompletion: FC<PlayerWithCompletionProps> = ({ player, playerTop
     )
 }
 
-const translatePlayerStatus = (status: GamePlayerStatus): string =>
+export const translatePlayerStatus = (status: GamePlayerStatus): string =>
     status === GamePlayerStatus.FINISHED ? "Terminé": "En cours"
 
 export default PlayerWithCompletion

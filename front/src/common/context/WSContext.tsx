@@ -61,6 +61,10 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.setName(action.payload)
             return state
         }
+        case 'forceSubmit': {
+            // TODO
+            return state
+        }
         case 'commitCode': {
             state.ws?.commitCode(action.payload)
             return state
@@ -70,6 +74,10 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
         }
         case 'startGame': {
             state.ws?.startGame()
+            return state
+        }
+        case 'calculateScore': {
+            state.ws?.calculateScore()
             return state
         }
         case 'resetGame': {

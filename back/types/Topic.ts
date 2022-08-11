@@ -1,4 +1,4 @@
-import {GamePlayerStatus} from "./GamePlayer";
+import {GamePlayerStatus, PlayerTopic} from "./GamePlayer";
 
 type Topic = {
     id: number,
@@ -16,6 +16,8 @@ type Topic = {
     examples?: Test[],
     defaultCode?: string,
     tests: Test[],
+
+    calculateScore: (topic: Topic, playerTopics: PlayerTopic[]) => PlayerTopic[]
 }
 
 export enum GameMode {
@@ -23,7 +25,7 @@ export enum GameMode {
     SHORTEST = "shortest",
 }
 
-type Test = {
+export type Test = {
     inputs: (string | number)[],
     output: (string | number),
     hidden?: boolean,

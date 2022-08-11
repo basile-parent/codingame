@@ -23,7 +23,7 @@ const PlayerCodeDisplay: FC<PlayerCodeDisplayProps> = ({}: PlayerCodeDisplayProp
     }, [])
 
     useEffect(() => {
-        const newCode = selectedPlayerTopic?.code || selectedPlayerTopic?.tempCode
+        const newCode = selectedPlayerTopic?.code
         codeFlask?.updateCode(newCode || "")
         setCode(newCode || selectedPlayerTopic ? "" : null)
     }, [ selectedPlayerTopic ])

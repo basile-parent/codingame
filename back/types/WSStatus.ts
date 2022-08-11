@@ -1,6 +1,6 @@
 import GameScreen from "./GameScreen"
 import {GamePlayer} from "./GamePlayer"
-import Player from "../websocket/Player"
+import Player from "../model/Player"
 import Game from "../websocket/Game"
 
 type WSStatus = {

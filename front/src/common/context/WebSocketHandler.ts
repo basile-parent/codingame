@@ -67,6 +67,9 @@ class WebSocketHandler {
     startGame() {
         this._emit("startGame")
     }
+    calculateScore() {
+        this._emit("calculateScore")
+    }
     resetGame() {
         this._emit("resetGame")
     }

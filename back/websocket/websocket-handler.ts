@@ -2,7 +2,9 @@ import {Socket} from "socket.io"
 import Game from "./Game"
 import UserHandler from "./UserHandler";
 import WSStatus from "../types/WSStatus";
-import Player from "./Player";
+import Player from "../model/Player";
+import {PlayerTopic} from "../types/GamePlayer";
+import Topic from "../types/Topic";
 
 class WebSocketServerHandler {
     private GAME: Game
@@ -26,8 +28,8 @@ class WebSocketServerHandler {
         this.logPlayers()
 
         socket.on("setName", this.setPlayerName)
-        socket.on("commitCode", this.setPlayerFinalCode)
-        socket.on("tempCode", this.setPlayerTempCode)
+        socket.on("commitCode", this.submitCode)
+        socket.on("calculateTopicScore", this.calculateScores)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
         socket.on("resetGame", this.resetGame)
@@ -43,14 +45,21 @@ class WebSocketServerHandler {
     private startGame = () => {
         this.userHandler.setGameToPlayer(this.GAME)
         this.GAME.startGame()
-        this.GAME.startTopic(this.GAME.allTopics[0].id, {
-            updateCb: this.broadcastStatus,
-            updateTopicCb: this.userHandler.updateTopicForAllPlayers,
-            updatePropsCb: this.userHandler.updatePropsForAllPlayers
-        })
+        this.startTopic(this.GAME.allTopics[0].id)
 
         this.broadcastStatus()
         console.log("Partie démarrée")
+    }
+
+    private startTopic = (id: number) => {
+        this.GAME.startTopic(id, this.gameUpdateCb)
+    }
+
+    private gameUpdateCb = (options: GameUpdateOptions) => {
+        options.playerProps && this.userHandler.updatePropsForAllPlayers(options.playerProps)
+        this.userHandler.updateTopicForAllPlayers(options.topic)
+        options.isFinishCb && this.userHandler.broadcastPlayers("forceSubmit")
+        this.broadcastStatus()
     }
 
     private resetGame = () => {
@@ -62,18 +71,23 @@ class WebSocketServerHandler {
 
     private setPlayerName = (uuid, name) => {
         this.userHandler.setPlayerName(uuid, name)
-
         this.logPlayers()
         this.broadcastLeaderboard()
     }
 
-    private setPlayerFinalCode = (uuid, code) => {
+    private submitCode = (uuid, code) => {
         this.userHandler.setPlayerFinalCode(uuid, code, this.GAME.topic)
+        this.GAME.calculateCompletion(code)
+            .then(completion => {
+                this.userHandler.setPlayerTopicProps(uuid, this.GAME.topic, { completion } as PlayerTopic)
+                this.broadcastStatus()
+            })
         this.broadcastStatus()
     }
 
-    private setPlayerTempCode = (uuid, code) => {
-        this.userHandler.setPlayerTempCode(uuid, code, this.GAME.topic)
+    private calculateScores = () => {
+
+        this.broadcastStatus()
     }
 
     private logPlayers = () => {
@@ -112,6 +126,12 @@ class WebSocketServerHandler {
         this.userHandler.broadcast(topic, ...args)
     }
 
+}
+
+export type GameUpdateOptions = {
+    topic: Topic,
+    playerProps?: Player,
+    isFinishCb?: boolean
 }
 
 export default WebSocketServerHandler

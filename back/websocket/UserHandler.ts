@@ -1,8 +1,8 @@
 import {Socket} from "socket.io";
-import {GamePlayer, GamePlayerStatus} from "../types/GamePlayer";
-import Admin from "./Admin";
-import Player from "./Player";
-import User from "./User";
+import {GamePlayer, GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
+import Admin from "../model/Admin";
+import Player from "../model/Player";
+import User from "../model/User";
 import Game from "./Game";
 import Topic from "../types/Topic";
 import GameScreen from "../types/GameScreen";
@@ -94,6 +94,7 @@ class UserHandler {
     }
     public resetGameOnPlayer = (): void => {
         this.PLAYERS.forEach(player => {
+            player.screen = GameScreen.LANDING_PAGE
             player.topics = undefined
         })
     }
@@ -106,21 +107,27 @@ class UserHandler {
         return this.PLAYERS.filter(p => p.name).map(p => p.toPublicPlayer())
     }
 
-    public setPlayerFinalCode(uuid: string, code: string, topic: Topic) {
+    public setPlayerFinalCode(uuid: string, code: string, topic: Topic): PlayerTopic {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         player.screen = GameScreen.AFTER_GAME
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
-        playerTopic.score = 1000
         playerTopic.code = code
         playerTopic.status = GamePlayerStatus.FINISHED
         playerTopic.endTime = new Date().getTime()
         playerTopic.duration = playerTopic.endTime - topic.startTime
+
+        return playerTopic
     }
 
-    public setPlayerTempCode(uuid: string, code: string, topic: Topic) {
+    public setPlayerTopicProps(uuid: string, topic: Topic, props: PlayerTopic): PlayerTopic {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
+        player.screen = GameScreen.AFTER_GAME
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
-        playerTopic.tempCode = code
+        for (let [key, value] of Object.entries(props)) {
+            playerTopic[key] = value
+        }
+
+        return playerTopic
     }
 
     public toString = (): string => {

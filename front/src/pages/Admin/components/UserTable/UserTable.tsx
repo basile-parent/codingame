@@ -23,7 +23,6 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
                         <th key={`topic-${topic.id}`}>#{topic.id}</th>
                     )
                 }
-                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -63,9 +62,6 @@ const UserRow: FC<UserRowProps> = ({player, allTopics}) => {
                 allTopics.map(topic =>
                     <TopicStatus player={player} topic={topic} key={`player-${player.uuid}-topic-${topic.id}`} />)
             }
-            <td>
-                {/*Actions*/}
-            </td>
         </tr>
     )
 }
