@@ -33,7 +33,7 @@ const TopicStatus: FC<TopicStatusProps> = ({ player, topic }) => {
                               {
                                   playerTopic.score ??
                                   (
-                                      playerTopic.completion ?
+                                      playerTopic.completion !== undefined ?
                                           `${Math.round(playerTopic.completion * 100)}%` :
                                           <FontAwesomeIcon icon={faSpinner}/>
                                   )

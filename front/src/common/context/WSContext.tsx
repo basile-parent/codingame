@@ -14,6 +14,7 @@ type WSState = {
     game: Game | null,
     transitionTimeout: number,
     delayedState: WSState | null,
+    forceSubmit: boolean
 }
 type WSStateAction = {
     type: string,
@@ -29,6 +30,7 @@ const INTIAL_STATE: WSState = {
     game: null,
     transitionTimeout: 0,
     delayedState: null,
+    forceSubmit: false,
 }
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
@@ -62,18 +64,21 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             return state
         }
         case 'forceSubmit': {
-            // TODO
-            return state
+            return state.screen === Screen.GAME_EDITOR ? {...state, forceSubmit: true} : state
         }
         case 'commitCode': {
             state.ws?.commitCode(action.payload)
-            return state
+            return { ...state, forceSubmit: false }
         }
         case 'setPlayers': {
             return { ...state, players: action.payload }
         }
         case 'startGame': {
             state.ws?.startGame()
+            return state
+        }
+        case 'finishTopic': {
+            state.ws?.finishTopic()
             return state
         }
         case 'calculateScore': {

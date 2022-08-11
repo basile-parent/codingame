@@ -53,20 +53,22 @@ class Game {
         this.allTopics[this.topicIndex].startTime = new Date().getTime()
         this.topic = this.allTopics[this.topicIndex]
         this.topic.status = GamePlayerStatus.IN_PROGRESS
-        updateCb({ topic: this.topic, playerProps: { screen: this.currentScreen } as Player })
+        updateCb({ topic: this.topic })
 
         // 2s of margin (instruction display) + 3s of transition countdown
         const topicDuration = (this.topic.timer * 1000) + 2000 + this.transitionTimeout
         this.endTimer = new Date().getTime() + topicDuration
         this.timerTimeout = setTimeout(() => {
-            this.topic.status = GamePlayerStatus.FINISHED
-            this.currentScreen = GameScreen.AFTER_GAME
-            console.log(`Timer finished for topic ${ this.topic.id } ${ this.topic.summary }.`)
-
-            updateCb({ topic: this.topic, playerProps: { screen: this.currentScreen } as Player, isFinishCb: true})
-
+            this.finishTopic(updateCb)
         // Setup 1s later to avoid the conflicts with player's local clock
         }, topicDuration + 1000)
+    }
+
+    finishTopic(updateCb: (options: GameUpdateOptions) => void) {
+        this.topic.status = GamePlayerStatus.FINISHED
+        this.currentScreen = GameScreen.AFTER_GAME
+        updateCb({ topic: this.topic, isFinishCb: true})
+        clearTimeout(this.timerTimeout)
     }
 
     calculateCompletion(code: string): Promise<number> {

@@ -55,6 +55,9 @@ class WebSocketHandler {
         this.socket.on("status", (wsStatus) => {
             this.dispatch({type: "status", payload: wsStatus})
         })
+        this.socket.on("forceSubmit", () => {
+            this.dispatch({type: "forceSubmit" })
+        })
     }
 
     setName(userName: string) {
@@ -66,6 +69,9 @@ class WebSocketHandler {
 
     startGame() {
         this._emit("startGame")
+    }
+    finishTopic() {
+        this._emit("finishTopic")
     }
     calculateScore() {
         this._emit("calculateScore")

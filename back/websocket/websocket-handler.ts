@@ -32,6 +32,7 @@ class WebSocketServerHandler {
         socket.on("calculateTopicScore", this.calculateScores)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
+        socket.on("finishTopic", this.finishTopic)
         socket.on("resetGame", this.resetGame)
     }
 
@@ -55,8 +56,12 @@ class WebSocketServerHandler {
         this.GAME.startTopic(id, this.gameUpdateCb)
     }
 
+    private finishTopic = () => {
+        this.GAME.finishTopic(this.gameUpdateCb)
+    }
+
     private gameUpdateCb = (options: GameUpdateOptions) => {
-        options.playerProps && this.userHandler.updatePropsForAllPlayers(options.playerProps)
+        this.userHandler.updatePropsForAllPlayers({ screen: this.GAME.currentScreen } as Player)
         this.userHandler.updateTopicForAllPlayers(options.topic)
         options.isFinishCb && this.userHandler.broadcastPlayers("forceSubmit")
         this.broadcastStatus()
@@ -130,7 +135,6 @@ class WebSocketServerHandler {
 
 export type GameUpdateOptions = {
     topic: Topic,
-    playerProps?: Player,
     isFinishCb?: boolean
 }
 

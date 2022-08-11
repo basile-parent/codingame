@@ -16,7 +16,7 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
     }, [])
 
     return (
-        <aside className={styles.wrapper}>
+        <aside className={styles.container}>
             <button className={`button is-small is-primary`}
                     disabled={screen !== Screen.LANDING_PAGE}
                     onClick={() => dispatch({ type: "startGame" })}

@@ -1,4 +1,4 @@
-import {FC, useCallback, useContext, useState} from 'react';
+import {FC, useCallback, useContext, useEffect, useState} from 'react';
 import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsActions, UnitTestsList} from "./components";
 import styles from "./GameEditor.module.scss"
 import {WSContext} from "../../common/context/WSContext";
@@ -17,7 +17,7 @@ return "your solution"`
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const {wsState: {game, mode}, dispatch} = useContext(WSContext)
+    const {wsState: {game, mode, forceSubmit}, dispatch} = useContext(WSContext)
     const [code, setCode] = useState<string>(game!.topic!.defaultCode || DEFAULT_CODE)
     const [dialogOpen, setDialogOpen] = useState<boolean>(true)
 
@@ -81,6 +81,12 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     const commitCode = useCallback(() => {
         dispatch({ type: "commitCode", payload: code})
     }, [ code ])
+
+    useEffect(() => {
+        if (forceSubmit) {
+            commitCode()
+        }
+    }, [ forceSubmit ])
 
     return (
         <>
