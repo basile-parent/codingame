@@ -22,7 +22,7 @@ class TopicCommon implements Topic {
         Object.assign(this, jsonTopic)
     }
 
-    calculateScore(topic: Topic, playerTopics: PlayerTopic[]): PlayerTopic[] {
+    calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
         throw new Error("Not implemented in TopicCommon")
     }
 

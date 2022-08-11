@@ -89,7 +89,7 @@ class UserHandler {
 
     public setGameToPlayer = (game: Game): void => {
         this.PLAYERS.forEach(player => {
-            player.topics = game.allTopics.map(topic => ({ topicId: topic.id, status: GamePlayerStatus.WAITING }))
+            player.topics = game.allTopics.map(topic => ({ topicId: topic.id, playerUuid: player.uuid, status: GamePlayerStatus.WAITING }))
         })
     }
     public resetGameOnPlayer = (): void => {
@@ -107,6 +107,16 @@ class UserHandler {
         return this.PLAYERS.filter(p => p.name).map(p => p.toPublicPlayer())
     }
 
+    public getAllPlayerTopics(topic: Topic): PlayerTopic[] {
+        return this.PLAYERS.map(player => player.topics.find(t => t.topicId === topic.id))
+    }
+    public updateAllPlayerTopics(allPlayerTopics: PlayerTopic[]): void {
+        allPlayerTopics.forEach(playerTopic => {
+            const player = this.PLAYERS.find(player => player.uuid === playerTopic.playerUuid)
+            const exisingTopicIndex = player.topics.findIndex(t => t.topicId === playerTopic.topicId)
+            player.topics[exisingTopicIndex] = playerTopic
+        })
+    }
     public setPlayerFinalCode(uuid: string, code: string, topic: Topic): PlayerTopic {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         player.screen = GameScreen.AFTER_GAME

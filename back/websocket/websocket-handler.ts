@@ -91,7 +91,9 @@ class WebSocketServerHandler {
     }
 
     private calculateScores = () => {
-
+        const allPlayerTopics = this.userHandler.getAllPlayerTopics(this.GAME.topic)
+        const allPlayerTopicsWithScore = this.GAME.topic.calculateScore(allPlayerTopics)
+        this.userHandler.updateAllPlayerTopics(allPlayerTopicsWithScore)
         this.broadcastStatus()
     }
 

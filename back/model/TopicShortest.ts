@@ -11,7 +11,7 @@ const _codeLengthComparator = (p1: PlayerTopicWithLength, p2: PlayerTopicWithLen
 
 class TopicShortest extends TopicCommon {
 
-    calculateScore(topic: Topic, playerTopics: PlayerTopic[]): PlayerTopic[] {
+    calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
         let playerTopicsWithLength = playerTopics
             .map(playerTopic => ({
                 ...playerTopic,
@@ -22,7 +22,7 @@ class TopicShortest extends TopicCommon {
         return playerTopicsWithLength
             .map(playerTopic => ({
                 ...playerTopic,
-                score: this._calculateScore(topic, playerTopic, playerTopicsWithLength.length)
+                score: this._calculateScore(playerTopic, playerTopicsWithLength.length)
             }))
     }
 
@@ -45,13 +45,13 @@ class TopicShortest extends TopicCommon {
         return playerTopics
     }
 
-    _calculateScore(topic: Topic, playerTopic: PlayerTopicWithLength, playerCount: number): number {
+    _calculateScore(playerTopic: PlayerTopicWithLength, playerCount: number): number {
         const completion = playerTopic.completion
         if (completion === 0) {
             return 0
         }
 
-        const maxPoints = completion === 1 ? topic.points : topic.points / 1.5
+        const maxPoints = completion === 1 ? this.points : this.points / 1.5
         const pointRange = maxPoints / 2.5
 
         const positionCoeff = (playerTopic.position - 1) / (playerCount - 1)

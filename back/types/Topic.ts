@@ -17,7 +17,7 @@ type Topic = {
     defaultCode?: string,
     tests: Test[],
 
-    calculateScore: (topic: Topic, playerTopics: PlayerTopic[]) => PlayerTopic[]
+    calculateScore: (playerTopics: PlayerTopic[]) => PlayerTopic[]
 }
 
 export enum GameMode {

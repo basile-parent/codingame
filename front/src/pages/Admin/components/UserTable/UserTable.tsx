@@ -27,16 +27,29 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
             </thead>
             <tbody>
             {
-                game && players.map((player) =>
-                    <UserRow player={player}
-                             allTopics={game.allTopics}
-                             key={`player-${player.name}`}
-                    />
-                )
+                game &&
+                players
+                    .sort(_usernameComoarator)
+                    .map((player) =>
+                        <UserRow player={player}
+                                 allTopics={game.allTopics}
+                                 key={`player-${player.name}`}
+                        />
+                    )
             }
             </tbody>
         </table>
     )
+}
+
+const _usernameComoarator = (p1: GamePlayer, p2: GamePlayer) => {
+    if (!p1.name) {
+        return 1
+    }
+    if (!p2.name) {
+        return -1
+    }
+    return p1.name.localeCompare(p2.name)
 }
 
 type UserRowProps = {
