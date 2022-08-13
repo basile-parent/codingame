@@ -1,0 +1,33 @@
+.container {
+  .openButton {
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    font-size: 1rem;
+    height: 30px;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: white;
+
+    .icon {
+      margin-left: 5px;
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+      .icon {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .dropdownMenu {
+    min-width: 100px;
+  }
+  .dropdownButton {
+    text-align: left;
+    cursor: pointer;
+  }
+}

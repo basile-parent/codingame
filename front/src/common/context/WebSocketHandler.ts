@@ -34,16 +34,14 @@ class WebSocketHandler {
 
     _initSocket() {
         this.socket.on("connect", () => {
+        })
+        this.socket.on("confirmConnect", () => {
             this.isConnected = true
-
-            if (this.mode === DisplayMode.PLAYER) {
-                const userName = playerUtils.getPlayerName()
-                if (userName) {
-                    this.setName(userName)
-                }
-            }
-
             this.dispatch({type: "connected"})
+            const userName = playerUtils.getPlayerName()
+            if (userName) {
+                this.setName(userName)
+            }
         })
         this.socket.on("disconnect", () => {
             this.isConnected = false
@@ -72,6 +70,9 @@ class WebSocketHandler {
 
     startGame() {
         this._emit("startGame")
+    }
+    startTopic(topicId: number) {
+        this._emit("startTopic", topicId)
     }
     addTime(time: number) {
         this._emit("addTime", time)

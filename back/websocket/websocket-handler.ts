@@ -16,7 +16,15 @@ class WebSocketServerHandler {
     }
 
     public connect(socket: Socket) {
-        const user = this.userHandler.connectUser(socket)
+        let user
+        try {
+            user = this.userHandler.connectUser(socket, this.GAME.started)
+        } catch(e) {
+            console.error(e.message)
+            return
+        }
+
+        socket.emit("confirmConnect")
 
         if (user.isAdmin()) {
             socket.emit("status", this.getAdminStatus())
@@ -32,6 +40,7 @@ class WebSocketServerHandler {
         socket.on("calculateTopicScore", this.calculateScores)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
+        socket.on("startTopic", this.startTopic)
         socket.on("addTime", this.addTime)
         socket.on("finishTopic", this.finishTopic)
         socket.on("resetGame", this.resetGame)
@@ -47,8 +56,6 @@ class WebSocketServerHandler {
     private startGame = () => {
         this.userHandler.setGameToPlayer(this.GAME)
         this.GAME.startGame()
-        this.startTopic(this.GAME.allTopics[0].id)
-
         this.broadcastStatus()
         console.log("Partie démarrée")
     }
@@ -81,6 +88,7 @@ class WebSocketServerHandler {
     }
 
     private setPlayerName = (uuid, name) => {
+        console.log("Set player name", uuid, name)
         this.userHandler.setPlayerName(uuid, name)
         this.logPlayers()
         this.broadcastLeaderboard()

@@ -10,9 +10,15 @@ const Timer: FC<TimerProps> = ({ endTimer, onEndTimer }: TimerProps) => {
     const [isEnding, setIsEnding] = useState<boolean>(false)
 
     useEffect(() => {
-        const worker = runTimer(new Date(endTimer).toISOString(), setTimerString, setIsEnding, onEndTimer)
-        return () => worker.terminate()
+        if (endTimer) {
+            const worker = runTimer(new Date(endTimer).toISOString(), setTimerString, setIsEnding, onEndTimer)
+            return () => worker.terminate()
+        }
     }, [ endTimer ])
+
+    if (!endTimer) {
+        return <time>--:--</time>
+    }
 
     return (
         <time className={isEnding ? styles.ending : undefined}>{timerString}</time>

@@ -1,4 +1,5 @@
 export type Game = {
+    started: boolean,
     topic: Topic | null,
     endTimer?: number,
     allTopics: Topic[],
@@ -16,6 +17,7 @@ export type Topic = {
     timer: number,
     isFinished: boolean,
     gameMode: GameMode,
+    status: TopicStatus,
     subject: string,
     inputs: string,
     output: string,
@@ -23,6 +25,12 @@ export type Topic = {
     examples?: Test[],
     defaultCode?: string,
     tests: Test[],
+}
+
+export enum TopicStatus {
+    WAITING = "WAITING",
+    IN_PROGRESS = "IN_PROGRESS",
+    FINISHED = "FINISHED",
 }
 
 type Test = {

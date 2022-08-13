@@ -8,6 +8,7 @@ import TopicShortest from "../model/TopicShortest";
 import TopicFastest from "../model/TopicFastest";
 
 class Game {
+    public started: boolean
     public currentScreen: GameScreen
     public allTopics: Topic[]
     public topic: Topic | null = null
@@ -19,6 +20,7 @@ class Game {
         this.currentScreen = GameScreen.LANDING_PAGE
         this.topicIndex = 0
         this.allTopics = this._initTopics()
+        this.started = false
     }
 
     _initTopics(): Topic[] {
@@ -40,26 +42,30 @@ class Game {
     }
 
     startGame() {
-        this.currentScreen = GameScreen.GAME_EDITOR
+        this.started = true
     }
 
     startTopic(id: number, updateCb: (options: GameUpdateOptions) => void) {
+        this.currentScreen = GameScreen.GAME_EDITOR
         this._setTransitionTimeout(3000)
 
         this.allTopics[this.topicIndex].startTime = new Date().getTime()
         this.topic = this.allTopics[this.topicIndex]
         this.topic.status = GamePlayerStatus.IN_PROGRESS
-        updateCb({ topic: this.topic })
 
         // 2s of margin (instruction display) + 3s of transition countdown
         const topicDuration = (this.topic.timer * 1000) + 2000 + this.transitionTimeout
         this.endTimer = new Date().getTime() + topicDuration
+
+        updateCb({ topic: this.topic })
+        console.log(`Topic ${ this.topic.id } démarré`)
     }
 
     finishTopic(updateCb: (options: GameUpdateOptions) => void) {
         this.topic.status = GamePlayerStatus.FINISHED
         this.currentScreen = GameScreen.AFTER_GAME
         updateCb({ topic: this.topic, isFinishCb: true})
+        console.log(`Topic ${ this.topic.id } terminé`)
     }
 
     addTimeToTopic(time: number) {

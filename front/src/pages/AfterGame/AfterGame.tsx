@@ -2,7 +2,7 @@ import {FC, useContext} from 'react'
 import {WSContext} from "../../common/context/WSContext"
 import {translatePlayerStatus} from "../GameEditor/components/OtherPlayers/PlayerWithCompletion"
 import styles from "./Aftergame.module.scss"
-import {Game} from "../../types/Game";
+import {Game, TopicStatus} from "../../types/Game";
 import {GamePlayer, PlayerTopic} from "../../types/Player";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner, faUser} from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +14,7 @@ const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
 
     return (
         <div className={styles.wrapper}>
-            <h1>{game!.topic!.isFinished ? "Manche terminée" : "Vous avez validé votre code"}</h1>
+            <h1>{game!.topic!.status === TopicStatus.FINISHED ? "Manche terminée" : "Vous avez validé votre code"}</h1>
             <h2>Résultats de la manche</h2>
             <ul className={styles.playerList}>
                 {

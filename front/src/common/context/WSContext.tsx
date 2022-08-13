@@ -92,9 +92,17 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.calculateScore()
             return state
         }
+        case 'startTopic': {
+            state.ws?.startTopic(action.payload)
+            return state
+        }
         case 'resetGame': {
             state.ws?.resetGame()
             return state
+        }
+        // Just for debug
+        case 'delayedStatus': {
+            return { ...state, ...action.payload }
         }
         case 'status': {
             const newState = action.payload
@@ -128,7 +136,7 @@ const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
         if (transitionTimeout && wsState.delayedState) {
             timeout = setTimeout(() => {
                 return dispatch({
-                    type: "status",
+                    type: "delayedStatus",
                     payload: {
                         ...wsState.delayedState,
                         transitionTimeout: 0,

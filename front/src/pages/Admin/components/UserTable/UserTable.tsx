@@ -5,6 +5,7 @@ import {GamePlayer} from "../../../../types/Player"
 import {Topic} from "../../../../types/Game"
 import TopicStatus from "./TopicStatus"
 import styles from "./UserTable.module.scss"
+import TopicHeaderCell from "./TopicHeaderCell";
 
 type UserTableProps = {}
 
@@ -20,7 +21,9 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
                 <th>Total</th>
                 {
                     game?.allTopics.map(topic =>
-                        <th key={`topic-${topic.id}`}>#{topic.id}</th>
+                        <th key={`topic-${topic.id}`} className={styles.topicCell}>
+                            <TopicHeaderCell topic={topic} />
+                        </th>
                     )
                 }
             </tr>

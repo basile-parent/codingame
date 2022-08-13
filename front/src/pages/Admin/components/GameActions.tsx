@@ -3,6 +3,7 @@ import {WSContext} from "../../../common/context/WSContext"
 import {Screen} from "../../../types/Screen"
 import styles from "./GameActions.module.scss"
 import ModalConfirm from "../../../common/ModalConfirm/ModalConfirm";
+import {TopicStatus} from "../../../types/Game";
 
 type GameActionsProps = {}
 const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
@@ -24,26 +25,31 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
     return (
         <div className={styles.container}>
             <button className={`button is-small is-primary ${ styles.button }`}
-                    disabled={screen !== Screen.LANDING_PAGE}
+                    disabled={game?.started}
                     onClick={() => dispatch({ type: "startGame" })}
             >
                 Démarrer
             </button>
 
-            <AddTimeButton onAddTime={(time) => dispatch({ type: "addTime", payload: time })} />
+            {
+                game?.topic &&
+                    <>
+                      <AddTimeButton onAddTime={(time) => dispatch({ type: "addTime", payload: time })} />
+                      <button className={`button is-small is-primary ${ styles.button }`}
+                              disabled={!game || screen !== Screen.GAME_EDITOR || game.topic.status === TopicStatus.FINISHED}
+                              onClick={handleTerminateTopic}
+                      >
+                        Terminer topic
+                      </button>
+                      <button className={`button is-small is-primary ${ styles.button }`}
+                              disabled={!game || screen !== Screen.AFTER_GAME}
+                              onClick={() => dispatch({ type: "calculateScore" })}
+                      >
+                        Calcul score
+                      </button>
+                    </>
+            }
 
-            <button className={`button is-small is-primary ${ styles.button }`}
-                    disabled={!game || screen !== Screen.GAME_EDITOR || game.topic?.isFinished}
-                    onClick={handleTerminateTopic}
-            >
-                Terminer topic
-            </button>
-            <button className={`button is-small is-primary ${ styles.button }`}
-                    disabled={!game || screen !== Screen.AFTER_GAME}
-                    onClick={() => dispatch({ type: "calculateScore" })}
-            >
-                Calcul score
-            </button>
 
             <button className={`button is-small is-danger ${ styles.button }`}
                     onClick={handleReset}
@@ -62,7 +68,7 @@ const AddTimeButton: FC<AddTimeButtonProps> = ({ onAddTime }) => {
     const { wsState: { screen, game } } = useContext(WSContext)
     const [ open, setOpen ] = useState(false)
     const [ customTime, setCustomTime ] = useState<number>(0)
-    const disabled = useMemo(() => !game || screen !== Screen.GAME_EDITOR || game.topic?.isFinished, [game, screen])
+    const disabled = useMemo(() => !game || screen !== Screen.GAME_EDITOR || game.topic?.status === TopicStatus.FINISHED, [game, screen])
     useEffect(() => {
         if (disabled) {
             setOpen(false)

@@ -16,7 +16,7 @@ const TopicStatus: FC<TopicStatusProps> = ({ player, topic }) => {
     if (!playerTopic) {
         return (
             <td className={tableStyles.scoreTopic}>
-                /
+                -
             </td>
         )
     }

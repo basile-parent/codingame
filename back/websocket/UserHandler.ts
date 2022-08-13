@@ -11,7 +11,7 @@ class UserHandler {
     private ADMINS: Admin[] = []
     private PLAYERS: Player[] = []
 
-    public connectUser = (socket: Socket): User => {
+    public connectUser = (socket: Socket, isGameStarted: boolean): User => {
         const uuid = <string>socket.handshake.headers["x-uuid"]
 
         const existingAdminIndex = this.ADMINS.findIndex(a => a.uuid === uuid)
@@ -34,6 +34,10 @@ class UserHandler {
             newUser = new Admin(socket, uuid, true)
             this.ADMINS.push(newUser)
         } else {
+            if (isGameStarted) {
+                throw new Error(`Cannot accept new users when the game is started [${ uuid }]`)
+            }
+
             newUser = new Player(socket, uuid, null, true)
             this.PLAYERS.push(new Player(socket, uuid, null, true))
         }
@@ -148,7 +152,7 @@ class UserHandler {
             `${connectedPlayers.length} connected player${connectedPlayers.length > 1 ? "s" : ""} : ` +
             `${connectedPlayers.map(p => p.toString()).join(", ") || "-"}`
         const disconnectedPlayerLabel = this.PLAYERS.length > 0 ?
-            `${disconnectedPlayers.length} connected player${disconnectedPlayers.length > 1 ? "s" : ""} : ` +
+            `${disconnectedPlayers.length} disconnected player${disconnectedPlayers.length > 1 ? "s" : ""} : ` +
             `${disconnectedPlayers.map(p => p.toString()).join(", ") || "-"}`
             : ""
         const labels = [adminLabel, connectedPlayerLabel, disconnectedPlayerLabel].filter(label => label)

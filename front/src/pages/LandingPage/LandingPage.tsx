@@ -1,4 +1,4 @@
-import {FC, useCallback, useContext, useState} from 'react'
+import {FC, useCallback, useContext, useEffect, useState} from 'react'
 import playerUtils from "../../utils/playerUtils";
 import UsernameDialog from "./components/UsernameDialog";
 import {WSContext} from "../../common/context/WSContext";
@@ -13,7 +13,7 @@ type LandingPageProps = {
 }
 const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
     const [userName, setUsername] = useState<string | null>(playerUtils.getPlayerName())
-    const {wsState, dispatch} = useContext(WSContext);
+    const {wsState, dispatch} = useContext(WSContext)
 
     const recordUsername = useCallback((newUserName: string): Promise<void> => {
         return new Promise((resolve, reject) => {
