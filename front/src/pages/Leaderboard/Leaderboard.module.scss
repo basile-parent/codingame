@@ -9,11 +9,7 @@
 
   h1 {
     font-size: 2.5rem;
-  }
-
-  h2 {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   .playerList {
@@ -46,39 +42,42 @@
       &:nth-of-type(3) .position { background-color: $copper-medal; }
 
       .playerResult {
+        flex: 1;
         display: flex;
         align-items: center;
         gap: 10px;
+        height: 50px;
 
-        .completion {
-          font-size: 12px;
-          line-height: 22px;
+        .name {
+          flex: 1;
+          font-size: 1.2rem;
           font-weight: 700;
-          width: 40px;
-          text-align: center;
         }
 
-        .info {
-          flex: 1;
-          display: inline-flex;
-          flex-direction: column;
-          overflow: hidden;
-          margin: 5px 0 7px 0;
+        .addedPoints {
+          font-size: 1rem;
+          color: $ok-test-color;
+          font-weight: 500;
+          margin-right: 20px;
+          animation: 0.7s fadeInDown forwards;
+        }
 
-          & > div {
-            overflow: hidden;
-            text-overflow: ellipsis;
+        @keyframes fadeInDown {
+          from {
+            transform: rotate(0deg) translateY(30px);
+            opacity: 0;
           }
+          to {
+            transform: rotate(-15deg) translateY(0px);
+            opacity: 1;
+          }
+        }
 
-          .name {
-            font-weight: 500;
-          }
-          .status {
-            font-style: italic;
-            color: $lowlight;
-            font-size: 14px;
-            line-height: 12px;
-          }
+        .score {
+          font-size: 1.2rem;
+          font-weight: 700;
+          width: 60px;
+          text-align: right;
         }
       }
     }

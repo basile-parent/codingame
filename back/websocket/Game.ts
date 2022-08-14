@@ -61,12 +61,8 @@ class Game {
         console.log(`Topic ${ this.topic.id } démarré`)
     }
 
-    showScores(updateCb: (options: GameUpdateOptions) => void) {
+    showScores() {
         this.currentScreen = GameScreen.LEADERBOARD
-        this.topic = null
-        this.topicIndex = null
-
-        updateCb({ topic: this.topic })
     }
 
     reinitTopic(id: number) {

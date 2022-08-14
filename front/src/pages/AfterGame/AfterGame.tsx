@@ -13,7 +13,7 @@ const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
     const {wsState: {game, players}} = useContext(WSContext)
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.container}>
             <h1>{game!.topic!.status === TopicStatus.FINISHED ? "Manche terminée" : "Vous avez validé votre code"}</h1>
             <h2>Résultats de la manche</h2>
             <ul className={styles.playerList}>
@@ -50,7 +50,7 @@ const _getPlayerTopic = (player: GamePlayer, game: Game): PlayerTopic => {
 }
 
 const AfterGamePlayerItem: FC<AfterGamePlayerItemProps> = ({game, player}) => {
-    const playerTopic = _getPlayerTopic(player, game);
+    const playerTopic = _getPlayerTopic(player, game)
     const isLocalPlayer = player.uuid === playerUtils.getPlayerUuid()
     return (
         <div className={styles.playerResult}>

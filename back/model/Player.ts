@@ -9,7 +9,7 @@ class Player implements User {
     public name: string
     public screen: GameScreen
     public connected: boolean
-    public score?: number
+    public score: number
     public topics?: PlayerTopic[]
 
     constructor(socket: Socket, uuid: string, name?: string, connected?: boolean) {

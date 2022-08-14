@@ -128,6 +128,11 @@ class UserHandler {
     public getAllPlayerTopics(topic: Topic): PlayerTopic[] {
         return this.PLAYERS.map(player => player.topics.find(t => t.topicId === topic.id))
     }
+    public calculateAllPlayerScore(): void {
+        this.PLAYERS.forEach(player => {
+            player.score = player.topics.reduce((acc, playerTopic) => acc + (playerTopic.score || 0), 0)
+        })
+    }
     public updateAllPlayerTopics(allPlayerTopics: PlayerTopic[]): void {
         allPlayerTopics.forEach(playerTopic => {
             const player = this.PLAYERS.find(player => player.uuid === playerTopic.playerUuid)

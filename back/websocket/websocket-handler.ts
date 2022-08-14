@@ -66,7 +66,8 @@ class WebSocketServerHandler {
         this.GAME.startTopic(id, this.gameUpdateCb)
     }
     private showScores = () => {
-        this.GAME.showScores(this.gameUpdateCb)
+        this.GAME.showScores()
+        this.gameUpdateCb()
     }
     private reinitTopic = (id: number) => {
         this.GAME.reinitTopic(id)
@@ -84,10 +85,10 @@ class WebSocketServerHandler {
         this.broadcast("newEndTime", this.GAME.endTimer)
     }
 
-    private gameUpdateCb = (options: GameUpdateOptions) => {
+    private gameUpdateCb = (options?: GameUpdateOptions) => {
         this.userHandler.updatePropsForAllPlayers({ screen: this.GAME.currentScreen } as Player)
-        options.topic && this.userHandler.updateTopicForAllPlayers(options.topic)
-        options.isFinishCb && this.userHandler.broadcastPlayers("forceSubmit")
+        options?.topic && this.userHandler.updateTopicForAllPlayers(options.topic)
+        options?.isFinishCb && this.userHandler.broadcastPlayers("forceSubmit")
         this.broadcastStatus()
     }
 
@@ -119,6 +120,7 @@ class WebSocketServerHandler {
         const allPlayerTopics = this.userHandler.getAllPlayerTopics(this.GAME.topic)
         const allPlayerTopicsWithScore = this.GAME.topic.calculateScore(allPlayerTopics)
         this.userHandler.updateAllPlayerTopics(allPlayerTopicsWithScore)
+        this.userHandler.calculateAllPlayerScore()
         this.GAME.calculateScore()
         this.broadcastStatus()
     }
@@ -162,7 +164,7 @@ class WebSocketServerHandler {
 }
 
 export type GameUpdateOptions = {
-    topic: Topic,
+    topic?: Topic,
     isFinishCb?: boolean
 }
 
