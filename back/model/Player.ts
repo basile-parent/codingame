@@ -9,6 +9,7 @@ class Player implements User {
     public name: string
     public screen: GameScreen
     public connected: boolean
+    public previousScore: number
     public score: number
     public topics?: PlayerTopic[]
 
@@ -17,6 +18,7 @@ class Player implements User {
         this.uuid = uuid
         this.name = name
         this.connected = connected ?? true
+        this.previousScore = 0
         this.score = 0
         this.screen = GameScreen.LANDING_PAGE
     }

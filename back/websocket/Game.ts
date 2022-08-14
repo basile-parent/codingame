@@ -63,6 +63,8 @@ class Game {
 
     showScores() {
         this.currentScreen = GameScreen.LEADERBOARD
+        this.topic = null
+        this.topicIndex = null
     }
 
     reinitTopic(id: number) {

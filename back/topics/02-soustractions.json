@@ -2,7 +2,7 @@
   "id": 2,
   "summary": "Soustraction simple",
   "timer": 10,
-  "points": 5000,
+  "points": 10000,
   "maxPointsTimer": 60,
   "gameMode": "fastest",
   "subject": "Vous recevez 2 entiers <strong>A</strong> et <strong>B</strong> en entrée. Le résultat doit être la différence des 2 entiers.",

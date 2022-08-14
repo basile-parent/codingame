@@ -130,6 +130,7 @@ class UserHandler {
     }
     public calculateAllPlayerScore(): void {
         this.PLAYERS.forEach(player => {
+            player.previousScore = player.score
             player.score = player.topics.reduce((acc, playerTopic) => acc + (playerTopic.score || 0), 0)
         })
     }
