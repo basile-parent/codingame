@@ -48,7 +48,7 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                         Calcul score
                       </button>
                       <button className={`button is-small is-primary ${ styles.button }`}
-                              disabled={!game || game.topic.status !== TopicStatus.SCORE_CALCULATED }
+                              disabled={!game || screen === Screen.LEADERBOARD || game.topic.status !== TopicStatus.SCORE_CALCULATED }
                               onClick={() => dispatch({ type: "showScores" })}
                       >
                         Tableau score

@@ -11,6 +11,7 @@ export type GamePlayer = {
     connected: boolean,
     name: string,
     screen: GameScreen,
+    previousScore: number,
     score: number,
     topics?: PlayerTopic[]
 }

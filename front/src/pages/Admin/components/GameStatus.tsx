@@ -10,7 +10,10 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
     const { wsState, dispatch } = useContext(WSContext)
 
     const handleEndTimer = useCallback(() => {
-        console.log("End timer => finishTopic")
+        if (!wsState.game || wsState.game.endTimer! < new Date().getTime()) {
+            // Skip if timer is already done when moubnting the component
+            return
+        }
         dispatch({ type: "finishTopic" })
     }, [])
 
