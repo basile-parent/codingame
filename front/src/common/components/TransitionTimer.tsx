@@ -21,7 +21,7 @@ const TransitionTimer: FC<TransitionTimeoutProps> = ({}: TransitionTimeoutProps)
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.container}>
             {
                 Array.apply(null, Array(transitionTimeout)).map((_, index) => (
                     <p key={`timeout-${ index }`}
