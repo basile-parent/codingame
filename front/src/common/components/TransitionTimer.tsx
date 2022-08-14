@@ -1,6 +1,6 @@
 import {FC, useContext, useEffect, useState} from 'react'
 import styles from "./TransitionTimer.module.scss"
-import {WSContext} from "./context/WSContext";
+import {WSContext} from "../context/WSContext";
 
 type TransitionTimeoutProps = {}
 const TransitionTimer: FC<TransitionTimeoutProps> = ({}: TransitionTimeoutProps) => {

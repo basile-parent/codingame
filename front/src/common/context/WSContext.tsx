@@ -35,7 +35,7 @@ const INTIAL_STATE: WSState = {
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
 const logWsStateReducer = (state: WSState, action: WSStateAction): WSState => {
-    console.groupCollapsed("Reducer action", action)
+    console.groupCollapsed("Reducer onClick", action)
     console.debug("State before", state)
     const stateAfter = wsStateReducer(state, action)
     console.debug("State after", stateAfter)

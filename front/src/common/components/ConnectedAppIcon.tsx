@@ -1,5 +1,5 @@
 import {FC, useContext} from 'react'
-import {WSContext} from "./context/WSContext";
+import {WSContext} from "../context/WSContext";
 import styles from "./ConnectedIcon.module.scss"
 import ConnectedIcon from "./ConnectedIcon";
 

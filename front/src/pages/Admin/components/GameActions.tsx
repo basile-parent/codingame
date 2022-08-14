@@ -2,7 +2,7 @@ import {FC, useCallback, useContext, useEffect, useMemo, useState} from 'react'
 import {WSContext} from "../../../common/context/WSContext"
 import {Screen} from "../../../types/Screen"
 import styles from "./GameActions.module.scss"
-import ModalConfirm from "../../../common/ModalConfirm/ModalConfirm";
+import ModalConfirm from "../../../common/components/ModalConfirm/ModalConfirm";
 import {TopicStatus} from "../../../types/Game";
 
 type GameActionsProps = {}

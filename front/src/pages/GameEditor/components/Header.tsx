@@ -4,7 +4,7 @@ import {faHourglass, faPuzzlePiece} from '@fortawesome/free-solid-svg-icons'
 import {ReactComponent as AtecnaIcon} from "../../../assets/logo-cube.svg"
 import styles from "./Header.module.scss"
 import {WSContext} from "../../../common/context/WSContext";
-import Timer from "../../../common/Timer";
+import Timer from "../../../common/components/Timer";
 import gameModeUtils from "../../../utils/gameModeUtils";
 
 type HeaderProps = {}

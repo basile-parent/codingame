@@ -15,6 +15,7 @@ export type Topic = {
     id: number,
     summary: string,
     timer: number,
+    points: number,
     isFinished: boolean,
     gameMode: GameMode,
     status: TopicStatus,

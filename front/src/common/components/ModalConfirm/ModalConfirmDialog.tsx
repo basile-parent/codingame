@@ -1,6 +1,7 @@
-import {FC, SyntheticEvent, useCallback, useEffect, useState} from 'react'
+import {FC, useCallback, useEffect, useMemo, useState} from 'react'
 import ModalConfirm, {ConfirmInfo} from "./ModalConfirm"
-import styles from "./ModalConfirmDialog.module.scss"
+import Modal from "../Modal";
+import {ModalButton} from "../Modal/ModalButton";
 
 type ModalConfirmDialogProps = {
 }
@@ -17,33 +18,34 @@ const ModalConfirmDialog: FC<ModalConfirmDialogProps> = ({ }: ModalConfirmDialog
         setOpen(true)
     }, [])
 
-    const handleConfirm = useCallback((_: SyntheticEvent) => {
+    const handleConfirm = useCallback(() => {
         confirmCallback && confirmCallback()
         setOpen(false)
     }, [ confirmCallback ])
 
-    const handleClose = useCallback((_: SyntheticEvent) => {
+    const handleClose = useCallback(() => {
         closeCallback && closeCallback()
         setOpen(false)
     }, [ closeCallback ])
+
+    const actions = useMemo<ModalButton[]>(() => [
+        { type: "cancel", text: "Annuler", onClick: handleClose },
+        { type: "primary", text: "Confirmer", onClick: handleConfirm },
+    ], [ handleConfirm, handleClose ])
 
     useEffect(() => {
         ModalConfirm.addConfirmListener(handleStoreChange)
         return () => ModalConfirm.removeConfirmListener(handleStoreChange)
     }, [])
 
+
     return (
-        <div className={`modal ${ open ? "is-active" : false }`}>
-            <div className="modal-background" />
-            <div className={`modal-content ${ styles.content }`}>
-                { message }
-                <div className={styles.actions}>
-                    <button className="button is-danger is-small" onClick={handleClose}>Annuler</button>
-                    <button className="button is-primary is-small" onClick={handleConfirm}>Confirmer</button>
-                </div>
-            </div>
-            <button className="modal-close is-large" aria-label="close" />
-        </div>
+        <Modal open={open}
+               onClose={handleClose}
+               actions={actions}
+        >
+            { message }
+        </Modal>
     )
 }
 

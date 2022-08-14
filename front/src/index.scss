@@ -84,5 +84,22 @@ hr {
   color: white !important;
 }
 
+.modal-card {
+  box-shadow: 4px 4px 4px black;
+  border: 1px solid $highlight-background;
+}
+
+.modal-card-body {
+  background-color: $background;
+}
+
+.modal-card-foot, .modal-card-head {
+  background-color: $lowlight-background;
+
+  .modal-card-title {
+    color: white;
+  }
+}
+
 /* ---- END Override Bulma settings ---- */
 

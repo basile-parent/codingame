@@ -15,7 +15,7 @@ const INTIAL_STATE: AdminState = {
 const AdminContext = createContext<{ adminState: AdminState, dispatch: Dispatch<any> }>({ adminState: INTIAL_STATE, dispatch: () => null })
 
 const logAdminStateReducer = (state: AdminState, action: AdminStateAction): AdminState => {
-    console.groupCollapsed("ADMIN STATE Reducer action", action)
+    console.groupCollapsed("ADMIN STATE Reducer onClick", action)
     console.debug("State before", state)
     const stateAfter = AdminStateReducer(state, action)
     console.debug("State after", stateAfter)

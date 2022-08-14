@@ -1,3 +1,5 @@
+@import "../../../../variables";
+
 .container {
   .openButton {
     white-space: nowrap;
@@ -25,9 +27,13 @@
 
   .dropdownMenu {
     min-width: 100px;
+    border: 1px solid $lowlight;
   }
   .dropdownButton {
     text-align: left;
     cursor: pointer;
+    padding-right: 30px;
+    border: 0;
+    border-bottom: 1px solid $lowlight-background;
   }
 }

@@ -2,7 +2,7 @@ import {FC, useCallback, useContext} from 'react'
 import {WSContext} from "../../../common/context/WSContext"
 import GameActions from "./GameActions"
 import styles from "./GameStatus.module.scss"
-import Timer from "../../../common/Timer";
+import Timer from "../../../common/components/Timer";
 import {TopicStatus} from "../../../types/Game";
 
 type GameStatusProps = {}

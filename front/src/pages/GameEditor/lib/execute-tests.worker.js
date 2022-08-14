@@ -10,7 +10,7 @@ self.onmessage = (message) => {
 let debugDetails = ""
 
 const debug = (...args) => {
-  // self.postMessage({ action: "debug", value: [ ...args ] });
+  // self.postMessage({ onClick: "debug", value: [ ...args ] });
   debugDetails += "> " + args.join(", ") + "\n"
 }
 

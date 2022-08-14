@@ -1,11 +1,11 @@
 import {FC, useContext} from "react"
 import {WSContext} from "./common/context/WSContext"
-import ConnectedAppIcon from "./common/ConnectedAppIcon"
+import ConnectedAppIcon from "./common/components/ConnectedAppIcon"
 import GameEditor from "./pages/GameEditor"
 import LandingPage from "./pages/LandingPage"
 import {Screen} from "./types/Screen"
 import AfterGame from "./pages/AfterGame/AfterGame"
-import TransitionTimer from "./common/TransitionTimer"
+import TransitionTimer from "./common/components/TransitionTimer"
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {

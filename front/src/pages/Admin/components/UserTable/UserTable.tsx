@@ -1,47 +1,56 @@
-import {FC, useContext} from 'react'
+import {FC, SyntheticEvent, useCallback, useContext, useEffect, useState} from 'react'
 import {WSContext} from "../../../../common/context/WSContext"
-import ConnectedIcon from "../../../../common/ConnectedIcon"
+import ConnectedIcon from "../../../../common/components/ConnectedIcon"
 import {GamePlayer} from "../../../../types/Player"
 import {Topic} from "../../../../types/Game"
 import TopicStatus from "./TopicStatus"
 import styles from "./UserTable.module.scss"
 import TopicHeaderCell from "./TopicHeaderCell";
+import DetailModal from "./DetailModal";
 
 type UserTableProps = {}
 
 const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
+    const [ modalTopic, setModalTopic ] = useState<Topic | null>(null)
     const {wsState: {game, players}} = useContext(WSContext)
 
     return (
-        <table className={`table ${styles.table}`}>
-            <thead>
-            <tr>
-                <th>Joueur</th>
-                <th>Ecran</th>
-                <th>Total</th>
+        <>
+            <table className={`table ${styles.table}`}>
+                <thead>
+                <tr>
+                    <th>Joueur</th>
+                    <th>Ecran</th>
+                    <th>Total</th>
+                    {
+                        game?.allTopics.map(topic =>
+                            <th key={`topic-${topic.id}`} className={styles.topicCell}>
+                                <TopicHeaderCell topic={topic} onDetailTopic={setModalTopic} />
+                            </th>
+                        )
+                    }
+                </tr>
+                </thead>
+                <tbody>
                 {
-                    game?.allTopics.map(topic =>
-                        <th key={`topic-${topic.id}`} className={styles.topicCell}>
-                            <TopicHeaderCell topic={topic} />
-                        </th>
-                    )
+                    game &&
+                    players
+                        .sort(_usernameComoarator)
+                        .map((player) =>
+                            <UserRow player={player}
+                                     allTopics={game.allTopics}
+                                     key={`player-${player.name}`}
+                            />
+                        )
                 }
-            </tr>
-            </thead>
-            <tbody>
+                </tbody>
+            </table>
+
             {
-                game &&
-                players
-                    .sort(_usernameComoarator)
-                    .map((player) =>
-                        <UserRow player={player}
-                                 allTopics={game.allTopics}
-                                 key={`player-${player.name}`}
-                        />
-                    )
+                modalTopic &&
+                <DetailModal topic={modalTopic} onClose={() => setModalTopic(null)} />
             }
-            </tbody>
-        </table>
+        </>
     )
 }
 

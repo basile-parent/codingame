@@ -1,0 +1,19 @@
+@import "../../../variables";
+
+.container {
+
+  .subject {
+    strong {
+      background-color: $highlight;
+      color: $highlight-contrast;
+      padding: 0 3px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+  }
+
+  .actions {
+    justify-content: flex-end;
+    padding: 10px 10px;
+  }
+}
