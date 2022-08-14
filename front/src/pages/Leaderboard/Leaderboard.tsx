@@ -1,11 +1,9 @@
 import {FC, useContext, useEffect, useState} from 'react'
 import {WSContext} from "../../common/context/WSContext"
-import {GamePlayer} from "../../types/Player";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faUser} from "@fortawesome/free-solid-svg-icons"
+import {GamePlayer} from "../../types/Player"
 import styles from "./Leaderboard.module.scss"
-import {Topic} from "../../types/Game";
-import CountUp from "react-countup";
+import LeaderboardPlayerItem from "./LeaderboardPlayerItem"
+import FixFlipMove from "./FixFlipMove";
 
 const _previousScoreComparator = (p1: GamePlayer, p2: GamePlayer) => {
     return p2.previousScore - p1.previousScore
@@ -17,46 +15,41 @@ const _scoreComparator = (p1: GamePlayer, p2: GamePlayer) => {
 type LeaderboardProps = {}
 const Leaderboard: FC<LeaderboardProps> = ({}: LeaderboardProps) => {
     const [ sortComparator, setSortComparator ] = useState(() => _previousScoreComparator)
-    const {wsState: {game, players}} = useContext(WSContext)
+    const [ animationEnded, setAnimationEnded ] = useState(false)
+    const {wsState: {players}} = useContext(WSContext)
 
     useEffect(() => {
         setTimeout(() => {
-            setSortComparator(() => _scoreComparator)
+            setAnimationEnded(true)
         }, 2000)
     }, [])
+    useEffect(() => {
+        animationEnded && setSortComparator(() => _scoreComparator)
+    }, [ animationEnded ])
 
+    // @ts-ignore
     return (
         <div className={styles.container}>
             <h1>Leaderboard</h1>
-            <ul className={styles.playerList}>
-                {
-                    players
-                        .sort(sortComparator)
-                        .map((player, index) => (
-                            <li className={styles.player} key={`player-${player.name}`}>
-                                <span className={styles.position}>{index + 1}</span>
-                                <LeaderboardPlayerItem player={player} />
-                            </li>
-                        ))
-                }
-            </ul>
-        </div>
-    )
-}
-
-type LeaderboardPlayerItemProps = {
-    player: GamePlayer,
-}
-const LeaderboardPlayerItem: FC<LeaderboardPlayerItemProps> = ({ player}) => {
-    const topicScore = player.score - player.previousScore
-    return (
-        <div className={styles.playerResult}>
-            <FontAwesomeIcon icon={faUser}/>
-            <div className={styles.name}>{player.name}</div>
-            { topicScore !== null ? <div className={styles.addedPoints}>+{topicScore}</div> : <></>}
-            <div className={styles.score}>
-                <CountUp start={player.previousScore} end={player.score} duration={1} />
-            </div>
+            <FixFlipMove className={styles.playerList}
+                      staggerDurationBy="30"
+                      duration={500}
+                      typeName="ul"
+                      enterAnimation="accordionVertical"
+                      leaveAnimation="accordionVertical"
+            >
+            {
+                players
+                    .sort(sortComparator)
+                    .map((player, index) => (
+                        <LeaderboardPlayerItem player={player}
+                                               index={index}
+                                               animationEnded={animationEnded}
+                                               key={`player-${ player.uuid }`}
+                        />
+                    ))
+            }
+            </FixFlipMove>
         </div>
     )
 }
