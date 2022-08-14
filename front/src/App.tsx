@@ -6,6 +6,7 @@ import LandingPage from "./pages/LandingPage"
 import {Screen} from "./types/Screen"
 import AfterGame from "./pages/AfterGame/AfterGame"
 import TransitionTimer from "./common/components/TransitionTimer"
+import Leaderboard from "./pages/Leaderboard/Leaderboard";
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
@@ -29,6 +30,10 @@ const CurrentPage: FC<CurrentPageProps> = () => {
 
     if (screen === Screen.AFTER_GAME) {
         return <AfterGame />
+    }
+
+    if (screen === Screen.LEADERBOARD) {
+        return <Leaderboard />
     }
 
     return <LandingPage mode={mode} />

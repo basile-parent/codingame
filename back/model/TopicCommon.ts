@@ -1,7 +1,7 @@
 import Topic, {GameMode, Test} from "../types/Topic";
 import {GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
 
-class TopicCommon implements Topic {
+abstract class TopicCommon implements Topic {
     constraints: string[];
     defaultCode: string;
     examples: Test[];
@@ -22,8 +22,12 @@ class TopicCommon implements Topic {
         Object.assign(this, jsonTopic)
     }
 
+    abstract _calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[]
+
     calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
-        throw new Error("Not implemented in TopicCommon")
+        const topics = this._calculateScore(playerTopics)
+        this.status = GamePlayerStatus.SCORE_CALCULATED
+        return topics
     }
 
 }

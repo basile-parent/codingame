@@ -61,6 +61,14 @@ class Game {
         console.log(`Topic ${ this.topic.id } démarré`)
     }
 
+    showScores(updateCb: (options: GameUpdateOptions) => void) {
+        this.currentScreen = GameScreen.LEADERBOARD
+        this.topic = null
+        this.topicIndex = null
+
+        updateCb({ topic: this.topic })
+    }
+
     reinitTopic(id: number) {
         this.topicIndex = this.allTopics.findIndex(t => t.id == id)
         this.allTopics[this.topicIndex].status = GamePlayerStatus.WAITING
@@ -95,29 +103,8 @@ class Game {
         })
     }
 
-    calculateScore(playerTopic: PlayerTopic): number {
-        const completion = playerTopic.completion
-        if (completion === 0) {
-            return 0
-        }
-
-        const maxPoints = completion === 1 ? this.topic.points : this.topic.points / 1.5
-        const pointRange = maxPoints / 2
-
-        const maxTimeWithDelay = this.topic.timer
-        const maxTime = maxTimeWithDelay - this.topic.maxPointsTimer
-
-        const maxScoreDelay = this.topic.maxPointsTimer
-        const duration = playerTopic.duration / 1000
-        const durationSinceMaxScore = duration - maxScoreDelay
-
-        const substractedPpoints =
-            durationSinceMaxScore <= 0 ?
-                0 :
-                (durationSinceMaxScore / maxTime) * pointRange
-
-        const baseScore = maxPoints - substractedPpoints
-        return Math.round(baseScore * completion)
+    calculateScore() {
+        this.topic.status = GamePlayerStatus.SCORE_CALCULATED
     }
 
     toPublicJson() {

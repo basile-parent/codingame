@@ -42,10 +42,16 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                         Terminer topic
                       </button>
                       <button className={`button is-small is-primary ${ styles.button }`}
-                              disabled={!game || screen !== Screen.AFTER_GAME}
+                              disabled={!game || screen !== Screen.AFTER_GAME || game.topic.status === TopicStatus.SCORE_CALCULATED }
                               onClick={() => dispatch({ type: "calculateScore" })}
                       >
                         Calcul score
+                      </button>
+                      <button className={`button is-small is-primary ${ styles.button }`}
+                              disabled={!game || game.topic.status !== TopicStatus.SCORE_CALCULATED }
+                              onClick={() => dispatch({ type: "showScores" })}
+                      >
+                        Tableau score
                       </button>
                     </>
             }

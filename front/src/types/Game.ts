@@ -31,6 +31,22 @@ export enum TopicStatus {
     WAITING = "WAITING",
     IN_PROGRESS = "IN_PROGRESS",
     FINISHED = "FINISHED",
+    SCORE_CALCULATED = "SCORE_CALCULATED",
+}
+
+export const toTopicStatusLabel = (topicStatus: TopicStatus) => {
+    switch(topicStatus) {
+        case TopicStatus.WAITING:
+            return "En attente"
+        case TopicStatus.IN_PROGRESS:
+            return "En cours"
+        case TopicStatus.FINISHED:
+            return "Terminé"
+        case TopicStatus.SCORE_CALCULATED:
+            return "Scores calculés"
+        default:
+            return "???"
+    }
 }
 
 type Test = {

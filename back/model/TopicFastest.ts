@@ -1,17 +1,16 @@
 import {PlayerTopic} from "../types/GamePlayer";
 import TopicCommon from "./TopicCommon";
-import Topic from "../types/Topic";
 
 class TopicFastest extends TopicCommon {
 
-    calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
+    _calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
         return playerTopics.map(playerTopic => ({
             ...playerTopic,
-            score: this._calculateScore(playerTopic)
+            score: this._calculate(playerTopic)
         }))
     }
 
-    _calculateScore(playerTopic: PlayerTopic): number {
+    _calculate(playerTopic: PlayerTopic): number {
         const completion = playerTopic.completion
         if (completion === 0) {
             return 0

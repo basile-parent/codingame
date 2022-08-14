@@ -35,7 +35,7 @@ const INTIAL_STATE: WSState = {
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
 const logWsStateReducer = (state: WSState, action: WSStateAction): WSState => {
-    console.groupCollapsed("Reducer onClick", action)
+    console.groupCollapsed("Reducer WS", action)
     console.debug("State before", state)
     const stateAfter = wsStateReducer(state, action)
     console.debug("State after", stateAfter)
@@ -84,12 +84,20 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
         case 'newEndTime': {
             return { ...state, game: { ...state.game, endTimer: action.payload } as Game}
         }
+        case 'reinitTopic': {
+            state.ws?.reinitTopic(action.payload)
+            return state
+        }
         case 'finishTopic': {
             state.ws?.finishTopic()
             return state
         }
         case 'calculateScore': {
             state.ws?.calculateScore()
+            return state
+        }
+        case 'showScores': {
+            state.ws?.showScores()
             return state
         }
         case 'startTopic': {

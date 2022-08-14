@@ -68,27 +68,15 @@ class WebSocketHandler {
         this._emit("setName", playerUtils.getPlayerUuid(), userName)
     }
 
-    startGame() {
-        this._emit("startGame")
-    }
-    startTopic(topicId: number) {
-        this._emit("startTopic", topicId)
-    }
-    addTime(time: number) {
-        this._emit("addTime", time)
-    }
-    finishTopic() {
-        this._emit("finishTopic")
-    }
-    calculateScore() {
-        this._emit("calculateTopicScore")
-    }
-    resetGame() {
-        this._emit("resetGame")
-    }
-    commitCode(code: string) {
-        this._emit("commitCode", playerUtils.getPlayerUuid(), code)
-    }
+    startGame = () => this._emit("startGame");
+    startTopic = (topicId: number) => this._emit("startTopic", topicId);
+    addTime = (time: number) => this._emit("addTime", time);
+    reinitTopic = (topicId: number) => this._emit("reinitTopic", topicId);
+    finishTopic = () => this._emit("finishTopic");
+    calculateScore = () => this._emit("calculateTopicScore");
+    showScores = () => this._emit("showScores")
+    resetGame = () => this._emit("resetGame");
+    commitCode = (code: string) => this._emit("commitCode", playerUtils.getPlayerUuid(), code);
 
     // _on = (channel: string, cb: () => {}) => {
     //     this.socket.on(channel, cb)

@@ -38,6 +38,7 @@ class WebSocketServerHandler {
         socket.on("setName", this.setPlayerName)
         socket.on("commitCode", this.submitCode)
         socket.on("calculateTopicScore", this.calculateScores)
+        socket.on("showScores", this.showScores)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
         socket.on("startTopic", this.startTopic)
@@ -64,9 +65,13 @@ class WebSocketServerHandler {
     private startTopic = (id: number) => {
         this.GAME.startTopic(id, this.gameUpdateCb)
     }
+    private showScores = () => {
+        this.GAME.showScores(this.gameUpdateCb)
+    }
     private reinitTopic = (id: number) => {
         this.GAME.reinitTopic(id)
         this.userHandler.reinitTopicForAllPlayers(id)
+        console.log("Topic reset")
         this.broadcastStatus()
     }
 
@@ -81,7 +86,7 @@ class WebSocketServerHandler {
 
     private gameUpdateCb = (options: GameUpdateOptions) => {
         this.userHandler.updatePropsForAllPlayers({ screen: this.GAME.currentScreen } as Player)
-        this.userHandler.updateTopicForAllPlayers(options.topic)
+        options.topic && this.userHandler.updateTopicForAllPlayers(options.topic)
         options.isFinishCb && this.userHandler.broadcastPlayers("forceSubmit")
         this.broadcastStatus()
     }
@@ -114,6 +119,7 @@ class WebSocketServerHandler {
         const allPlayerTopics = this.userHandler.getAllPlayerTopics(this.GAME.topic)
         const allPlayerTopicsWithScore = this.GAME.topic.calculateScore(allPlayerTopics)
         this.userHandler.updateAllPlayerTopics(allPlayerTopicsWithScore)
+        this.GAME.calculateScore()
         this.broadcastStatus()
     }
 

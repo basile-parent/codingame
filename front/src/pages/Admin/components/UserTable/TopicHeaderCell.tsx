@@ -57,7 +57,7 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
                         </button>
                         <button className={`dropdown-item ${ styles.dropdownButton }`}
                                 onClick={handleReinitTopic}
-                                disabled={topic.status !== TopicStatus.FINISHED}
+                                disabled={![TopicStatus.FINISHED, TopicStatus.SCORE_CALCULATED].includes(topic.status)}
                         >
                             Réinit
                         </button>
