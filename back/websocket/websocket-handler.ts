@@ -41,6 +41,7 @@ class WebSocketServerHandler {
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
         socket.on("startTopic", this.startTopic)
+        socket.on("reinitTopic", this.reinitTopic)
         socket.on("addTime", this.addTime)
         socket.on("finishTopic", this.finishTopic)
         socket.on("resetGame", this.resetGame)
@@ -62,6 +63,11 @@ class WebSocketServerHandler {
 
     private startTopic = (id: number) => {
         this.GAME.startTopic(id, this.gameUpdateCb)
+    }
+    private reinitTopic = (id: number) => {
+        this.GAME.reinitTopic(id)
+        this.userHandler.reinitTopicForAllPlayers(id)
+        this.broadcastStatus()
     }
 
     private finishTopic = () => {

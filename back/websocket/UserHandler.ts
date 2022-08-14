@@ -82,6 +82,20 @@ class UserHandler {
             player.topics[playerTopicIndex] = playerTopic
         })
     }
+    public reinitTopicForAllPlayers = (topicId: number) => {
+        this.PLAYERS.forEach(player => {
+            const playerTopicIndex = player.topics.findIndex(t => t.topicId === topicId)
+            const playerTopic = player.topics[playerTopicIndex]
+            playerTopic.status = GamePlayerStatus.WAITING
+            playerTopic.endTime = null
+            playerTopic.duration = null
+            playerTopic.completion = null
+            playerTopic.score = null
+            playerTopic.code = null
+
+            player.topics[playerTopicIndex] = playerTopic
+        })
+    }
 
     public updatePropsForAllPlayers = (playerProps: Player) => {
         this.PLAYERS.forEach(player => {

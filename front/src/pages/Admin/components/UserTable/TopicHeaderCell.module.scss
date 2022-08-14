@@ -35,5 +35,16 @@
     padding-right: 30px;
     border: 0;
     border-bottom: 1px solid $lowlight-background;
+
+    &[disabled] {
+      color: grey;
+      background-color: $lowlight-background;
+      cursor: default;
+
+      &:hover {
+        color: grey !important;
+        background-color: $lowlight-background !important;
+      }
+    }
   }
 }

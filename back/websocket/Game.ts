@@ -18,7 +18,6 @@ class Game {
 
     constructor() {
         this.currentScreen = GameScreen.LANDING_PAGE
-        this.topicIndex = 0
         this.allTopics = this._initTopics()
         this.started = false
     }
@@ -46,6 +45,7 @@ class Game {
     }
 
     startTopic(id: number, updateCb: (options: GameUpdateOptions) => void) {
+        this.topicIndex = this.allTopics.findIndex(t => t.id == id)
         this.currentScreen = GameScreen.GAME_EDITOR
         this._setTransitionTimeout(3000)
 
@@ -59,6 +59,11 @@ class Game {
 
         updateCb({ topic: this.topic })
         console.log(`Topic ${ this.topic.id } démarré`)
+    }
+
+    reinitTopic(id: number) {
+        this.topicIndex = this.allTopics.findIndex(t => t.id == id)
+        this.allTopics[this.topicIndex].status = GamePlayerStatus.WAITING
     }
 
     finishTopic(updateCb: (options: GameUpdateOptions) => void) {

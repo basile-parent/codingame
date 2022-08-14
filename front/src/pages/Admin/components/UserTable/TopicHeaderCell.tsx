@@ -1,5 +1,5 @@
 import {FC, useCallback, useContext, useMemo, useState} from 'react'
-import {Topic} from "../../../../types/Game"
+import {Topic, TopicStatus} from "../../../../types/Game"
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import styles from "./TopicHeaderCell.module.scss"
@@ -15,6 +15,11 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
 
     const handleStartTopic = useCallback(() => {
         dispatch({ type: "startTopic", payload: topic.id })
+        setOpen(false)
+    }, [])
+
+    const handleReinitTopic = useCallback(() => {
+        dispatch({ type: "reinitTopic", payload: topic.id })
         setOpen(false)
     }, [])
 
@@ -39,11 +44,22 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
                 </div>
                 <div className={`dropdown-menu ${ styles.dropdownMenu }`} id="dropdown-menu" role="menu">
                     <div className="dropdown-content">
-                        <button className={`dropdown-item ${ styles.dropdownButton }`} onClick={handleDetails}>
+                        <button className={`dropdown-item ${ styles.dropdownButton }`}
+                                onClick={handleDetails}
+                        >
                             Détails
                         </button>
-                        <button className={`dropdown-item ${ styles.dropdownButton }`} onClick={handleStartTopic}>
+                        <button className={`dropdown-item ${ styles.dropdownButton }`}
+                                onClick={handleStartTopic}
+                                disabled={topic.status !== TopicStatus.WAITING}
+                        >
                             Démarrer
+                        </button>
+                        <button className={`dropdown-item ${ styles.dropdownButton }`}
+                                onClick={handleReinitTopic}
+                                disabled={topic.status !== TopicStatus.FINISHED}
+                        >
+                            Réinit
                         </button>
                     </div>
                 </div>
