@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 .waitingPlayerList {
   height: 300px;
   border: 1px solid grey;
@@ -39,7 +41,7 @@
         height: 100%;
         width: 100%;
         cursor: pointer;
-        color: white;
+        color: $highlight;
 
         font-size: inherit;
         font-weight: inherit;

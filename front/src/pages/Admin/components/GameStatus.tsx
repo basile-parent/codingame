@@ -1,4 +1,4 @@
-import {FC, useCallback, useContext} from 'react'
+import {FC, useCallback, useContext, useEffect, useMemo, useState} from 'react'
 import {WSContext} from "../../../common/context/WSContext"
 import GameActions from "./GameActions"
 import styles from "./GameStatus.module.scss"
@@ -8,9 +8,16 @@ import {TopicStatus, toTopicStatusLabel} from "../../../types/Game";
 type GameStatusProps = {}
 const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
     const { wsState, dispatch } = useContext(WSContext)
+    const [ preventEndTimer, setPreventEndTimer ] = useState(false)
+
+    useEffect(() => {
+        if (!wsState.game || wsState.game.endTimer! < new Date().getTime()) {
+            setPreventEndTimer(true)
+        }
+    }, [])
 
     const handleEndTimer = useCallback(() => {
-        if (!wsState.game || wsState.game.endTimer! < new Date().getTime()) {
+        if (preventEndTimer) {
             // Skip if timer is already done when moubnting the component
             return
         }

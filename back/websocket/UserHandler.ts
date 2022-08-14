@@ -94,6 +94,9 @@ class UserHandler {
             playerTopic.code = null
 
             player.topics[playerTopicIndex] = playerTopic
+
+            player.score = player.topics.reduce((acc, playerTopic) => acc + (playerTopic.score || 0), 0)
+            player.previousScore = player.score
         })
     }
 
@@ -114,6 +117,8 @@ class UserHandler {
         this.PLAYERS.forEach(player => {
             player.screen = GameScreen.LANDING_PAGE
             player.topics = undefined
+            player.score = 0
+            player.previousScore = 0
         })
     }
 

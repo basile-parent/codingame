@@ -73,6 +73,9 @@
           .name {
             font-weight: 500;
           }
+          .localPlayer {
+            color: $highlight;
+          }
           .status {
             font-style: italic;
             color: $lowlight;

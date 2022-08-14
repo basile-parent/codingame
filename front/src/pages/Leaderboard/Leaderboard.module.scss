@@ -52,6 +52,11 @@
           flex: 1;
           font-size: 1.2rem;
           font-weight: 700;
+
+        }
+        .localPlayer {
+          color: $highlight;
+          fill: $highlight;
         }
 
         .addedPoints {
