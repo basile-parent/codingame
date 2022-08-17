@@ -13,9 +13,15 @@ Start:
 npm run start
 ```
 
+## Instruction for the game
+- In your code, DON'T create a function called "debug". It will break the test runner so your completion will be 0%.
+- Please don't try to hunt the bugs on the application: it certainly have some.
+The application was created to animate a game with reasonable people.
+If you don't know enough reasonable people, play something else.
+
 ## TODO
 - [x] Shortest mode
-- [ ] Bug when you left a debug insruction (0% completion)
+- [x] Bug when you left a debug instruction (0% completion)
 - [ ] Save game between restarts
 - [ ] Modes de jeu : icônes + hide code length
 - [ ] Confirm before submit

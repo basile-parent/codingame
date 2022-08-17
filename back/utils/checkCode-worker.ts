@@ -27,14 +27,14 @@ console.exception = function(){};
 console.profile = function(){};
 console.profileEnd = function(){};
 
+const debug = () => {
+  // Debug don't do anything here
+}
+
 `
 
 const { code, args, expectedResult } = workerData
 runTest(quietConsole + code, args, expectedResult)
-
-const debug = () => {
-  // Debug don't do anything here
-}
 
 function runTest (code, args, expectedResult) {
   const solutionFn = new Function("...inputArray", code)
