@@ -1,10 +1,10 @@
 {
   "id": 2,
   "summary": "Soustraction simple",
-  "timer": 10,
+  "timer": 3600,
   "points": 10000,
   "maxPointsTimer": 60,
-  "gameMode": "fastest",
+  "gameMode": "shortest",
   "subject": "Vous recevez 2 entiers <strong>A</strong> et <strong>B</strong> en entrée. Le résultat doit être la différence des 2 entiers.",
   "inputs": "Les entiers <strong>A</strong> et <strong>B</strong> tels que inputArray = [ A, B ]",
   "output": "Retourne un entier qui est la différence de <strong>A</strong> et <strong>B</strong>.",
@@ -22,7 +22,7 @@
     { "inputs": [7, 0], "output": 7 },
     { "inputs": [-5, 5], "output": -10 },
     { "inputs": [-5, -5], "output": 0, "hidden": true },
-    { "inputs": [500000, -500000], "output": -1000000, "hidden": true },
+    { "inputs": [500000, -500000], "output": 1000000, "hidden": true },
     { "inputs": [-500000, -500000], "output": 0, "hidden": true }
   ]
 }

@@ -1,6 +1,5 @@
 import {PlayerTopic} from "../types/GamePlayer";
 import TopicCommon from "./TopicCommon";
-import Topic from "../types/Topic";
 
 type PlayerTopicWithLength = PlayerTopic & {
     codeLength?: number

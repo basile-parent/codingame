@@ -4,15 +4,16 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {GamePlayer, GamePlayerStatus, PlayerTopic} from "../../../../types/Player";
 import styles from "./OtherPlayers.module.scss"
 
-type PlayerWithCompletionProps = {
+type OtherPlayerShortestItemProps = {
     player: GamePlayer,
     playerTopic: PlayerTopic
 }
-const PlayerWithCompletion: FC<PlayerWithCompletionProps> = ({ player, playerTopic }: PlayerWithCompletionProps) => {
+const OtherPlayerShortestItem: FC<OtherPlayerShortestItemProps> = ({ player, playerTopic }: OtherPlayerShortestItemProps) => {
     return (
         <div className={styles.player}>
-            <span className={styles.completion}>
-                { playerTopic.completion ? `${ Math.round(playerTopic.completion * 100) }%` : "N/A" }
+            <span>
+                <div className={styles.completion}>{ playerTopic.completion ? `${ Math.round(playerTopic.completion * 100) }%` : "N/A" }</div>
+                <div className={styles.codeLength}>{ playerTopic.code ? `${ playerTopic.code.length } car.` : "" }</div>
             </span>
             <FontAwesomeIcon icon={faUser} />
             <div className={styles.info}>
@@ -26,4 +27,4 @@ const PlayerWithCompletion: FC<PlayerWithCompletionProps> = ({ player, playerTop
 export const translatePlayerStatus = (status: GamePlayerStatus): string =>
     status === GamePlayerStatus.FINISHED ? "Terminé": "En cours"
 
-export default PlayerWithCompletion
+export default OtherPlayerShortestItem

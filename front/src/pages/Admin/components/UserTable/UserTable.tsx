@@ -13,6 +13,8 @@ type UserTableProps = {}
 const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
     const [ modalTopic, setModalTopic ] = useState<Topic | null>(null)
     const {wsState: {game, players}} = useContext(WSContext)
+    console.log("game", game)
+    console.log("players", players)
 
     return (
         <>

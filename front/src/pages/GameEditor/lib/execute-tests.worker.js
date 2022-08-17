@@ -10,7 +10,6 @@ self.onmessage = (message) => {
 let debugDetails = ""
 
 const debug = (...args) => {
-  // self.postMessage({ onClick: "debug", value: [ ...args ] });
   debugDetails += "> " + args.join(", ") + "\n"
 }
 
@@ -20,9 +19,9 @@ const runTest = (code, args, expectedResult) => {
   const isSuccess = result === expectedResult
   let details = debugDetails + "\n"
   if (isSuccess) {
-    details += `Expected output: ${ expectedResult }`
+    details += `Expected output:\n${ expectedResult }`
   } else {
-    details += `Expected output: ${ expectedResult }. Actual: ${ result }`
+    details += `Expected output:\n${ expectedResult }\n\nActual:\n${ result }`
   }
   notify(isSuccess, details)
 }
