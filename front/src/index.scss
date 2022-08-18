@@ -103,3 +103,22 @@ hr {
 
 /* ---- END Override Bulma settings ---- */
 
+
+/* ---- Override CodeFlask settings ---- */
+.codeflask--has-line-numbers pre.codeflask__flatten {
+  width: unset;
+}
+/* ---- END Override CodeFlask settings ---- */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: $highlight-background;
+}
+::-webkit-scrollbar-thumb {
+  background: $lowlight;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

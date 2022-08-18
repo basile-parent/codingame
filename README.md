@@ -23,7 +23,7 @@ If you don't know enough reasonable people, play something else.
 - [x] Shortest mode
 - [x] Bug when you left a debug instruction (0% completion)
 - [x] Modes de jeu : icônes + hide code length
-- [ ] Code flask bug when scroll (invisible)
+- [x] Code flask bug when scroll (invisible)
 - [ ] Confirm before submit
 - [ ] Share code
 - [ ] Save game between restarts
