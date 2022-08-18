@@ -1,16 +1,18 @@
-import {FC, useContext, useEffect} from 'react'
+import {FC, useContext, useEffect, useMemo} from 'react'
 import CodeFlask from "codeflask"
 import styles from "./Editor.module.scss"
 import "./Editor.ide.scss"
 import {WSContext} from "../../../common/context/WSContext";
 import {DisplayMode} from "../../../types/DisplayMode";
+import {GameMode} from "../../../types/Game";
 
 type EditorProps = {
     code: string,
     updateCode: (code: string) => void
 }
 const Editor: FC<EditorProps> = ({ code, updateCode }) => {
-    const { wsState } = useContext(WSContext)
+    const { wsState: { game, mode } } = useContext(WSContext)
+    const isShortestTopic = useMemo(() => game!.topic!.gameMode === GameMode.SHORTEST, [ game!.topic! ])
 
     useEffect(() => {
         const id = "editor-ide"
@@ -18,7 +20,7 @@ const Editor: FC<EditorProps> = ({ code, updateCode }) => {
             language: 'js',
             lineNumbers: true,
             defaultTheme: false,
-            readonly: wsState.mode === DisplayMode.ADMIN,
+            readonly: mode === DisplayMode.ADMIN,
         });
 
         codeFlask.updateCode(code);
@@ -29,7 +31,10 @@ const Editor: FC<EditorProps> = ({ code, updateCode }) => {
     return (
         <section className={styles.editor}>
             <div id="editor-ide"/>
-            <div className={styles.editorCharCount}>{ code.length }</div>
+            {
+                isShortestTopic &&
+                <div className={styles.editorCharCount}>{ code.length }</div>
+            }
         </section>
     )
 }

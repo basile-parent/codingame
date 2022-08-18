@@ -9,6 +9,7 @@ export type Game = {
 export enum GameMode {
     FASTEST = "fastest",
     SHORTEST = "shortest",
+    REVERSE = "reverse",
 }
 
 export type Topic = {

@@ -11,18 +11,18 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
     const [ preventEndTimer, setPreventEndTimer ] = useState(false)
 
     useEffect(() => {
-        if (!wsState.game || wsState.game.endTimer! < new Date().getTime()) {
-            setPreventEndTimer(true)
-        }
-    }, [])
+        setPreventEndTimer(!wsState.game?.endTimer || wsState.game.endTimer! < new Date().getTime())
+    }, [ wsState.game?.endTimer ])
 
     const handleEndTimer = useCallback(() => {
         if (preventEndTimer) {
-            // Skip if timer is already done when moubnting the component
+            // Skip if timer is already done when mounting the component
+            console.debug("End timer prevented")
             return
         }
         dispatch({ type: "finishTopic" })
-    }, [])
+    }, [ preventEndTimer ])
+
 
     return (
         <article className={styles.wrapper}>

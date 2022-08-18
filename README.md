@@ -22,10 +22,11 @@ If you don't know enough reasonable people, play something else.
 ## TODO
 - [x] Shortest mode
 - [x] Bug when you left a debug instruction (0% completion)
-- [ ] Save game between restarts
-- [ ] Modes de jeu : icônes + hide code length
+- [x] Modes de jeu : icônes + hide code length
+- [ ] Code flask bug when scroll (invisible)
 - [ ] Confirm before submit
 - [ ] Share code
+- [ ] Save game between restarts
 - [ ] Presentation mode
 - [ ] Final screen
 - [ ] Handicaps
