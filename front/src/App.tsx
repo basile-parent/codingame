@@ -7,11 +7,14 @@ import {Screen} from "./types/Screen"
 import AfterGame from "./pages/AfterGame/AfterGame"
 import TransitionTimer from "./common/components/TransitionTimer"
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
+import ModalConfirmDialog from "./common/components/ModalConfirm/ModalConfirmDialog";
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
     return (
         <>
+            <ModalConfirmDialog />
+
             <aside><ConnectedAppIcon /></aside>
             <aside><TransitionTimer /></aside>
             

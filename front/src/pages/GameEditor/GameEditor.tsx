@@ -7,6 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import InstructionsModal from "./components/InstructionsModal";
 import {UnitTestExecution, UnitTestExecutionStatus} from "../../types/Game";
+import ModalConfirm from "../../common/components/ModalConfirm/ModalConfirm";
 
 const DEFAULT_CODE = `const [ firstInput ] = inputArray
 // Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
@@ -79,12 +80,15 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     }, [ unitTests ])
 
     const commitCode = useCallback(() => {
-        dispatch({ type: "commitCode", payload: code})
+        ModalConfirm.confirm({
+            message: "Êtes-vous sûr de vouloir soumettre votre code ? Cette action est définitive.",
+            onConfirm: () => dispatch({ type: "commitCode", payload: code})
+        })
     }, [ code ])
 
     useEffect(() => {
         if (forceSubmit) {
-            commitCode()
+            dispatch({ type: "commitCode", payload: code})
         }
     }, [ forceSubmit ])
 
