@@ -27,7 +27,7 @@ const _codeLengthComparator = (topic: Topic) => (p1: GamePlayer, p2: GamePlayer)
     if (diffCompletion !== 0) {
         return diffCompletion * -1
     }
-    const diffCodeLength = (playerTopic1.code?.length ?? -1) - (playerTopic2.code?.length ?? -1)
+    const diffCodeLength = (playerTopic1.codeLength ?? -1) - (playerTopic2.codeLength ?? -1)
     return diffCodeLength !== 0 ? diffCodeLength : (playerTopic1.duration ?? -1) - (playerTopic2.duration ?? -1)
 }
 

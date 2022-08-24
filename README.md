@@ -25,8 +25,11 @@ If you don't know enough reasonable people, play something else.
 - [x] Modes de jeu : icônes + hide code length
 - [x] Code flask bug when scroll (invisible)
 - [x] Confirm before submit
-- [ ] Share code
+- [x] Share code
+- [x] After game: Add duration
+- [ ] Bug when the round ends but a player is disconnected
 - [ ] Save game between restarts
+- [ ] Save code on local storage
 - [ ] Presentation mode
 - [ ] Final screen
 - [ ] Handicaps

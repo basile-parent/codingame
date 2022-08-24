@@ -2,7 +2,7 @@ import {Dispatch} from "react"
 import io from "socket.io-client"
 import {Socket} from "socket.io-client/build/esm/socket"
 import playerUtils from "../../utils/playerUtils"
-import {DisplayMode} from "../../types/DisplayMode";
+import {DisplayMode} from "../../types/DisplayMode"
 
 type WSOptions = {
     mode?: DisplayMode,
@@ -68,15 +68,16 @@ class WebSocketHandler {
         this._emit("setName", playerUtils.getPlayerUuid(), userName)
     }
 
-    startGame = () => this._emit("startGame");
-    startTopic = (topicId: number) => this._emit("startTopic", topicId);
-    addTime = (time: number) => this._emit("addTime", time);
-    reinitTopic = (topicId: number) => this._emit("reinitTopic", topicId);
-    finishTopic = () => this._emit("finishTopic");
-    calculateScore = () => this._emit("calculateTopicScore");
+    startGame = () => this._emit("startGame")
+    startTopic = (topicId: number) => this._emit("startTopic", topicId)
+    addTime = (time: number) => this._emit("addTime", time)
+    reinitTopic = (topicId: number) => this._emit("reinitTopic", topicId)
+    finishTopic = () => this._emit("finishTopic")
+    calculateScore = () => this._emit("calculateTopicScore")
     showScores = () => this._emit("showScores")
-    resetGame = () => this._emit("resetGame");
-    commitCode = (code: string) => this._emit("commitCode", playerUtils.getPlayerUuid(), code);
+    resetGame = () => this._emit("resetGame")
+    commitCode = (code: string) => this._emit("commitCode", playerUtils.getPlayerUuid(), code)
+    shareCode = () => this._emit("shareCode", playerUtils.getPlayerUuid())
 
     // _on = (channel: string, cb: () => {}) => {
     //     this.socket.on(channel, cb)

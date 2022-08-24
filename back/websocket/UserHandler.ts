@@ -87,11 +87,13 @@ class UserHandler {
             const playerTopicIndex = player.topics.findIndex(t => t.topicId === topicId)
             const playerTopic = player.topics[playerTopicIndex]
             playerTopic.status = GamePlayerStatus.WAITING
-            playerTopic.endTime = null
-            playerTopic.duration = null
-            playerTopic.completion = null
-            playerTopic.score = null
-            playerTopic.code = null
+            playerTopic.endTime = undefined
+            playerTopic.duration = undefined
+            playerTopic.completion = undefined
+            playerTopic.score = undefined
+            playerTopic.code = undefined
+            playerTopic.codeLength = undefined
+            playerTopic.isCodeShared = false
 
             player.topics[playerTopicIndex] = playerTopic
 
@@ -110,7 +112,7 @@ class UserHandler {
 
     public setGameToPlayer = (game: Game): void => {
         this.PLAYERS.forEach(player => {
-            player.topics = game.allTopics.map(topic => ({ topicId: topic.id, playerUuid: player.uuid, status: GamePlayerStatus.WAITING }))
+            player.topics = game.allTopics.map(topic => ({ topicId: topic.id, playerUuid: player.uuid, status: GamePlayerStatus.WAITING, isCodeShared: false }))
         })
     }
     public resetGameOnPlayer = (): void => {
@@ -151,6 +153,7 @@ class UserHandler {
         player.screen = GameScreen.AFTER_GAME
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
         playerTopic.code = code
+        playerTopic.codeLength = code.length
         playerTopic.status = GamePlayerStatus.FINISHED
         playerTopic.endTime = new Date().getTime()
         playerTopic.duration = playerTopic.endTime - topic.startTime
@@ -167,6 +170,12 @@ class UserHandler {
         }
 
         return playerTopic
+    }
+    
+    public shareCode(uuid: string, topic: Topic) {
+        const player = this.PLAYERS.find(p => p.uuid === uuid)
+        const playerTopic = player.topics.find(t => t.topicId === topic.id)
+        playerTopic.isCodeShared = true
     }
 
     public toString = (): string => {

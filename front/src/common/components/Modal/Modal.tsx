@@ -7,9 +7,10 @@ type ModalProps = {
     onClose: () => void,
     title?: string | ReactElement,
     actions?: ModalButton[],
-    children: string | ReactElement | ReactElement[],
+    className?: string;
+    children: string | ReactElement | (string | ReactElement)[],
 }
-const Modal: FC<ModalProps> = ({open, onClose, title, actions, children}: ModalProps) => {
+const Modal: FC<ModalProps> = ({open, onClose, title, actions, className, children}: ModalProps) => {
     // Close modal via Escape
     const handleEscapeModal = useCallback((event: KeyboardEvent) => {
         if (event.key === "Escape") {
@@ -32,7 +33,7 @@ const Modal: FC<ModalProps> = ({open, onClose, title, actions, children}: ModalP
     return (
         <div className={`modal ${open && "is-active"} ${styles.container}`}>
             <div className="modal-background" onClick={onClose}/>
-            <div className="modal-card">
+            <div className={`modal-card ${ className }`}>
                 {
                     title &&
                     <header className="modal-card-head">

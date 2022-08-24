@@ -19,21 +19,39 @@
   display: flex;
   margin-bottom: 10px;
 
-  .completion {
-    font-size: 12px;
-    line-height: 22px;
-    font-weight: 700;
+  .completionContainer {
     width: 40px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+
+    .completion {
+      font-size: 12px;
+      line-height: 22px;
+      font-weight: 700;
+    }
+
+    .duration {
+      font-size: 12px;
+      font-weight: normal;
+    }
   }
 
-  .codeLength {
+  .duration {
     font-size: 12px;
     line-height: 12px;
     width: 40px;
     text-align: center;
     font-style: italic;
     color: $lowlight;
+  }
+
+  .codeLength {
+    font-size: 12px;
+    line-height: 22px;
+    width: 40px;
+    text-align: center;
+    font-style: italic;
   }
 
   svg {
@@ -55,6 +73,7 @@
     .name {
       font-weight: 500;
     }
+
     .status {
       font-style: italic;
       color: $lowlight;

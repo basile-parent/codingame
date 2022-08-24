@@ -37,6 +37,7 @@ class WebSocketServerHandler {
 
         socket.on("setName", this.setPlayerName)
         socket.on("commitCode", this.submitCode)
+        socket.on("shareCode", this.shareCode)
         socket.on("calculateTopicScore", this.calculateScores)
         socket.on("showScores", this.showScores)
         socket.on("disconnect", () => this.disconnectedUser(socket))
@@ -100,7 +101,6 @@ class WebSocketServerHandler {
     }
 
     private setPlayerName = (uuid, name) => {
-        console.log("Set player name", uuid, name)
         this.userHandler.setPlayerName(uuid, name)
         this.logPlayers()
         this.broadcastLeaderboard()
@@ -114,6 +114,12 @@ class WebSocketServerHandler {
                 this.broadcastStatus()
             })
         this.broadcastStatus()
+    }
+
+    private shareCode = (uuid) => {
+        this.userHandler.shareCode(uuid, this.GAME.topic)
+        this.broadcastStatus()
+        console.log("Code shared", uuid)
     }
 
     private calculateScores = () => {

@@ -70,6 +70,10 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.commitCode(action.payload)
             return { ...state, forceSubmit: false }
         }
+        case 'shareCode': {
+            state.ws?.shareCode()
+            return state
+        }
         case 'setPlayers': {
             return { ...state, players: action.payload }
         }

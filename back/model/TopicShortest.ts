@@ -1,22 +1,16 @@
 import {PlayerTopic} from "../types/GamePlayer";
 import TopicCommon from "./TopicCommon";
 
-type PlayerTopicWithLength = PlayerTopic & {
-    codeLength?: number
+type PlayerTopicWithPosition = PlayerTopic & {
     position?: number
 }
 
-const _codeLengthComparator = (p1: PlayerTopicWithLength, p2: PlayerTopicWithLength) => p1.codeLength - p2.codeLength
+const _codeLengthComparator = (p1: PlayerTopicWithPosition, p2: PlayerTopicWithPosition) => p1.codeLength - p2.codeLength
 
 class TopicShortest extends TopicCommon {
 
     _calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
-        let playerTopicsWithLength = playerTopics
-            .map(playerTopic => ({
-                ...playerTopic,
-                codeLength: playerTopic.code.length
-            }) as PlayerTopicWithLength)
-        playerTopicsWithLength = this._calculatePosition(playerTopicsWithLength)
+        let playerTopicsWithLength = this._calculatePosition(playerTopics)
 
         return playerTopicsWithLength
             .map(playerTopic => ({
@@ -25,7 +19,7 @@ class TopicShortest extends TopicCommon {
             }))
     }
 
-    _calculatePosition(playerTopics: PlayerTopicWithLength[]): PlayerTopicWithLength[] {
+    _calculatePosition(playerTopics: PlayerTopicWithPosition[]): PlayerTopicWithPosition[] {
         playerTopics.sort(_codeLengthComparator)
         let previousPlayerTopic = null
         let position = 1
@@ -44,7 +38,7 @@ class TopicShortest extends TopicCommon {
         return playerTopics
     }
 
-    _calculate(playerTopic: PlayerTopicWithLength, playerCount: number): number {
+    _calculate(playerTopic: PlayerTopicWithPosition, playerCount: number): number {
         const completion = playerTopic.completion
         if (completion === 0) {
             return 0

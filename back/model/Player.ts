@@ -41,6 +41,10 @@ class Player implements User {
             socket: undefined,
             connected: undefined,
             toString: undefined,
+            topics: this.topics?.map(topic => ({
+                ...topic,
+                code: topic.isCodeShared ? topic.code : undefined
+            }))
         }
     }
 

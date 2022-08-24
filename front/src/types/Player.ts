@@ -18,6 +18,7 @@ export type GamePlayer = {
 
 export type PlayerTopic = {
     topicId: number,
+    codeLength?: number,
     code?: string,
     completion?: number,
     score?: number,
