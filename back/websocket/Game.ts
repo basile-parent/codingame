@@ -75,7 +75,7 @@ class Game {
     finishTopic(updateCb: (options: GameUpdateOptions) => void) {
         this.topic.status = GamePlayerStatus.FINISHED
         this.currentScreen = GameScreen.AFTER_GAME
-        updateCb({ topic: this.topic, isFinishCb: true})
+        updateCb({ topic: this.topic })
         console.log(`Topic ${ this.topic.id } terminé`)
     }
 

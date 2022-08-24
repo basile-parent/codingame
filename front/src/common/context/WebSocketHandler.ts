@@ -53,9 +53,6 @@ class WebSocketHandler {
         this.socket.on("status", (wsStatus) => {
             this.dispatch({type: "status", payload: wsStatus})
         })
-        this.socket.on("forceSubmit", () => {
-            this.dispatch({type: "forceSubmit" })
-        })
         this.socket.on("newEndTime", (endTimer: number) => {
             this.dispatch({type: "newEndTime", payload: endTimer })
         })

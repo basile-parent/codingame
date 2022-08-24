@@ -27,9 +27,11 @@ If you don't know enough reasonable people, play something else.
 - [x] Confirm before submit
 - [x] Share code
 - [x] After game: Add duration
-- [ ] Bug when the round ends but a player is disconnected
+- [x] Bug when the round ends but a player is disconnected
+- [x] Save code on local storage
+- [x] Delete forceSubmit
+- [ ] Bug on shortest score calculation: shortest code is in first position even if not complete
 - [ ] Save game between restarts
-- [ ] Save code on local storage
 - [ ] Presentation mode
 - [ ] Final screen
 - [ ] Handicaps

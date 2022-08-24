@@ -36,6 +36,7 @@ class WebSocketServerHandler {
         this.logPlayers()
 
         socket.on("setName", this.setPlayerName)
+        socket.on("tempCode", this.saveTempCode)
         socket.on("commitCode", this.submitCode)
         socket.on("shareCode", this.shareCode)
         socket.on("calculateTopicScore", this.calculateScores)
@@ -79,6 +80,10 @@ class WebSocketServerHandler {
 
     private finishTopic = () => {
         this.GAME.finishTopic(this.gameUpdateCb)
+        const allUnfinishedPlayerTopics = this.userHandler.getAllUnfinishedPlayerTopics(this.GAME.topic.id)
+        allUnfinishedPlayerTopics.forEach(playerTopic => {
+            this.submitCode(playerTopic.playerUuid, playerTopic.tempCode || "")
+        })
     }
 
     private addTime = (time: number) => {
@@ -89,7 +94,6 @@ class WebSocketServerHandler {
     private gameUpdateCb = (options?: GameUpdateOptions) => {
         this.userHandler.updatePropsForAllPlayers({ screen: this.GAME.currentScreen } as Player)
         options?.topic && this.userHandler.updateTopicForAllPlayers(options.topic)
-        options?.isFinishCb && this.userHandler.broadcastPlayers("forceSubmit")
         this.broadcastStatus()
     }
 
@@ -106,6 +110,10 @@ class WebSocketServerHandler {
         this.broadcastLeaderboard()
     }
 
+    private saveTempCode = (uuid, code) => {
+        this.userHandler.setPlayerTempCode(uuid, code, this.GAME.topic)
+        this.userHandler.broadcastAdmin("status", this.getAdminStatus())
+    }
     private submitCode = (uuid, code) => {
         this.userHandler.setPlayerFinalCode(uuid, code, this.GAME.topic)
         this.GAME.calculateCompletion(code)
@@ -119,7 +127,6 @@ class WebSocketServerHandler {
     private shareCode = (uuid) => {
         this.userHandler.shareCode(uuid, this.GAME.topic)
         this.broadcastStatus()
-        console.log("Code shared", uuid)
     }
 
     private calculateScores = () => {
@@ -171,7 +178,6 @@ class WebSocketServerHandler {
 
 export type GameUpdateOptions = {
     topic?: Topic,
-    isFinishCb?: boolean
 }
 
 export default WebSocketServerHandler

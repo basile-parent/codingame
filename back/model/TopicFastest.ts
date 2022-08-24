@@ -12,7 +12,7 @@ class TopicFastest extends TopicCommon {
 
     _calculate(playerTopic: PlayerTopic): number {
         const completion = playerTopic.completion
-        if (completion === 0) {
+        if (!completion) {
             return 0
         }
 

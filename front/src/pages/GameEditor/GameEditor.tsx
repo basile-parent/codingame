@@ -13,7 +13,7 @@ import playerUtils from "../../utils/playerUtils";
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const {wsState: {game, mode, forceSubmit}, dispatch} = useContext(WSContext)
+    const {wsState: {game, mode}, dispatch} = useContext(WSContext)
     const [code, setCode] = useState<string>(playerUtils.getSavedCode() || game!.topic!.defaultCode || "")
     const [dialogOpen, setDialogOpen] = useState<boolean>(true)
 
@@ -87,12 +87,6 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
             onConfirm: () => dispatch({ type: "commitCode", payload: code})
         })
     }, [ code ])
-
-    useEffect(() => {
-        if (forceSubmit) {
-            dispatch({ type: "commitCode", payload: code})
-        }
-    }, [ forceSubmit ])
 
     return (
         <>

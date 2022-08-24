@@ -40,7 +40,7 @@ class TopicShortest extends TopicCommon {
 
     _calculate(playerTopic: PlayerTopicWithPosition, playerCount: number): number {
         const completion = playerTopic.completion
-        if (completion === 0) {
+        if (!completion) {
             return 0
         }
 

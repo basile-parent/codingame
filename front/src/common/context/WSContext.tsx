@@ -14,7 +14,6 @@ type WSState = {
     game: Game | null,
     transitionTimeout: number,
     delayedState: WSState | null,
-    forceSubmit: boolean
 }
 type WSStateAction = {
     type: string,
@@ -30,7 +29,6 @@ const INTIAL_STATE: WSState = {
     game: null,
     transitionTimeout: 0,
     delayedState: null,
-    forceSubmit: false,
 }
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 
@@ -63,16 +61,13 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.setName(action.payload)
             return state
         }
-        case 'forceSubmit': {
-            return state.screen === Screen.GAME_EDITOR ? {...state, forceSubmit: true} : state
-        }
         case 'tempCode': {
             state.ws?.saveTempCode(action.payload)
             return state
         }
         case 'commitCode': {
             state.ws?.commitCode(action.payload)
-            return { ...state, forceSubmit: false }
+            return state
         }
         case 'shareCode': {
             state.ws?.shareCode()

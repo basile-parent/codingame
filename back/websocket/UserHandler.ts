@@ -82,6 +82,13 @@ class UserHandler {
             player.topics[playerTopicIndex] = playerTopic
         })
     }
+
+    public getAllUnfinishedPlayerTopics = (topicId: number): PlayerTopic[] => {
+        return this.PLAYERS
+            .map(player => player.topics.find(t => t.topicId === topicId))
+            .filter(playerTopic => !playerTopic.code)
+    }
+
     public reinitTopicForAllPlayers = (topicId: number) => {
         this.PLAYERS.forEach(player => {
             const playerTopicIndex = player.topics.findIndex(t => t.topicId === topicId)
@@ -148,11 +155,17 @@ class UserHandler {
             player.topics[exisingTopicIndex] = playerTopic
         })
     }
+    public setPlayerTempCode(uuid: string, code: string, topic: Topic) {
+        const player = this.PLAYERS.find(p => p.uuid === uuid)
+        const playerTopic = player.topics.find(t => t.topicId === topic.id)
+        playerTopic.tempCode = code
+    }
     public setPlayerFinalCode(uuid: string, code: string, topic: Topic): PlayerTopic {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         player.screen = GameScreen.AFTER_GAME
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
         playerTopic.code = code
+        playerTopic.tempCode = null
         playerTopic.codeLength = code.length
         playerTopic.status = GamePlayerStatus.FINISHED
         playerTopic.endTime = new Date().getTime()

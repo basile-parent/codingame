@@ -16,6 +16,7 @@ export type PlayerTopic = {
     playerUuid: string,
     topicId: number,
     codeLength?: number,
+    tempCode?: string,
     code?: string,
     isCodeShared?: boolean,
     completion?: number,
