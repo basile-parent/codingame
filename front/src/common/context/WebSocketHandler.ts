@@ -77,6 +77,7 @@ class WebSocketHandler {
     showScores = () => this._emit("showScores")
     resetGame = () => this._emit("resetGame")
     commitCode = (code: string) => this._emit("commitCode", playerUtils.getPlayerUuid(), code)
+    saveTempCode = (code: string) => this._emit("tempCode", playerUtils.getPlayerUuid(), code)
     shareCode = () => this._emit("shareCode", playerUtils.getPlayerUuid())
 
     // _on = (channel: string, cb: () => {}) => {

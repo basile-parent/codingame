@@ -1,4 +1,4 @@
-import {FC, useContext, useMemo, useState} from 'react'
+import {FC, useContext, useEffect, useMemo, useState} from 'react'
 import {WSContext} from "../../common/context/WSContext"
 import styles from "./Aftergame.module.scss"
 import {GameMode, TopicStatus} from "../../types/Game";
@@ -7,6 +7,7 @@ import AfterGameFastestItem from "./AfterGameFastestItem";
 import AfterGameShortestItem from "./AfterGameShortestItem";
 import Timer from "../../common/components/Timer";
 import CodeDialog from "./CodeDialog";
+import playerUtils from "../../utils/playerUtils";
 
 type AfterGameProps = {}
 const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
@@ -16,6 +17,10 @@ const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
     const ItemComponent = useMemo(() => game!.topic!.gameMode === GameMode.SHORTEST ? AfterGameShortestItem : AfterGameFastestItem, [ game!.topic! ])
 
     const [ codeDialogContent, setCodeDialogContent ] = useState<string | null>(null)
+
+    useEffect(() => {
+        playerUtils.cleanSavedCode()
+    }, [])
 
     return (
         <div className={styles.container}>

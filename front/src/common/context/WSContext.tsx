@@ -66,6 +66,10 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
         case 'forceSubmit': {
             return state.screen === Screen.GAME_EDITOR ? {...state, forceSubmit: true} : state
         }
+        case 'tempCode': {
+            state.ws?.saveTempCode(action.payload)
+            return state
+        }
         case 'commitCode': {
             state.ws?.commitCode(action.payload)
             return { ...state, forceSubmit: false }

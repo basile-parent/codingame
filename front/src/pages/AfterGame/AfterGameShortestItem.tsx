@@ -1,11 +1,12 @@
 import {FC, useContext} from 'react'
-import playerUtils from "../../utils/playerUtils";
-import styles from "./Aftergame.module.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner, faUser} from "@fortawesome/free-solid-svg-icons";
+import playerUtils from "../../utils/playerUtils";
+import styles from "./Aftergame.module.scss";
 import {Game} from "../../types/Game";
 import {GamePlayer, PlayerTopic} from "../../types/Player";
 import {WSContext} from "../../common/context/WSContext";
+import dateUtils from "../../utils/dateUtils";
 
 const _getPlayerTopic = (player: GamePlayer, game: Game): PlayerTopic => {
     return player.topics!.find(topic => topic.topicId === game.topic!.id)!;
@@ -22,15 +23,23 @@ const AfterGameShortestItem: FC<AfterGameShortestItemProps> = ({ game, player, o
     const isLocalPlayer = player.uuid === playerUtils.getPlayerUuid()
     return (
         <div className={styles.playerResult}>
-            <span className={styles.completion}>
+            <div className={styles.completionContainer}>
+                <span className={styles.completion}>
+                    {
+                        playerTopic.completion !== undefined && playerTopic.completion !== null ?
+                            `${ Math.round(playerTopic.completion * 100) }%` :
+                            isLocalPlayer ?
+                                <FontAwesomeIcon icon={faSpinner} /> :
+                                "N/A"
+                    }
+                </span>
                 {
-                    playerTopic.completion !== undefined && playerTopic.completion !== null  ?
-                        `${ Math.round(playerTopic.completion * 100) }%` :
-                        isLocalPlayer ?
-                            <FontAwesomeIcon icon={faSpinner} /> :
-                            "N/A"
+                    playerTopic.duration &&
+                    <span className={styles.duration}>
+                        { dateUtils.timeToString(Math.round(playerTopic.duration / 1000)) }
+                    </span>
                 }
-            </span>
+            </div>
             <FontAwesomeIcon icon={faUser} className={`${isLocalPlayer && styles.localPlayer}`} />
             <div className={styles.info}>
                 <div className={`${styles.name} ${isLocalPlayer && styles.localPlayer}`}>{ player.name }</div>

@@ -1,4 +1,5 @@
-import {FC, useCallback, useContext, useEffect, useState} from 'react';
+import {FC, useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import { debounce } from 'lodash'
 import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsActions, UnitTestsList} from "./components";
 import styles from "./GameEditor.module.scss"
 import {WSContext} from "../../common/context/WSContext";
@@ -8,18 +9,12 @@ import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import InstructionsModal from "./components/InstructionsModal";
 import {UnitTestExecution, UnitTestExecutionStatus} from "../../types/Game";
 import ModalConfirm from "../../common/components/ModalConfirm/ModalConfirm";
-
-const DEFAULT_CODE = `const [ firstInput ] = inputArray
-// Pour debugger, utiliser la fonction "debug". Exemple: debug(inputArray)
-// Faire un "return" de la solution au problème
-
-for (let i = 0; i < 5000; i++) {}
-return "your solution"`
+import playerUtils from "../../utils/playerUtils";
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     const {wsState: {game, mode, forceSubmit}, dispatch} = useContext(WSContext)
-    const [code, setCode] = useState<string>(game!.topic!.defaultCode || DEFAULT_CODE)
+    const [code, setCode] = useState<string>(playerUtils.getSavedCode() || game!.topic!.defaultCode || "")
     const [dialogOpen, setDialogOpen] = useState<boolean>(true)
 
     const [unitTests, setUnitTests] = useState<UnitTestExecution[]>(game!.topic!.tests.map((test, index) => ({
@@ -29,6 +24,11 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     })))
     const [selectedUnitTest, setSelectedUnitTest] = useState<UnitTestExecution | null>(null)
 
+    const saveTempCode = useMemo(() =>
+            debounce(async (code: string) => {
+                dispatch({ type: "tempCode", payload: code })
+            }, 1000)
+        , [ dispatch ])
     const onCodeChange = useCallback((newCode: string) => {
         setSelectedUnitTest(null)
         setUnitTests(unitTests => unitTests.map(unitTest => ({
@@ -36,6 +36,8 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
             status: UnitTestExecutionStatus.WAIT,
             consoleOutput: undefined
         })))
+        playerUtils.saveCode(newCode)
+        saveTempCode(newCode)
         setCode(newCode)
     }, [])
     const executeTest = useCallback((testExecution: UnitTestExecution) => {

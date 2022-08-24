@@ -101,12 +101,17 @@
           }
         }
 
-        .codeLengthValue {
-          font-size: 1.25rem;
-          margin-right: 10px
-        }
-        .codeLengthLabel {
-          font-size: 1rem;
+        .codeLength {
+          min-width: 80px;
+          text-align: right;
+
+          .codeLengthValue {
+            font-size: 1.25rem;
+            margin-right: 10px
+          }
+          .codeLengthLabel {
+            font-size: 1rem;
+          }
         }
 
       }
