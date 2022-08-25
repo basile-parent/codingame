@@ -5,8 +5,6 @@ type PlayerTopicWithPosition = PlayerTopic & {
     position?: number
 }
 
-const _codeLengthComparator = (p1: PlayerTopicWithPosition, p2: PlayerTopicWithPosition) => p1.codeLength - p2.codeLength
-
 class TopicShortest extends TopicCommon {
 
     _calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
@@ -19,14 +17,30 @@ class TopicShortest extends TopicCommon {
             }))
     }
 
-    _calculatePosition(playerTopics: PlayerTopicWithPosition[]): PlayerTopicWithPosition[] {
-        playerTopics.sort(_codeLengthComparator)
+    _comparator = (p1: PlayerTopicWithPosition, p2: PlayerTopicWithPosition) => {
+        if (p2.completion - p1.completion !== 0) {
+            return p2.completion - p1.completion
+        }
+        if (p1.codeLength - p2.codeLength !== 0) {
+            return p1.codeLength - p2.codeLength
+        }
+
+        return p1.duration - p2.duration
+    }
+
+    _isSamePosition(p1: PlayerTopic, p2: PlayerTopic) {
+        return p1.completion === p2.completion && p1.codeLength === p2.codeLength
+                && p1.duration === p2.duration
+    }
+
+    _calculatePosition(playerTopics: PlayerTopic[]): PlayerTopicWithPosition[] {
+        const playerTopicsWithPosition: PlayerTopicWithPosition[] = playerTopics.sort(this._comparator)
         let previousPlayerTopic = null
         let position = 1
-        for (let index in playerTopics) {
-            const playerTopic = playerTopics[index]
+        for (let index in playerTopicsWithPosition) {
+            const playerTopic = playerTopicsWithPosition[index]
 
-            if (previousPlayerTopic && previousPlayerTopic.codeLength === playerTopic.codeLength) {
+            if (previousPlayerTopic && this._isSamePosition(previousPlayerTopic, playerTopic)) {
                 playerTopic.position = previousPlayerTopic.position
             } else {
                 playerTopic.position = position
@@ -35,7 +49,7 @@ class TopicShortest extends TopicCommon {
             position++
             previousPlayerTopic = playerTopic
         }
-        return playerTopics
+        return playerTopicsWithPosition
     }
 
     _calculate(playerTopic: PlayerTopicWithPosition, playerCount: number): number {

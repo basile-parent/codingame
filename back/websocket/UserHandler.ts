@@ -76,7 +76,7 @@ class UserHandler {
             playerTopic.status = topic.status
             if (topic.status === GamePlayerStatus.FINISHED && !playerTopic.endTime) {
                 playerTopic.endTime = new Date().getTime()
-                playerTopic.duration = playerTopic.endTime - topic.startTime
+                playerTopic.duration = Math.floor((playerTopic.endTime - topic.startTime) / 1000)
             }
 
             player.topics[playerTopicIndex] = playerTopic
@@ -169,7 +169,7 @@ class UserHandler {
         playerTopic.codeLength = code.length
         playerTopic.status = GamePlayerStatus.FINISHED
         playerTopic.endTime = new Date().getTime()
-        playerTopic.duration = playerTopic.endTime - topic.startTime
+        playerTopic.duration = Math.floor((playerTopic.endTime - topic.startTime) / 1000)
 
         return playerTopic
     }

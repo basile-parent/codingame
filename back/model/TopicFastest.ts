@@ -23,7 +23,7 @@ class TopicFastest extends TopicCommon {
         const maxTime = maxTimeWithDelay - this.maxPointsTimer
 
         const maxScoreDelay = this.maxPointsTimer
-        const duration = playerTopic.duration / 1000
+        const duration = playerTopic.duration
         const durationSinceMaxScore = duration - maxScoreDelay
 
         const substractedPpoints =

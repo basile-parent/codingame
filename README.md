@@ -30,7 +30,8 @@ If you don't know enough reasonable people, play something else.
 - [x] Bug when the round ends but a player is disconnected
 - [x] Save code on local storage
 - [x] Delete forceSubmit
-- [ ] Bug on shortest score calculation: shortest code is in first position even if not complete
+- [x] Bug on shortest score calculation: shortest code is in first position even if not complete
+- [ ] Same place if same score on score board
 - [ ] Save game between restarts
 - [ ] Presentation mode
 - [ ] Final screen
