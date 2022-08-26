@@ -2,7 +2,7 @@ import TopicFastest from "./TopicFastest";
 import Topic from "../types/Topic";
 import {PlayerTopic} from "../types/GamePlayer";
 
-describe("Topic Fastest: Calculation score tests", () => {
+describe("Topic Fastest tests", () => {
     it("should set the maximum score when player have 100% completion and are beyond the max point time limit", () => {
         // Given
         const initialTopic = {

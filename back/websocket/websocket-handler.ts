@@ -133,7 +133,7 @@ class WebSocketServerHandler {
         const allPlayerTopics = this.userHandler.getAllPlayerTopics(this.GAME.topic)
         const allPlayerTopicsWithScore = this.GAME.topic.calculateScore(allPlayerTopics)
         this.userHandler.updateAllPlayerTopics(allPlayerTopicsWithScore)
-        this.userHandler.calculateAllPlayerScore()
+        this.userHandler.calculateAllPlayerScoreAndPosition()
         this.GAME.calculateScore()
         this.broadcastStatus()
     }

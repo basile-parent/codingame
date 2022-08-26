@@ -22,7 +22,7 @@ If you don't know enough reasonable people, play something else.
 ## TODO
 - [x] Shortest mode
 - [x] Bug when you left a debug instruction (0% completion)
-- [x] Modes de jeu : icônes + hide code length
+- [x] Game modes : icons + hide code length if not shortest
 - [x] Code flask bug when scroll (invisible)
 - [x] Confirm before submit
 - [x] Share code
@@ -31,8 +31,11 @@ If you don't know enough reasonable people, play something else.
 - [x] Save code on local storage
 - [x] Delete forceSubmit
 - [x] Bug on shortest score calculation: shortest code is in first position even if not complete
-- [ ] Same place if same score on score board
+- [x] Same place if same score on score board
+- [ ] Bug on timer (/ 1000 is not set everywhere)
+- [ ] Bug on admin timer: when topic is finished manually => still appear
 - [ ] Save game between restarts
 - [ ] Presentation mode
 - [ ] Final screen
+- [ ] Refacto client WS => event based
 - [ ] Handicaps

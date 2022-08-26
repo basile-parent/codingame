@@ -41,9 +41,8 @@ const Leaderboard: FC<LeaderboardProps> = ({}: LeaderboardProps) => {
             {
                 players
                     .sort(sortComparator)
-                    .map((player, index) => (
+                    .map(player => (
                         <LeaderboardPlayerItem player={player}
-                                               index={index}
                                                animationEnded={animationEnded}
                                                key={`player-${ player.uuid }`}
                         />

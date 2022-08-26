@@ -13,6 +13,8 @@ export type GamePlayer = {
     screen: GameScreen,
     previousScore: number,
     score: number,
+    position?: number,
+    previousPosition?: number,
     topics?: PlayerTopic[]
 }
 

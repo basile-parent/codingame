@@ -103,10 +103,8 @@ class UserHandler {
             playerTopic.isCodeShared = false
 
             player.topics[playerTopicIndex] = playerTopic
-
-            player.score = player.topics.reduce((acc, playerTopic) => acc + (playerTopic.score || 0), 0)
-            player.previousScore = player.score
         })
+        this.calculateAllPlayerScoreAndPosition()
     }
 
     public updatePropsForAllPlayers = (playerProps: Player) => {
@@ -142,11 +140,28 @@ class UserHandler {
     public getAllPlayerTopics(topic: Topic): PlayerTopic[] {
         return this.PLAYERS.map(player => player.topics.find(t => t.topicId === topic.id))
     }
-    public calculateAllPlayerScore(): void {
+    public calculateAllPlayerScoreAndPosition(): void {
         this.PLAYERS.forEach(player => {
+            player.previousPosition = player.position
             player.previousScore = player.score
             player.score = player.topics.reduce((acc, playerTopic) => acc + (playerTopic.score || 0), 0)
         })
+
+        const sortedPlayers = [ ...this.PLAYERS ].sort((p1, p2) => p2.score - p1.score)
+        let previousPlayer = null
+        let position = 1
+        for (let index in sortedPlayers) {
+            const player = sortedPlayers[index]
+
+            if (previousPlayer && player.score === previousPlayer.score) {
+                player.position = previousPlayer.position
+            } else {
+                player.position = position
+            }
+
+            position++
+            previousPlayer = player
+        }
     }
     public updateAllPlayerTopics(allPlayerTopics: PlayerTopic[]): void {
         allPlayerTopics.forEach(playerTopic => {

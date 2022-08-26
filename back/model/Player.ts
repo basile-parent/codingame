@@ -11,6 +11,8 @@ class Player implements User {
     public connected: boolean
     public previousScore: number
     public score: number
+    public position?: number
+    public previousPosition?: number
     public topics?: PlayerTopic[]
 
     constructor(socket: Socket, uuid: string, name?: string, connected?: boolean) {
