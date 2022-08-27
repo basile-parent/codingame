@@ -35,8 +35,8 @@ If you don't know enough reasonable people, play something else.
 - [x] Bug on timer (/ 1000 is not set everywhere)
 - [x] Bug on admin timer: when topic is finished manually => still appear
 - [x] Save game between restarts
-- [ ] Toaster / disable if action (submit) cannot be done because server is disconnected
-- [ ] More visible disconnection on admin
+- [x] Toaster / disable if action (submit) cannot be done because server is disconnected
+- [x] More visible disconnection on admin
 - [ ] Presentation mode
 - [ ] Final screen
 - [ ] Refacto client WS => event based
