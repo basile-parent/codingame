@@ -13,7 +13,7 @@ type LandingPageProps = {
 }
 const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
     const [userName, setUsername] = useState<string | null>(playerUtils.getPlayerName())
-    const {wsState, dispatch} = useContext(WSContext)
+    const {wsState: { game, connected }, dispatch} = useContext(WSContext)
 
     const recordUsername = useCallback((newUserName: string): Promise<void> => {
         return new Promise((resolve, reject) => {
@@ -42,7 +42,7 @@ const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
                     <h1>Codingame Atecna</h1>
 
                     {
-                        !wsState.connected ?
+                        !connected ?
                             <h2>Connection en cours...</h2>:
                             <PlayerList onChangeName={() => setUsername(null)} />
                     }
@@ -60,7 +60,9 @@ const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
 
                 {
                     mode === DisplayMode.PRESENTATION &&
-                    <aside className={styles.gameLink}>Pour rejoindre: <span>https://codingame.basileparent.fr</span></aside>
+                    <aside className={`${styles.gameLink} ${ game?.started ? styles.connectionOver : ""}`}>
+                      Pour rejoindre: <span>https://codingame.basileparent.fr</span>
+                    </aside>
                 }
             </article>
         </>

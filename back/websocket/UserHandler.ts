@@ -7,8 +7,11 @@ import Game, {TIME_MARGIN, TRANSITION_TIMEOUT} from "./Game";
 import Topic from "../types/Topic";
 import GameScreen from "../types/GameScreen";
 import PersistentObject from "./PersistentObject";
+import DisplayMode from "../types/DisplayMode";
+import Presentation from "../model/Presentation";
 
 class UserHandler extends PersistentObject {
+    private PRESENTATIONS: Admin[] = []
     private ADMINS: Admin[] = []
     private PLAYERS: Player[] = []
 
@@ -23,6 +26,12 @@ class UserHandler extends PersistentObject {
     public connectUser = (socket: Socket, isGameStarted: boolean): User => {
         const uuid = <string>socket.handshake.headers["x-uuid"]
 
+        const existingPresentationIndex = this.PRESENTATIONS.findIndex(a => a.uuid === uuid)
+        if (existingPresentationIndex >= 0) {
+            this.PRESENTATIONS[existingPresentationIndex].socket = socket
+            this.PRESENTATIONS[existingPresentationIndex].connected = true
+            return this.PRESENTATIONS[existingPresentationIndex]
+        }
         const existingAdminIndex = this.ADMINS.findIndex(a => a.uuid === uuid)
         if (existingAdminIndex >= 0) {
             this.ADMINS[existingAdminIndex].socket = socket
@@ -39,16 +48,19 @@ class UserHandler extends PersistentObject {
         const mode = socket.handshake.headers["x-mode"]
 
         let newUser
-        if (mode === "ADMIN") {
+        if (mode === DisplayMode.ADMIN) {
             newUser = new Admin(socket, uuid, true)
             this.ADMINS.push(newUser)
+        } else if (mode === DisplayMode.PRESENTATION) {
+            newUser = new Admin(socket, uuid, true)
+            this.PRESENTATIONS.push(newUser)
         } else {
             if (isGameStarted) {
                 throw new Error(`Cannot accept new users when the game is started [${ uuid }]`)
             }
 
             newUser = new Player(socket, uuid, null, true)
-            this.PLAYERS.push(new Player(socket, uuid, null, true))
+            this.PLAYERS.push(newUser)
         }
 
         this.save()
@@ -68,6 +80,13 @@ class UserHandler extends PersistentObject {
         if (indexAdmin >= 0) {
             console.log("Admin disconnected")
             this.ADMINS[indexAdmin].connected = false
+            return
+        }
+
+        const indexPresentation = this.PRESENTATIONS.findIndex(p => p.socket === socket)
+        if (indexPresentation >= 0) {
+            console.log("Presentation disconnected")
+            this.PRESENTATIONS[indexPresentation].connected = false
             return
         }
 
@@ -163,6 +182,7 @@ class UserHandler extends PersistentObject {
     public getAllPlayerTopics(topic: Topic): PlayerTopic[] {
         return this.PLAYERS.map(player => player.topics.find(t => t.topicId === topic.id))
     }
+
     public calculateAllPlayerScoreAndPosition(): void {
         this.PLAYERS.forEach(player => {
             player.previousPosition = player.position
@@ -188,6 +208,7 @@ class UserHandler extends PersistentObject {
 
         this.save()
     }
+
     public updateAllPlayerTopics(allPlayerTopics: PlayerTopic[]): void {
         allPlayerTopics.forEach(playerTopic => {
             const player = this.PLAYERS.find(player => player.uuid === playerTopic.playerUuid)
@@ -197,6 +218,7 @@ class UserHandler extends PersistentObject {
 
         this.save()
     }
+
     public setPlayerTempCode(uuid: string, code: string, topic: Topic) {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
@@ -204,6 +226,7 @@ class UserHandler extends PersistentObject {
 
         this.save()
     }
+
     public setPlayerFinalCode(uuid: string, code: string, topic: Topic): PlayerTopic {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         player.screen = GameScreen.AFTER_GAME
@@ -243,6 +266,7 @@ class UserHandler extends PersistentObject {
 
     public toString = (): string => {
         const adminLabel = `${this.ADMINS.length} admin${this.ADMINS.length > 1 ? "s" : ""}`
+        const presLabel = `${this.PRESENTATIONS.length} pres.`
         const connectedPlayers = this.PLAYERS.filter(p => p.connected)
         const disconnectedPlayers = this.PLAYERS.filter(p => !p.connected)
         const connectedPlayerLabel =
@@ -252,7 +276,7 @@ class UserHandler extends PersistentObject {
             `${disconnectedPlayers.length} disconnected player${disconnectedPlayers.length > 1 ? "s" : ""} : ` +
             `${disconnectedPlayers.map(p => p.toString()).join(", ") || "-"}`
             : ""
-        const labels = [adminLabel, connectedPlayerLabel, disconnectedPlayerLabel].filter(label => label)
+        const labels = [adminLabel, presLabel, connectedPlayerLabel, disconnectedPlayerLabel].filter(label => label)
         if (labels.length) {
             return `There is ${labels.join(", ")}`
         }
@@ -261,11 +285,12 @@ class UserHandler extends PersistentObject {
     }
 
     public broadcastAdmin = (topic, ...args): void => {
-        // @ts-ignore
         this.ADMINS.forEach(admin => admin.socket?.emit(topic, ...args))
     }
+    public broadcastPresentation = (topic, ...args): void => {
+        this.PRESENTATIONS.forEach(presentation => presentation.socket?.emit(topic, ...args))
+    }
     public broadcastPlayers = (topic, ...args): void => {
-        // @ts-ignore
         this.PLAYERS.forEach(player => player.socket?.emit(topic, ...args))
     }
     public broadcastEachPlayers = (topic, computePlayerMessage: (player: Player) => any[]): void => {
@@ -275,6 +300,7 @@ class UserHandler extends PersistentObject {
     public broadcast = (topic, ...args): void => {
         this.broadcastAdmin(topic, ...args)
         this.broadcastPlayers(topic, ...args)
+        this.broadcastPresentation(topic, ...args)
     }
 
     public sendMessageToPlayer = (uuid, topic, message): void => {
@@ -291,6 +317,7 @@ class UserHandler extends PersistentObject {
         return {
             ADMINS: this.ADMINS.map(p => p.toJson()),
             PLAYERS: this.PLAYERS.map(p => p.toJson()),
+            PRESENTATIONS: this.PRESENTATIONS.map(p => p.toJson()),
         } as any
     }
 
@@ -298,6 +325,7 @@ class UserHandler extends PersistentObject {
         const json = jsonObject as UserHandler
         this.ADMINS = json.ADMINS?.map(a => Admin.fromJson(a)) || []
         this.PLAYERS = json.PLAYERS?.map(p => Player.fromJson(p)) || []
+        this.PRESENTATIONS = json.PRESENTATIONS?.map(p => Presentation.fromJson(p)) || []
     }
 }
 

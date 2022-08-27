@@ -21,100 +21,103 @@
     margin-bottom: 20px;
   }
 
-  .playerList {
-    width: 100%;
-    max-height: 600px;
-    overflow: auto;
-    padding-top: 2px;
+}
 
-    .player {
-      width: 100%;
-      border: 1px solid white;
-      margin-top: -1px;
+.playerList {
+  width: 100%;
+  max-height: 600px;
+  overflow: auto;
+  padding-top: 2px;
+
+  .player {
+    width: 100%;
+    border: 1px solid white;
+    margin-top: -1px;
+    display: flex;
+    align-items: center;
+    padding: 3px 10px;
+
+    .position {
       display: flex;
       align-items: center;
-      padding: 3px 10px;
+      justify-content: center;
+      height: 25px;
+      width: 25px;
+      border-radius: 100%;
+      text-align: right;
+      margin-right: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      background-color: $lowlight;
+      font-size: 14px;
+      text-shadow: 0 0 1px black, 1px 1px 0 black;
+    }
 
-      .position {
+    &:nth-of-type(1) .position { background-color: $gold-medal; }
+    &:nth-of-type(2) .position { background-color: $silver-medal; }
+    &:nth-of-type(3) .position { background-color: $bronze-medal; }
+
+    .playerResult {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .completionContainer {
+        width: 40px;
+        text-align: center;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 25px;
-        width: 25px;
-        border-radius: 100%;
-        text-align: right;
-        margin-right: 10px;
-        font-weight: 700;
-        padding: 3px 8px;
-        background-color: $lowlight;
+        flex-direction: column;
+
+        .completion {
+          font-size: 14px;
+          font-weight: 700;
+        }
+        .duration {
+          font-size: 12px;
+          font-weight: normal;
+        }
       }
 
-      &:nth-of-type(1) .position { background-color: $gold-medal; }
-      &:nth-of-type(2) .position { background-color: $silver-medal; }
-      &:nth-of-type(3) .position { background-color: $bronze-medal; }
-
-      .playerResult {
+      .info {
         flex: 1;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        display: inline-flex;
+        flex-direction: column;
+        overflow: hidden;
+        margin: 5px 0 7px 0;
 
-        .completionContainer {
-          width: 40px;
-          text-align: center;
-          display: flex;
-          flex-direction: column;
-
-          .completion {
-            font-size: 14px;
-            font-weight: 700;
-          }
-          .duration {
-            font-size: 12px;
-            font-weight: normal;
-          }
-        }
-
-        .info {
-          flex: 1;
-          display: inline-flex;
-          flex-direction: column;
+        & > div {
           overflow: hidden;
-          margin: 5px 0 7px 0;
-
-          & > div {
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          .name {
-            font-weight: 500;
-          }
-          .localPlayer {
-            color: $highlight;
-          }
-          .status {
-            font-style: italic;
-            color: $lowlight;
-            font-size: 14px;
-            line-height: 12px;
-          }
+          text-overflow: ellipsis;
         }
 
-        .codeLength {
-          min-width: 80px;
-          text-align: right;
-
-          .codeLengthValue {
-            font-size: 1.25rem;
-            margin-right: 10px
-          }
-          .codeLengthLabel {
-            font-size: 1rem;
-          }
+        .name {
+          font-weight: 500;
         }
-
+        .localPlayer {
+          color: $highlight;
+        }
+        .status {
+          font-style: italic;
+          color: $lowlight;
+          font-size: 14px;
+          line-height: 12px;
+        }
       }
+
+      .codeLength {
+        min-width: 80px;
+        text-align: right;
+
+        .codeLengthValue {
+          font-size: 1.25rem;
+          margin-right: 10px
+        }
+        .codeLengthLabel {
+          font-size: 1rem;
+        }
+      }
+
     }
   }
 }

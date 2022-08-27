@@ -37,10 +37,11 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                 Réinit
             </button>
 
+            <hr/>
+
             {
                 game?.topic &&
                     <>
-                      <hr/>
                       <AddTimeButton onAddTime={(time) => dispatch({ type: "addTime", payload: time })} />
                       <button className={`button is-small is-primary ${ styles.button }`}
                               disabled={!game || screen !== Screen.GAME_EDITOR || game.topic.status === TopicStatus.FINISHED}
@@ -60,14 +61,15 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                       >
                         Tableau score
                       </button>
-                      <button className={`button is-small is-warning ${ styles.button }`}
-                              disabled={!game || game.topic.status !== TopicStatus.SCORE_CALCULATED }
-                              onClick={() => dispatch({ type: "showPodium" })}
-                      >
-                        Podium
-                      </button>
                     </>
             }
+
+            <button className={`button is-small is-warning ${ styles.button }`}
+                    disabled={ game?.topic?.status === TopicStatus.IN_PROGRESS || screen === Screen.PODIUM }
+                    onClick={() => dispatch({ type: "showPodium" })}
+            >
+                Podium
+            </button>
 
         </div>
     )

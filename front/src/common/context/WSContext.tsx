@@ -149,10 +149,10 @@ const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
 
     // Set the delayed state after the timeout
     useEffect(() => {
-        let timeout: number | null = null
+        let timeoutRef: ReturnType<typeof setTimeout> | null = null
         const transitionTimeout = wsState.transitionTimeout
         if (transitionTimeout && wsState.delayedState) {
-            timeout = setTimeout(() => {
+            timeoutRef = setTimeout(() => {
                 return dispatch({
                     type: "delayedStatus",
                     payload: {
@@ -164,8 +164,8 @@ const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
             }, transitionTimeout)
         }
         return () => {
-            if (timeout) {
-                clearTimeout(timeout)
+            if (timeoutRef) {
+                clearTimeout(timeoutRef)
             }
         }
     }, [ wsState.delayedState ])

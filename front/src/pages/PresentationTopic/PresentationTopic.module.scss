@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 600px;
+
+  .progress {
+    margin-bottom: 50px;
+
+    .timer {
+      font-size: 5rem;
+      text-shadow: 4px 4px 4px black, 8px 8px 4px black;
+    }
+
+    svg {
+      filter: drop-shadow(10px 10px 5px black);
+    }
+  }
+
+
+  .playerList {
+    max-height: 277px; // 5 items
+  }
+
+}

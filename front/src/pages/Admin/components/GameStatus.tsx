@@ -1,9 +1,9 @@
-import {FC, useCallback, useContext, useEffect, useMemo, useState} from 'react'
+import {FC, useCallback, useContext, useEffect, useState} from 'react'
 import {WSContext} from "../../../common/context/WSContext"
 import GameActions from "./GameActions"
 import styles from "./GameStatus.module.scss"
 import Timer from "../../../common/components/Timer";
-import {TopicStatus, toTopicStatusLabel} from "../../../types/Game";
+import {toTopicStatusLabel} from "../../../types/Game";
 
 type GameStatusProps = {}
 const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {

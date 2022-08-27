@@ -1,3 +1,5 @@
+@import "../../variables";
+
 .landingPage {
   display: flex;
 
@@ -31,6 +33,19 @@
     right: 10px;
 
     font-size: 1.5rem;
+
+    &.connectionOver {
+      color: $lowlight;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 12px;
+        left: 0;
+        width: 100%;
+        border-bottom: 3px solid $lowlight;
+      }
+    }
 
     span {
       text-decoration: underline;

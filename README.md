@@ -37,7 +37,12 @@ If you don't know enough reasonable people, play something else.
 - [x] Save game between restarts
 - [x] Toaster / disable if action (submit) cannot be done because server is disconnected
 - [x] More visible disconnection on admin
-- [ ] Presentation mode
+- [x] Presentation mode
 - [x] Final screen
+- [ ] Calculate topic position (for AfterGame component) in the back
+- [ ] Podium: Real players
+- [ ] Podium: Same position players
+- [ ] Podium: Only 1 or 2 players
+- [ ] Podium: Manual launch
 - [ ] Refacto client WS => event based
 - [ ] Handicaps

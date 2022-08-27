@@ -3,9 +3,10 @@ import styles from "./Timer.module.scss"
 
 type TimerProps = {
     endTimer: number,
-    onEndTimer?: () => void
+    onEndTimer?: () => void,
+    className?: string,
 }
-const Timer: FC<TimerProps> = ({ endTimer, onEndTimer }: TimerProps) => {
+const Timer: FC<TimerProps> = ({ endTimer, onEndTimer, className }: TimerProps) => {
     const [timerString, setTimerString] = useState<string>("--:--")
     const [isEnding, setIsEnding] = useState<boolean>(false)
 
@@ -21,7 +22,7 @@ const Timer: FC<TimerProps> = ({ endTimer, onEndTimer }: TimerProps) => {
     }
 
     return (
-        <time className={isEnding ? styles.ending : undefined}>{timerString}</time>
+        <time className={`${ isEnding ? styles.ending : "" } ${ className }`}>{timerString}</time>
     )
 }
 

@@ -31,6 +31,7 @@ class WebSocketServerHandler {
         } else {
             socket.emit("status", this.getPlayerStatus(user as Player))
             this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
+            this.userHandler.broadcastPresentation("leaderboard", this.userHandler.getAllPlayers())
         }
 
         this.logPlayers()
@@ -150,6 +151,7 @@ class WebSocketServerHandler {
     private broadcastStatus = () => {
         this.userHandler.broadcastEachPlayers("status", p => [ this.getPlayerStatus(p) ])
         this.userHandler.broadcastAdmin("status", this.getAdminStatus())
+        this.userHandler.broadcastPresentation("status", this.getAdminStatus())
     }
 
     private getAdminStatus = (): WSStatus => {
@@ -173,6 +175,7 @@ class WebSocketServerHandler {
     private broadcastLeaderboard = () => {
         this.userHandler.broadcastPlayers("leaderboard", this.userHandler.getLeaderboard())
         this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
+        this.userHandler.broadcastPresentation("leaderboard", this.userHandler.getAllPlayers())
     }
 
     private broadcast = (topic, ...args) => {

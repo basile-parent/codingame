@@ -7,6 +7,7 @@ import {Game} from "../../types/Game";
 import {GamePlayer, PlayerTopic} from "../../types/Player";
 import {WSContext} from "../../common/context/WSContext";
 import dateUtils from "../../utils/dateUtils";
+import {DisplayMode} from "../../types/DisplayMode";
 
 const _getPlayerTopic = (player: GamePlayer, game: Game): PlayerTopic => {
     return player.topics!.find(topic => topic.topicId === game.topic!.id)!;
@@ -18,9 +19,10 @@ type AfterGameShortestItemProps = {
     onOpenCodeDialog: (code: string) => void,
 }
 const AfterGameShortestItem: FC<AfterGameShortestItemProps> = ({ game, player, onOpenCodeDialog }: AfterGameShortestItemProps) => {
-    const {dispatch} = useContext(WSContext)
+    const {wsState: { mode }, dispatch} = useContext(WSContext)
     const playerTopic = _getPlayerTopic(player, game)
     const isLocalPlayer = player.uuid === playerUtils.getPlayerUuid()
+
     return (
         <div className={styles.playerResult}>
             <div className={styles.completionContainer}>
@@ -51,7 +53,7 @@ const AfterGameShortestItem: FC<AfterGameShortestItemProps> = ({ game, player, o
                 <button className={"button is-info"} onClick={() => dispatch({ type: "shareCode" })}>Partager votre code</button>
             }
             {
-                playerTopic.code &&
+                playerTopic.code && mode === DisplayMode.PLAYER &&
                 <button className={"button is-info is-light"}
                         onClick={() => onOpenCodeDialog(playerTopic.code!)}
                 >

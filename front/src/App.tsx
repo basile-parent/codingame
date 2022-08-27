@@ -9,6 +9,10 @@ import TransitionTimer from "./common/components/TransitionTimer"
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import ModalConfirmDialog from "./common/components/ModalConfirm/ModalConfirmDialog";
 import Podium from "./pages/Podium/Podium";
+import {DisplayMode} from "./types/DisplayMode";
+import Presentation from "../../back/model/Presentation";
+import PresentationTopic from "./pages/PresentationTopic/PresentationTopic";
+import ThankYou from "./pages/ThankYou/ThankYou";
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
@@ -29,6 +33,9 @@ const CurrentPage: FC<CurrentPageProps> = () => {
     const { wsState: { screen, mode } } = useContext(WSContext)
 
     if (screen === Screen.GAME_EDITOR) {
+        if (mode === DisplayMode.PRESENTATION) {
+            return <PresentationTopic />
+        }
         return <GameEditor />
     }
 
@@ -41,7 +48,10 @@ const CurrentPage: FC<CurrentPageProps> = () => {
     }
 
     if (screen === Screen.PODIUM) {
-        return <Podium />
+        if (mode === DisplayMode.PRESENTATION) {
+            return <Podium />
+        }
+        return <ThankYou />
     }
 
     return <LandingPage mode={mode} />
