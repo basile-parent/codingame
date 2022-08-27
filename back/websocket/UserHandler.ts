@@ -3,7 +3,7 @@ import {GamePlayer, GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
 import Admin from "../model/Admin";
 import Player from "../model/Player";
 import User from "../model/User";
-import Game from "./Game";
+import Game, {TIME_MARGIN, TRANSITION_TIMEOUT} from "./Game";
 import Topic from "../types/Topic";
 import GameScreen from "../types/GameScreen";
 
@@ -76,7 +76,7 @@ class UserHandler {
             playerTopic.status = topic.status
             if (topic.status === GamePlayerStatus.FINISHED && !playerTopic.endTime) {
                 playerTopic.endTime = new Date().getTime()
-                playerTopic.duration = Math.floor((playerTopic.endTime - topic.startTime) / 1000)
+                playerTopic.duration = Math.max(playerTopic.endTime - topic.startTime - TIME_MARGIN - TRANSITION_TIMEOUT, 1000) // Minimum 1s
             }
 
             player.topics[playerTopicIndex] = playerTopic
@@ -184,7 +184,7 @@ class UserHandler {
         playerTopic.codeLength = code.length
         playerTopic.status = GamePlayerStatus.FINISHED
         playerTopic.endTime = new Date().getTime()
-        playerTopic.duration = Math.floor((playerTopic.endTime - topic.startTime) / 1000)
+        playerTopic.duration = Math.max(playerTopic.endTime - topic.startTime - TIME_MARGIN - TRANSITION_TIMEOUT, 1000) // Minimum 1s
 
         return playerTopic
     }

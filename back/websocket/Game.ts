@@ -1,11 +1,14 @@
 import Topic, {GameMode, Test} from "../types/Topic";
 import * as fs from "fs"
 import GameScreen from "../types/GameScreen"
-import {GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
+import {GamePlayerStatus} from "../types/GamePlayer";
 import testRunner from "./testRunner";
 import {GameUpdateOptions} from "./websocket-handler";
 import TopicShortest from "../model/TopicShortest";
 import TopicFastest from "../model/TopicFastest";
+
+export const TIME_MARGIN = 2000;
+export const TRANSITION_TIMEOUT = 3000;
 
 class Game {
     public started: boolean
@@ -47,14 +50,14 @@ class Game {
     startTopic(id: number, updateCb: (options: GameUpdateOptions) => void) {
         this.topicIndex = this.allTopics.findIndex(t => t.id == id)
         this.currentScreen = GameScreen.GAME_EDITOR
-        this._setTransitionTimeout(3000)
+        this._setTransitionTimeout(TRANSITION_TIMEOUT)
 
         this.allTopics[this.topicIndex].startTime = new Date().getTime()
         this.topic = this.allTopics[this.topicIndex]
         this.topic.status = GamePlayerStatus.IN_PROGRESS
 
         // 2s of margin (instruction display) + 3s of transition countdown
-        const topicDuration = (this.topic.timer * 1000) + 2000 + this.transitionTimeout
+        const topicDuration = this.topic.timer + TIME_MARGIN + this.transitionTimeout
         this.endTimer = new Date().getTime() + topicDuration
 
         updateCb({ topic: this.topic })

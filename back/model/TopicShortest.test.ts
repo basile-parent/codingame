@@ -48,9 +48,9 @@ describe("Topic Shortest tests", () => {
             const initialTopic = {} as Topic
             const topic = new TopicShortest(initialTopic)
             let playerTopics = [
-                {playerUuid: "player1", completion: 1, codeLength: 200, duration: 234} as PlayerTopic,
-                {playerUuid: "player2", completion: 1, codeLength: 200, duration: 123} as PlayerTopic,
-                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 345} as PlayerTopic,
+                {playerUuid: "player1", completion: 1, codeLength: 200, duration: 234000} as PlayerTopic,
+                {playerUuid: "player2", completion: 1, codeLength: 200, duration: 123000} as PlayerTopic,
+                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 345000} as PlayerTopic,
             ]
 
             // When
@@ -67,9 +67,9 @@ describe("Topic Shortest tests", () => {
             const initialTopic = {} as Topic
             const topic = new TopicShortest(initialTopic)
             let playerTopics = [
-                {playerUuid: "player1", completion: 1, codeLength: 200, duration: 123} as PlayerTopic,
-                {playerUuid: "player2", completion: 1, codeLength: 200, duration: 123} as PlayerTopic,
-                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 345} as PlayerTopic,
+                {playerUuid: "player1", completion: 1, codeLength: 200, duration: 123000} as PlayerTopic,
+                {playerUuid: "player2", completion: 1, codeLength: 200, duration: 123000} as PlayerTopic,
+                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 345000} as PlayerTopic,
             ]
 
             // When
@@ -114,9 +114,9 @@ describe("Topic Shortest tests", () => {
             } as Topic
             const topic = new TopicShortest(initialTopic)
             let playerTopics = [
-                {playerUuid: "player1", completion: 1, codeLength: 100, duration: 123} as PlayerTopic, // Calculated position = 1
-                {playerUuid: "player2", completion: 1, codeLength: 100, duration: 123} as PlayerTopic, // Calculated position = 1
-                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 234} as PlayerTopic, // Calculated position = 3
+                {playerUuid: "player1", completion: 1, codeLength: 100, duration: 123000} as PlayerTopic, // Calculated position = 1
+                {playerUuid: "player2", completion: 1, codeLength: 100, duration: 123000} as PlayerTopic, // Calculated position = 1
+                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 234000} as PlayerTopic, // Calculated position = 3
             ]
 
             // When

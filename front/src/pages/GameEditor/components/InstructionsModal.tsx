@@ -29,7 +29,7 @@ const InstructionsModal: FC<InstructionsModalProps> = ({open, onClose}: Instruct
                 {
                     topic.timer &&
                     <p className={styles.timer}>
-                      Limite de temps: {dateUtils.timeToString(topic.timer)}
+                      Limite de temps: {dateUtils.timeToString(topic.timer / 1000)}
                     </p>
                 }
 

@@ -31,9 +31,16 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                 Démarrer
             </button>
 
+            <button className={`button is-small is-danger ${ styles.button }`}
+                    onClick={handleReset}
+            >
+                Réinit
+            </button>
+
             {
                 game?.topic &&
                     <>
+                      <hr/>
                       <AddTimeButton onAddTime={(time) => dispatch({ type: "addTime", payload: time })} />
                       <button className={`button is-small is-primary ${ styles.button }`}
                               disabled={!game || screen !== Screen.GAME_EDITOR || game.topic.status === TopicStatus.FINISHED}
@@ -55,13 +62,6 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                       </button>
                     </>
             }
-
-
-            <button className={`button is-small is-danger ${ styles.button }`}
-                    onClick={handleReset}
-            >
-                Réinit
-            </button>
 
         </div>
     )

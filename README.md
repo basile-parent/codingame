@@ -32,7 +32,7 @@ If you don't know enough reasonable people, play something else.
 - [x] Delete forceSubmit
 - [x] Bug on shortest score calculation: shortest code is in first position even if not complete
 - [x] Same place if same score on score board
-- [ ] Bug on timer (/ 1000 is not set everywhere)
+- [x] Bug on timer (/ 1000 is not set everywhere)
 - [ ] Bug on admin timer: when topic is finished manually => still appear
 - [ ] Save game between restarts
 - [ ] Presentation mode
