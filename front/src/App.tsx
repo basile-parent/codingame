@@ -8,6 +8,7 @@ import AfterGame from "./pages/AfterGame/AfterGame"
 import TransitionTimer from "./common/components/TransitionTimer"
 import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import ModalConfirmDialog from "./common/components/ModalConfirm/ModalConfirmDialog";
+import Podium from "./pages/Podium/Podium";
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
@@ -37,6 +38,10 @@ const CurrentPage: FC<CurrentPageProps> = () => {
 
     if (screen === Screen.LEADERBOARD) {
         return <Leaderboard />
+    }
+
+    if (screen === Screen.PODIUM) {
+        return <Podium />
     }
 
     return <LandingPage mode={mode} />

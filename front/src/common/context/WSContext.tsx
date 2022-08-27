@@ -103,6 +103,10 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
             state.ws?.showScores()
             return state
         }
+        case 'showPodium': {
+            state.ws?.showPodium()
+            return state
+        }
         case 'startTopic': {
             state.ws?.startTopic(action.payload)
             return state

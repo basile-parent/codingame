@@ -11,24 +11,20 @@ const ConnectionOverlay: FC<ConnectionOverlayProps> = ({}: ConnectionOverlayProp
     const [pingInterval, setPingInterval] = useState<number | null>(null)
 
     useEffect(() => {
-        console.log("connected", wsState.connected)
         if (wsState.connected) {
             if (pingInterval) {
-                console.log("clearInterval")
                 clearInterval(pingInterval)
                 setPingInterval(null)
             }
         } else {
             setPingOK(false)
             if (!pingInterval) {
-                console.log("setInterval")
                 setPingInterval(setInterval(() => {
                     PingActions.ping().then(setPingOK)
                 }, 1000))
             }
         }
     }, [ wsState.connected, pingInterval ])
-
 
     return (
         <div className={`${styles.container} ${ wsState.connected ? styles.hidden : "" }`}>

@@ -60,6 +60,12 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                       >
                         Tableau score
                       </button>
+                      <button className={`button is-small is-warning ${ styles.button }`}
+                              disabled={!game || game.topic.status !== TopicStatus.SCORE_CALCULATED }
+                              onClick={() => dispatch({ type: "showPodium" })}
+                      >
+                        Podium
+                      </button>
                     </>
             }
 

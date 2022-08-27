@@ -38,6 +38,6 @@ If you don't know enough reasonable people, play something else.
 - [x] Toaster / disable if action (submit) cannot be done because server is disconnected
 - [x] More visible disconnection on admin
 - [ ] Presentation mode
-- [ ] Final screen
+- [x] Final screen
 - [ ] Refacto client WS => event based
 - [ ] Handicaps

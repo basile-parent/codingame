@@ -1,0 +1,193 @@
+@import "../../../variables";
+
+$delay-baseLine: 4.5s;
+$delay-startShowPosition: $delay-baseLine + 2s;
+$delay-beforeCountUp: 2s;
+$delay-beforeShowPlayer: 2s;
+$delay-betweenPositions: 4s;
+
+$thirdPositionSlideDuration: 4s;
+$secondPositionSlideDuration: 5s;
+$firstPositionSlideDuration: 6s;
+$thirdPositionTotalDelay: $delay-startShowPosition + $thirdPositionSlideDuration + $delay-beforeShowPlayer;
+$secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + $secondPositionSlideDuration + $delay-beforeShowPlayer;
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  height: 400px;
+  width: 800px;
+
+  // Mask
+  &::after {
+    content:"";
+    position: absolute;
+    z-index: 100;
+    bottom: -100vh;
+    width: 100%;
+    height: 100vh;
+    background-color: $background;
+  }
+
+  .baseLine {
+    position: absolute;
+    width: 100%;
+    bottom: 0 ;
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  .baseLine::after {
+    content:"";
+    height:2px;
+    width:0;
+    background: linear-gradient(90deg, rgba(219,219,219,0) 0%, rgba(255,255,255,1) 15%, rgba(255,255,255,1) 85%, rgba(255,255,255,0) 100%);
+    animation: baseLineAppear .5s linear $delay-baseLine forwards;
+  }
+
+  @keyframes baseLineAppear {
+    0% { width:0; opacity: 0; }
+    100% { width:100%; opacity: 1; }
+  }
+
+  .firstPosition, .secondPosition, .thirdPosition {
+    position: absolute;
+    width: 15%;
+    bottom: 0;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid black;
+
+    p {
+      position: absolute;
+      width: 100%;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+
+      &.player {
+        opacity: 0;
+        top: -90px;
+        font-size: 30px;
+        width: 400px;
+        left: -140px;
+        text-shadow: 3px 3px 2px black;
+
+        .medal {
+          position: absolute;
+          top: -45px;
+          left: 179px;
+          width: 40px;
+          height: 40px;
+
+          img {
+            height: 100%;
+            width: 100%;
+            filter: drop-shadow(4px 4px 2px black);
+          }
+        }
+      }
+      &.score {
+        top: -45px;
+        opacity: 0;
+        font-size: 20px;
+        text-shadow: 3px 3px 2px black;
+      }
+    }
+  }
+
+  @mixin bgColor($bgColor) {
+    background: linear-gradient(320deg, darken($bgColor, 30%) 0%, darken($bgColor, 15%) 50%, $bgColor 100%);
+  }
+
+  .thirdPosition {
+    @include bgColor($bronze-medal);
+    left: 15%;
+    height: 200px;
+    bottom: -200px;
+
+    $delay: $delay-startShowPosition + $delay-beforeCountUp;
+    animation: barSlideUp $thirdPositionSlideDuration ease-out $delay forwards;
+
+    & p.score {
+      $delay-score: $delay - $delay-beforeCountUp;
+      animation: fadeIn 1s ease-in $delay-score forwards;
+    }
+    & p.player {
+      $delay-player: $delay + $thirdPositionSlideDuration + $delay-beforeShowPlayer;
+      animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    }
+  }
+
+  .secondPosition {
+    @include bgColor($silver-medal);
+    left: 70%;
+    height: 300px;
+
+    bottom: -300px;
+    $delay: $thirdPositionTotalDelay + $delay-betweenPositions + $delay-beforeCountUp;
+    animation: barSlideUp $secondPositionSlideDuration ease-out $delay forwards;
+
+    & p.score {
+      $delay-score: $delay - $delay-beforeCountUp;
+      animation: fadeIn 1s ease-in $delay-score forwards;
+    }
+    & p.player {
+      $delay-player: $delay + $secondPositionSlideDuration + $delay-beforeShowPlayer;
+      animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    }
+  }
+
+  .firstPosition {
+    @include bgColor($gold-medal);
+    left: 42%;
+    height: 400px;
+
+    bottom: -400px;
+    $delay: $secondPositionTotalDelay + $delay-betweenPositions + $delay-beforeCountUp;
+    animation: barSlideUp 6s ease-out $delay forwards;
+
+    & p.score {
+      $delay-score: $delay - $delay-beforeCountUp;
+      animation: fadeIn 1s ease-in $delay-score forwards;
+    }
+    & p.player {
+      $delay-player: $delay + $firstPositionSlideDuration + $delay-beforeShowPlayer;
+      animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+
+      .radialStripes {
+        position:absolute;
+        top: -77px;
+        left: 100px;
+        width: 200px;
+        height: 200px;
+        animation: rotate 30s infinite linear;
+
+        img {
+          height: 100%;
+          width: 100%;
+          opacity: 0;
+          $delay-stripes: $delay-player + 2s;
+          animation: fadeIn 1s ease-in $delay-stripes forwards;
+        }
+      }
+    }
+  }
+
+  @keyframes barSlideUp {
+    from { }
+    to { bottom: 0; box-shadow: 10px 10px 5px black; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes rotate {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+  }
+}

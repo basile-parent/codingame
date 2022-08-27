@@ -41,6 +41,7 @@ class WebSocketServerHandler {
         socket.on("shareCode", this.shareCode)
         socket.on("calculateTopicScore", this.calculateScores)
         socket.on("showScores", this.showScores)
+        socket.on("showPodium", this.showPodium)
         socket.on("disconnect", () => this.disconnectedUser(socket))
         socket.on("startGame", this.startGame)
         socket.on("startTopic", this.startTopic)
@@ -69,6 +70,10 @@ class WebSocketServerHandler {
     }
     private showScores = () => {
         this.GAME.showScores()
+        this.gameUpdateCb()
+    }
+    private showPodium = () => {
+        this.GAME.showPodium()
         this.gameUpdateCb()
     }
     private reinitTopic = (id: number) => {

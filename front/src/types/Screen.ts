@@ -3,4 +3,5 @@ export enum Screen {
     GAME_EDITOR = "GAME_EDITOR",
     AFTER_GAME = "AFTER_GAME",
     LEADERBOARD = "LEADERBOARD",
+    PODIUM = "PODIUM",
 }

@@ -72,6 +72,7 @@ class WebSocketHandler {
     finishTopic = () => this._emit("finishTopic")
     calculateScore = () => this._emit("calculateTopicScore")
     showScores = () => this._emit("showScores")
+    showPodium = () => this._emit("showPodium")
     resetGame = () => this._emit("resetGame")
     commitCode = (code: string) => this._emit("commitCode", playerUtils.getPlayerUuid(), code)
     saveTempCode = (code: string) => this._emit("tempCode", playerUtils.getPlayerUuid(), code)

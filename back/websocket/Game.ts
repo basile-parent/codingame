@@ -89,6 +89,14 @@ class Game extends PersistentObject {
         this.save()
     }
 
+    showPodium() {
+        this.currentScreen = GameScreen.PODIUM
+        this.topic = null
+        this.topicIndex = null
+
+        this.save()
+    }
+
     reinitTopic(id: number) {
         this.topicIndex = this.allTopics.findIndex(t => t.id == id)
         this.allTopics[this.topicIndex].status = GamePlayerStatus.WAITING
