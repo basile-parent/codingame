@@ -76,6 +76,7 @@ class Game {
     }
 
     finishTopic(updateCb: (options: GameUpdateOptions) => void) {
+        this.endTimer = new Date().getTime()
         this.topic.status = GamePlayerStatus.FINISHED
         this.currentScreen = GameScreen.AFTER_GAME
         updateCb({ topic: this.topic })
