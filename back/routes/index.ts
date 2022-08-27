@@ -1,12 +1,15 @@
+import * as express from "express"
 import * as bodyParser from "body-parser"
 import checkCode from "./checkCode"
-import * as express from "express"
-const routes = express.Router()
 
-routes.post('/code', bodyParser.text({type: '*/*'}), checkCode)
+const router = express.Router()
 
-routes.get('/', (req, res) => {
-  res.status(200).json({ success: true, message: 'PING OK' })
+router.post('/code', bodyParser.text({type: '*/*'}), checkCode)
+
+router.get('/', (req, res) => {
+  res.status(200)
+      .setHeader('Content-Type', 'application/json')
+      .json({ success: true, message: 'PING OK' })
 })
 
-export default routes
+export default router

@@ -4,3 +4,4 @@
 *.iml
 
 back/save/*.json
+*/.env*.local

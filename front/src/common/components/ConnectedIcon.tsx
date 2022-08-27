@@ -1,13 +1,13 @@
 import {FC, useContext} from 'react'
-import {WSContext} from "./context/WSContext";
 import styles from "./ConnectedIcon.module.scss"
 
 type ConnectedIconProps = {
-    connected: boolean
+    connected: boolean,
+    additionalClassName?: string
 }
-const ConnectedIcon: FC<ConnectedIconProps> = ({ connected }: ConnectedIconProps) => {
+const ConnectedIcon: FC<ConnectedIconProps> = ({ connected, additionalClassName }: ConnectedIconProps) => {
     return (
-        <span className={`${ styles.icon } ${ connected ? styles.connected : styles.disconnected}`}>
+        <span className={`${ styles.icon } ${ connected ? styles.connected : styles.disconnected} ${ additionalClassName }`}>
         </span>
     )
 }

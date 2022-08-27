@@ -1,5 +1,5 @@
 const errorHandler = (err, req, res, next) => {
-  console.debug("INTERCEPTION : headerSent ?", res.headersSent)
+  // console.debug("INTERCEPTION : headerSent ?", res.headersSent)
   if (res.headersSent) {
     return next(err)
   }

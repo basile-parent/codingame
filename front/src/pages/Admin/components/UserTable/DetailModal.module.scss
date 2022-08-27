@@ -1,7 +1,6 @@
 @import "../../../../variables";
 
 .container {
-
   .subject {
     strong {
       background-color: $highlight;
@@ -10,5 +9,12 @@
       border-radius: 3px;
       font-weight: 500;
     }
+  }
+
+  .detailsLabel {
+    font-weight: 700;
+  }
+  .detailsValue {
+    //color: $highlight;
   }
 }

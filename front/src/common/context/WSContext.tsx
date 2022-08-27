@@ -133,6 +133,9 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
     }
 }
 
+
+const { VITE_SERVER_URL, VITE_WS_PATH } = import.meta.env
+
 type WSProviderProps = {
     mode: DisplayMode,
     children: ReactElement,
@@ -165,7 +168,7 @@ const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
 
     useEffect(() => {
         dispatch({ type: "disconnect" })
-        const socket = new WebSocketHandler("http://localhost:9090", dispatch, { mode })
+        const socket = new WebSocketHandler(VITE_SERVER_URL, dispatch, { mode, path: VITE_WS_PATH })
         dispatch({ type: "setWs", payload: socket })
     }, [ dispatch ])
 
