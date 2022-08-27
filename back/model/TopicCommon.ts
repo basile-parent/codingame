@@ -1,5 +1,7 @@
 import Topic, {GameMode, Test} from "../types/Topic";
 import {GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
+import TopicShortest from "./TopicShortest";
+import TopicFastest from "./TopicFastest";
 
 abstract class TopicCommon implements Topic {
     constraints: string[];
@@ -24,7 +26,7 @@ abstract class TopicCommon implements Topic {
 
     abstract _calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[]
 
-    calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
+    public calculateScore(playerTopics: PlayerTopic[]): PlayerTopic[] {
         const topics = this._calculateScore(playerTopics)
         this.status = GamePlayerStatus.SCORE_CALCULATED
         return topics

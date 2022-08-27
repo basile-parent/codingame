@@ -6,10 +6,19 @@ import User from "../model/User";
 import Game, {TIME_MARGIN, TRANSITION_TIMEOUT} from "./Game";
 import Topic from "../types/Topic";
 import GameScreen from "../types/GameScreen";
+import PersistentObject from "./PersistentObject";
 
-class UserHandler {
+class UserHandler extends PersistentObject {
     private ADMINS: Admin[] = []
     private PLAYERS: Player[] = []
+
+    constructor() {
+        super("Users")
+
+        if (this.load()) {
+            console.log("Utilisateurs chargés !")
+        }
+    }
 
     public connectUser = (socket: Socket, isGameStarted: boolean): User => {
         const uuid = <string>socket.handshake.headers["x-uuid"]
@@ -42,6 +51,8 @@ class UserHandler {
             this.PLAYERS.push(new Player(socket, uuid, null, true))
         }
 
+        this.save()
+
         return newUser
     }
 
@@ -67,6 +78,8 @@ class UserHandler {
         const index = this.PLAYERS.findIndex(p => p.uuid === uuid)
         const player = this.PLAYERS[index]
         player.name = name
+
+        this.save()
     }
 
     public updateTopicForAllPlayers = (topic: Topic) => {
@@ -81,9 +94,11 @@ class UserHandler {
 
             player.topics[playerTopicIndex] = playerTopic
         })
+
+        this.save()
     }
 
-    public getAllUnfinishedPlayerTopics = (topicId: number): PlayerTopic[] => {
+    public _getAllUnfinishedPlayerTopics = (topicId: number): PlayerTopic[] => {
         return this.PLAYERS
             .map(player => player.topics.find(t => t.topicId === topicId))
             .filter(playerTopic => !playerTopic.code)
@@ -105,6 +120,8 @@ class UserHandler {
             player.topics[playerTopicIndex] = playerTopic
         })
         this.calculateAllPlayerScoreAndPosition()
+
+        // Save is done by the "calcule" function
     }
 
     public updatePropsForAllPlayers = (playerProps: Player) => {
@@ -113,12 +130,16 @@ class UserHandler {
                 player[prop] = value
             }
         })
+
+        this.save()
     }
 
     public setGameToPlayer = (game: Game): void => {
         this.PLAYERS.forEach(player => {
             player.topics = game.allTopics.map(topic => ({ topicId: topic.id, playerUuid: player.uuid, status: GamePlayerStatus.WAITING, isCodeShared: false }))
         })
+
+        this.save()
     }
     public resetGameOnPlayer = (): void => {
         this.PLAYERS.forEach(player => {
@@ -127,10 +148,12 @@ class UserHandler {
             player.score = 0
             player.previousScore = 0
         })
+
+        this.save()
     }
 
     public getAllPlayers = (): Player[] => {
-        return this.PLAYERS.map(a => a.toAdminPlayer())
+        return this.PLAYERS.map(p => p.toAdminPlayer())
     }
 
     public getLeaderboard = (): GamePlayer[] => {
@@ -162,6 +185,8 @@ class UserHandler {
             position++
             previousPlayer = player
         }
+
+        this.save()
     }
     public updateAllPlayerTopics(allPlayerTopics: PlayerTopic[]): void {
         allPlayerTopics.forEach(playerTopic => {
@@ -169,11 +194,15 @@ class UserHandler {
             const exisingTopicIndex = player.topics.findIndex(t => t.topicId === playerTopic.topicId)
             player.topics[exisingTopicIndex] = playerTopic
         })
+
+        this.save()
     }
     public setPlayerTempCode(uuid: string, code: string, topic: Topic) {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
         playerTopic.tempCode = code
+
+        this.save()
     }
     public setPlayerFinalCode(uuid: string, code: string, topic: Topic): PlayerTopic {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
@@ -186,6 +215,8 @@ class UserHandler {
         playerTopic.endTime = new Date().getTime()
         playerTopic.duration = Math.max(playerTopic.endTime - topic.startTime - TIME_MARGIN - TRANSITION_TIMEOUT, 1000) // Minimum 1s
 
+        this.save()
+
         return playerTopic
     }
 
@@ -197,6 +228,8 @@ class UserHandler {
             playerTopic[key] = value
         }
 
+        this.save()
+
         return playerTopic
     }
     
@@ -204,6 +237,8 @@ class UserHandler {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         const playerTopic = player.topics.find(t => t.topicId === topic.id)
         playerTopic.isCodeShared = true
+
+        this.save()
     }
 
     public toString = (): string => {
@@ -227,14 +262,14 @@ class UserHandler {
 
     public broadcastAdmin = (topic, ...args): void => {
         // @ts-ignore
-        this.ADMINS.forEach(admin => admin.socket.emit(topic, ...args))
+        this.ADMINS.forEach(admin => admin.socket?.emit(topic, ...args))
     }
     public broadcastPlayers = (topic, ...args): void => {
         // @ts-ignore
-        this.PLAYERS.forEach(player => player.socket.emit(topic, ...args))
+        this.PLAYERS.forEach(player => player.socket?.emit(topic, ...args))
     }
     public broadcastEachPlayers = (topic, computePlayerMessage: (player: Player) => any[]): void => {
-        this.PLAYERS.forEach(player => player.socket.emit(topic, ...computePlayerMessage(player)))
+        this.PLAYERS.forEach(player => player.socket?.emit(topic, ...computePlayerMessage(player)))
     }
 
     public broadcast = (topic, ...args): void => {
@@ -246,12 +281,24 @@ class UserHandler {
         const player = this.PLAYERS.find(p => p.uuid === uuid)
         if (player) {
             console.debug(`Sending message to player [${player.toString()}] on topic [${topic}].`)
-            player.socket.emit(topic, message)
+            player.socket?.emit(topic, message)
         } else {
             console.error(`Cannot send message to player [${uuid}] : not connected to server.`)
         }
     }
 
+    toJson(): PersistentObject {
+        return {
+            ADMINS: this.ADMINS.map(p => p.toJson()),
+            PLAYERS: this.PLAYERS.map(p => p.toJson()),
+        } as any
+    }
+
+    loadFromJson(jsonObject: Object) {
+        const json = jsonObject as UserHandler
+        this.ADMINS = json.ADMINS?.map(a => Admin.fromJson(a)) || []
+        this.PLAYERS = json.PLAYERS?.map(p => Player.fromJson(p)) || []
+    }
 }
 
 export default UserHandler

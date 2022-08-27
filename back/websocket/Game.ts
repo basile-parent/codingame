@@ -1,16 +1,16 @@
-import Topic, {GameMode, Test} from "../types/Topic";
+import Topic, {Test} from "../types/Topic";
 import * as fs from "fs"
 import GameScreen from "../types/GameScreen"
 import {GamePlayerStatus} from "../types/GamePlayer";
 import testRunner from "./testRunner";
 import {GameUpdateOptions} from "./websocket-handler";
-import TopicShortest from "../model/TopicShortest";
-import TopicFastest from "../model/TopicFastest";
+import PersistentObject from "./PersistentObject";
+import topicUtils from "../utils/topicUtils";
 
 export const TIME_MARGIN = 2000;
 export const TRANSITION_TIMEOUT = 3000;
 
-class Game {
+class Game extends PersistentObject {
     public started: boolean
     public currentScreen: GameScreen
     public allTopics: Topic[]
@@ -20,9 +20,29 @@ class Game {
     public transitionTimeout: number = 0
 
     constructor() {
+        super("Game")
+
+        if (!this.load()) {
+            this.currentScreen = GameScreen.LANDING_PAGE
+            this.allTopics = this._initTopics()
+            this.started = false
+
+            this.save()
+        } else {
+            console.log("Partie chargée !")
+        }
+    }
+
+    reset() {
         this.currentScreen = GameScreen.LANDING_PAGE
         this.allTopics = this._initTopics()
         this.started = false
+        this.endTimer = null
+        this.topic = null
+        this.topicIndex = null
+        this.endTimer = null
+        this.transitionTimeout = 0
+        this.save()
     }
 
     _initTopics(): Topic[] {
@@ -30,13 +50,7 @@ class Game {
         return allFiles.filter(fileName => fileName.endsWith(".json"))
             .map(fileName => JSON.parse(String(fs.readFileSync(`./topics/${fileName}`))))
             .map((jsonTopic: Topic) => {
-                let topic
-                if (jsonTopic.gameMode === GameMode.SHORTEST) {
-                    topic = new TopicShortest(jsonTopic)
-                } else {
-                    topic = new TopicFastest(jsonTopic)
-                }
-
+                const topic = topicUtils.buildTopicFromJson(jsonTopic)
                 topic.status = GamePlayerStatus.WAITING
                 return topic
             })
@@ -45,6 +59,7 @@ class Game {
 
     startGame() {
         this.started = true
+        this.save()
     }
 
     startTopic(id: number, updateCb: (options: GameUpdateOptions) => void) {
@@ -62,17 +77,23 @@ class Game {
 
         updateCb({ topic: this.topic })
         console.log(`Topic ${ this.topic.id } démarré`)
+
+        this.save()
     }
 
     showScores() {
         this.currentScreen = GameScreen.LEADERBOARD
         this.topic = null
         this.topicIndex = null
+
+        this.save()
     }
 
     reinitTopic(id: number) {
         this.topicIndex = this.allTopics.findIndex(t => t.id == id)
         this.allTopics[this.topicIndex].status = GamePlayerStatus.WAITING
+
+        this.save()
     }
 
     finishTopic(updateCb: (options: GameUpdateOptions) => void) {
@@ -81,10 +102,13 @@ class Game {
         this.currentScreen = GameScreen.AFTER_GAME
         updateCb({ topic: this.topic })
         console.log(`Topic ${ this.topic.id } terminé`)
+
+        this.save()
     }
 
     addTimeToTopic(time: number) {
         this.endTimer += time * 1000
+        this.save()
     }
 
     calculateCompletion(code: string): Promise<number> {
@@ -107,6 +131,7 @@ class Game {
 
     calculateScore() {
         this.topic.status = GamePlayerStatus.SCORE_CALCULATED
+        this.save()
     }
 
     toPublicJson() {
@@ -127,16 +152,30 @@ class Game {
         return game
     }
 
-    toAdminJson() {
+    toAdminJson(): Game {
         return { ...this }
+    }
+
+    toJson(): PersistentObject {
+        return this.toAdminJson()
     }
 
     _setTransitionTimeout(timeout: number) {
         this.transitionTimeout = timeout
         setTimeout(() => {
             this.transitionTimeout = 0
+
+            this.save()
         }, timeout)
     }
+
+    loadFromJson(jsonObject: Object) {
+        const json = jsonObject as Game
+        Object.assign(this, json)
+        this.allTopics = this.allTopics.map(t => topicUtils.buildTopicFromJson(t))
+        this.topic = this.topic ? topicUtils.buildTopicFromJson(this.topic) : null
+    }
+
 }
 
 export default Game

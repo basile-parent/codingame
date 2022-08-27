@@ -15,14 +15,21 @@ class Player implements User {
     public previousPosition?: number
     public topics?: PlayerTopic[]
 
-    constructor(socket: Socket, uuid: string, name?: string, connected?: boolean) {
+    constructor(socket?: Socket, uuid?: string, name?: string, connected?: boolean) {
         this.socket = socket
         this.uuid = uuid
         this.name = name
-        this.connected = connected ?? true
+        this.connected = connected ?? false
         this.previousScore = 0
         this.score = 0
         this.screen = GameScreen.LANDING_PAGE
+    }
+
+    public static fromJson(json: object): Player {
+        const player = new Player()
+        Object.assign(player, json)
+
+        return player
     }
 
     public isAdmin(): boolean {
@@ -35,6 +42,13 @@ class Player implements User {
             socket: undefined,
             toString: undefined,
         }
+    }
+
+    public toJson(): Player {
+        return {
+            ...this.toAdminPlayer(),
+            connected: undefined,
+        } as Player
     }
 
     public toPublicPlayer(): GamePlayer {

@@ -80,7 +80,7 @@ class WebSocketServerHandler {
 
     private finishTopic = () => {
         this.GAME.finishTopic(this.gameUpdateCb)
-        const allUnfinishedPlayerTopics = this.userHandler.getAllUnfinishedPlayerTopics(this.GAME.topic.id)
+        const allUnfinishedPlayerTopics = this.userHandler._getAllUnfinishedPlayerTopics(this.GAME.topic.id)
         allUnfinishedPlayerTopics.forEach(playerTopic => {
             this.submitCode(playerTopic.playerUuid, playerTopic.tempCode || "")
         })
@@ -98,7 +98,7 @@ class WebSocketServerHandler {
     }
 
     private resetGame = () => {
-        this.GAME = new Game()
+        this.GAME.reset()
         this.userHandler.resetGameOnPlayer()
         this.broadcastStatus()
         console.log("Partie réinitialisée")

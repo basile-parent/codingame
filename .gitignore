@@ -2,3 +2,5 @@
 **/dist
 .idea
 *.iml
+
+back/save/*.json
