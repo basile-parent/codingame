@@ -148,7 +148,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
 const runTest = (code: string, args: any[], expectedResult: any): Promise<string> => {
     return new Promise((resolve, reject) => {
         const worker = new Worker(new URL('./lib/execute-tests.worker.js', import.meta.url))
-        let workerTimeout: number | null = null
+        let workerTimeout: ReturnType<typeof setTimeout> | null = null
 
         worker.addEventListener('error', e => {
             reject(e.message)

@@ -1,12 +1,11 @@
 import {createContext, Dispatch, FC, ReactElement, useEffect, useReducer} from "react"
-import WebSocketHandler from "./WebSocketHandler"
 import {DisplayMode} from "../../types/DisplayMode";
 import {Screen} from "../../types/Screen";
 import {Game} from "../../types/Game";
-import {GamePlayer} from "../../types/Player";
+import {GamePlayer} from "../../types/Player"
+import {ReducerAction} from "../../types/Actions"
 
 type WSState = {
-    ws: WebSocketHandler | null,
     mode: DisplayMode,
     connected: boolean,
     players: GamePlayer[],
@@ -21,7 +20,6 @@ type WSStateAction = {
 }
 
 const INTIAL_STATE: WSState = {
-    ws: null,
     mode: DisplayMode.PLAYER,
     connected: false,
     players: [],
@@ -42,84 +40,72 @@ const logWsStateReducer = (state: WSState, action: WSStateAction): WSState => {
 }
 const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
     switch (action.type) {
-        case 'connected': {
+        case ReducerAction.USER_CONNECTED().type: {
             return { ...state, connected: true }
         }
-        case 'disconnect': {
-            if (state.ws) {
-                state.ws.close()
-            }
+        case ReducerAction.USER_DISCONNECTED().type: {
             return { ...state, connected: false }
         }
-        case 'disconnected': {
-            return { ...state, connected: false }
-        }
-        case 'setWs': {
-            return { ...state, ws: action.payload }
-        }
-        case 'setName': {
-            state.ws?.setName(action.payload)
-            return state
-        }
-        case 'tempCode': {
-            state.ws?.saveTempCode(action.payload)
-            return state
-        }
-        case 'commitCode': {
-            state.ws?.commitCode(action.payload)
-            return state
-        }
-        case 'shareCode': {
-            state.ws?.shareCode()
-            return state
-        }
-        case 'setPlayers': {
+        case ReducerAction.SET_PLAYERS().type: {
             return { ...state, players: action.payload }
         }
-        case 'startGame': {
-            state.ws?.startGame()
-            return state
-        }
-        case 'addTime': {
-            state.ws?.addTime(action.payload)
-            return state
-        }
-        case 'newEndTime': {
-            return { ...state, game: { ...state.game, endTimer: action.payload } as Game}
-        }
-        case 'reinitTopic': {
-            state.ws?.reinitTopic(action.payload)
-            return state
-        }
-        case 'finishTopic': {
-            state.ws?.finishTopic()
-            return state
-        }
-        case 'calculateScore': {
-            state.ws?.calculateScore()
-            return state
-        }
-        case 'showScores': {
-            state.ws?.showScores()
-            return state
-        }
-        case 'showPodium': {
-            state.ws?.showPodium()
-            return state
-        }
-        case 'startTopic': {
-            state.ws?.startTopic(action.payload)
-            return state
-        }
-        case 'resetGame': {
-            state.ws?.resetGame()
-            return state
-        }
+
+        // case 'tempCode': {
+        //     state.ws?.saveTempCode(action.payload)
+        //     return state
+        // }
+        // case 'commitCode': {
+        //     state.ws?.commitCode(action.payload)
+        //     return state
+        // }
+        // case 'shareCode': {
+        //     state.ws?.shareCode()
+        //     return state
+        // }
+        // case 'startGame': {
+        //     state.ws?.startGame()
+        //     return state
+        // }
+        // case 'addTime': {
+        //     state.ws?.addTime(action.payload)
+        //     return state
+        // }
+        // case 'newEndTime': {
+        //     return { ...state, game: { ...state.game, endTimer: action.payload } as Game}
+        // }
+        // case 'reinitTopic': {
+        //     state.ws?.reinitTopic(action.payload)
+        //     return state
+        // }
+        // case 'finishTopic': {
+        //     state.ws?.finishTopic()
+        //     return state
+        // }
+        // case 'calculateScore': {
+        //     state.ws?.calculateScore()
+        //     return state
+        // }
+        // case 'showScores': {
+        //     state.ws?.showScores()
+        //     return state
+        // }
+        // case 'showPodium': {
+        //     state.ws?.showPodium()
+        //     return state
+        // }
+        // case 'startTopic': {
+        //     state.ws?.startTopic(action.payload)
+        //     return state
+        // }
+        // case 'resetGame': {
+        //     state.ws?.resetGame()
+        //     return state
+        // }
         // Just for debug
         case 'delayedStatus': {
             return { ...state, ...action.payload }
         }
-        case 'status': {
+        case ReducerAction.STATUS().type: {
             const newState = action.payload
             if (newState.transitionTimeout) {
                 return {
@@ -136,9 +122,6 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
         }
     }
 }
-
-
-const { VITE_SERVER_URL, VITE_WS_PATH } = import.meta.env
 
 type WSProviderProps = {
     mode: DisplayMode,
@@ -169,12 +152,6 @@ const WSProvider: FC<WSProviderProps> = ({ mode, children }) => {
             }
         }
     }, [ wsState.delayedState ])
-
-    useEffect(() => {
-        dispatch({ type: "disconnect" })
-        const socket = new WebSocketHandler(VITE_SERVER_URL, dispatch, { mode, path: VITE_WS_PATH })
-        dispatch({ type: "setWs", payload: socket })
-    }, [ dispatch ])
 
     const value = {wsState, dispatch}
 

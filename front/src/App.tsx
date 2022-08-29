@@ -10,15 +10,16 @@ import Leaderboard from "./pages/Leaderboard/Leaderboard";
 import ModalConfirmDialog from "./common/components/ModalConfirm/ModalConfirmDialog";
 import Podium from "./pages/Podium/Podium";
 import {DisplayMode} from "./types/DisplayMode";
-import Presentation from "../../back/model/Presentation";
 import PresentationTopic from "./pages/PresentationTopic/PresentationTopic";
 import ThankYou from "./pages/ThankYou/ThankYou";
+import WebsocketProvider from "./common/components/WebsocketManager/WebsocketProvider";
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
     return (
         <>
             <ModalConfirmDialog />
+            <WebsocketProvider />
 
             <aside><ConnectedAppIcon /></aside>
             <aside><TransitionTimer /></aside>

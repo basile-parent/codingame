@@ -1,12 +1,13 @@
-import {FC, useCallback, useContext, useEffect, useState} from 'react'
-import playerUtils from "../../utils/playerUtils";
-import UsernameDialog from "./components/UsernameDialog";
-import {WSContext} from "../../common/context/WSContext";
+import {FC, useCallback, useContext, useState} from 'react'
+import playerUtils from "../../utils/playerUtils"
+import UsernameDialog from "./components/UsernameDialog"
+import {WSContext} from "../../common/context/WSContext"
 import {ReactComponent as AtecnaIcon} from "../../assets/logo-cube.svg"
 import {ReactComponent as AtecnaAdminIcon} from "../../assets/logo-admin.svg"
 import styles from "./LandingPage.module.scss"
-import PlayerList from "./components/PlayerList";
-import {DisplayMode} from "../../types/DisplayMode";
+import PlayerList from "./components/PlayerList"
+import {DisplayMode} from "../../types/DisplayMode"
+import WebsocketManager from "../../common/components/WebsocketManager"
 
 type LandingPageProps = {
     mode: DisplayMode
@@ -21,7 +22,7 @@ const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
                 reject("Vous devez spécifier un nom")
                 return
             }
-            dispatch({type: "setName", payload: newUserName})
+            WebsocketManager.setName(newUserName)
             playerUtils.setPlayerName(newUserName)
             setUsername(newUserName)
         })

@@ -1,20 +1,21 @@
-import {Dispatch} from "react"
 import io from "socket.io-client"
 import {Socket} from "socket.io-client/build/esm/socket"
-import playerUtils from "../../utils/playerUtils"
-import {DisplayMode} from "../../types/DisplayMode"
+import playerUtils from "../../../utils/playerUtils"
+import {DisplayMode} from "../../../types/DisplayMode"
+import {ReducerAction, WSAction} from "../../../types/Actions"
+import WebsocketManager from "./WebsocketManager";
 
 type WSOptions = {
     mode?: DisplayMode,
     path?: string
 }
 class WebSocketHandler {
-    public socket: Socket
-    public dispatch: Dispatch<any>
+    private socket: Socket
+    private readonly onMessage: (action: ReducerAction) => void
     public isConnected: boolean
-    public mode: DisplayMode
+    private readonly mode: DisplayMode
 
-    constructor(url: string, dispatch: Dispatch<any>, options?: WSOptions) {
+    constructor(url: string, onMessage: (action: ReducerAction) => void, options?: WSOptions) {
         this.isConnected = false
         this.mode = options?.mode || DisplayMode.PLAYER
         this.socket = io(url,
@@ -27,43 +28,44 @@ class WebSocketHandler {
                     "X-UUID": playerUtils.getPlayerUuid()
                 }
             })
-        this.dispatch = dispatch
+        this.onMessage = onMessage
 
         this._initSocket()
     }
 
     _initSocket() {
-        this.socket.on("connect", () => {
-        })
+        this.socket.on("connect", () => {})
         this.socket.on("confirmConnect", () => {
             this.isConnected = true
-            this.dispatch({type: "connected"})
+            this.onMessage(ReducerAction.USER_CONNECTED())
             const userName = playerUtils.getPlayerName()
             if (userName) {
-                this.setName(userName)
+                WebsocketManager.setName(userName)
             }
         })
         this.socket.on("disconnect", () => {
             this.isConnected = false
-            this.dispatch({type: "disconnected"})
+            this.onMessage(ReducerAction.USER_DISCONNECTED())
         })
         this.socket.on("leaderboard", (players) => {
-            this.dispatch({type: "setPlayers", payload: players})
+            this.onMessage(ReducerAction.SET_PLAYERS(players))
         })
         this.socket.on("status", (wsStatus) => {
-            this.dispatch({type: "status", payload: wsStatus})
+            this.onMessage(ReducerAction.STATUS(wsStatus))
         })
         this.socket.on("newEndTime", (endTimer: number) => {
-            this.dispatch({type: "newEndTime", payload: endTimer })
+            this.onMessage(ReducerAction.NEW_END_TIME(endTimer))
         })
     }
 
-    setName(userName: string) {
-        if (this.mode !== DisplayMode.PLAYER) {
-            return
-        }
-        this._emit("setName", playerUtils.getPlayerUuid(), userName)
-    }
+    // setName(action: Actions) {
+    //     if (this.mode !== DisplayMode.PLAYER) {
+    //         return
+    //     }
+    //     this._emit("setName", action)
+    // }
+
+    emit = (action: WSAction) => this._emit(action.type, action.payload)
 
     startGame = () => this._emit("startGame")
     startTopic = (topicId: number) => this._emit("startTopic", topicId)
@@ -92,9 +94,9 @@ class WebSocketHandler {
         return true
     }
 
-    close = () => {
-        this.socket.close()
-    }
+    // close = () => {
+    //     this.socket.close()
+    // }
 }
 
 export default WebSocketHandler

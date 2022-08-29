@@ -8,7 +8,7 @@ type ConnectionOverlayProps = {}
 const ConnectionOverlay: FC<ConnectionOverlayProps> = ({}: ConnectionOverlayProps) => {
     const { wsState } = useContext(WSContext)
     const [pingOK, setPingOK] = useState<boolean>(wsState.connected)
-    const [pingInterval, setPingInterval] = useState<number | null>(null)
+    const [pingInterval, setPingInterval] = useState<ReturnType<typeof setInterval> | null>(null)
 
     useEffect(() => {
         if (wsState.connected) {

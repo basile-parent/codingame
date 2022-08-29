@@ -3,9 +3,8 @@ import ModalConfirm, {ConfirmInfo} from "./ModalConfirm"
 import Modal from "../Modal";
 import {ModalButton} from "../Modal/ModalButton";
 
-type ModalConfirmDialogProps = {
-}
-const ModalConfirmDialog: FC<ModalConfirmDialogProps> = ({ }: ModalConfirmDialogProps) => {
+type ModalConfirmDialogProps = {}
+const ModalConfirmDialog: FC<ModalConfirmDialogProps> = ({}: ModalConfirmDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [message, setMessage] = useState<string>("")
     const [confirmCallback, setConfirmCallback] = useState<Function | null>(null)
@@ -37,7 +36,6 @@ const ModalConfirmDialog: FC<ModalConfirmDialogProps> = ({ }: ModalConfirmDialog
         ModalConfirm.addConfirmListener(handleStoreChange)
         return () => ModalConfirm.removeConfirmListener(handleStoreChange)
     }, [])
-
 
     return (
         <Modal open={open}
