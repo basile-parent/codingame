@@ -45,4 +45,6 @@ If you don't know enough reasonable people, play something else.
 - [ ] Podium: Only 1 or 2 players
 - [ ] Podium: Manual launch
 - [ ] Refacto client WS => event based
+- [ ] Go Redux !
+- [ ] Mutualise back and front (types and src)
 - [ ] Handicaps

@@ -110,7 +110,7 @@ class WebSocketServerHandler {
         console.log("Partie réinitialisée")
     }
 
-    private setPlayerName = (uuid, name) => {
+    private setPlayerName = ({ uuid, name }) => {
         this.userHandler.setPlayerName(uuid, name)
         this.logPlayers()
         this.broadcastLeaderboard()
