@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "test": "jest --testPathPattern **/*.test.ts"
+    "test": "jest --testPathPattern **/*.test.ts",
+    "build": "echo TODO"
   },
   "author": "Basile Parent",
   "license": "ISC",
