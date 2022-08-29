@@ -1,7 +1,7 @@
 import {createContext, Dispatch, FC, ReactElement, useEffect, useReducer} from "react"
-import {DisplayMode} from "../../types/DisplayMode";
-import {Screen} from "../../types/Screen";
-import {Game} from "../../types/Game";
+import {DisplayMode} from "../../types/DisplayMode"
+import {Screen} from "../../types/Screen"
+import {Game} from "../../types/Game"
 import {GamePlayer} from "../../types/Player"
 import {ReducerAction} from "../../types/Actions"
 
