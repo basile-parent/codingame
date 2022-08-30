@@ -36,7 +36,7 @@ type PlayerProps = {
     onChangeName?: () => void
 }
 const Player: FC<PlayerProps> = ({ player, onChangeName }) => {
-    if (player.name === playerUtils.getPlayerName()) {
+    if (player.uuid === playerUtils.getPlayerUuid()) {
         return (
             <li>
                 <button className={styles.changeNameButton} onClick={onChangeName}>

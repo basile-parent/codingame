@@ -44,6 +44,7 @@ If you don't know enough reasonable people, play something else.
 - [X] Podium: Real players
 - [x] Podium: Same position players
 - [x] Podium: Only 1 or 2 players
+- [ ] Admin: delete players
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [x] Refacto client WS => event based
