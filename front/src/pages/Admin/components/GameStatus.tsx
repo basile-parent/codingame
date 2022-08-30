@@ -4,13 +4,15 @@ import GameActions from "./GameActions"
 import styles from "./GameStatus.module.scss"
 import Timer from "../../../common/components/Timer";
 import {toTopicStatusLabel} from "../../../types/Game";
+import WebsocketManager from "../../../common/components/WebsocketManager";
 
 type GameStatusProps = {}
 const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
-    const { wsState, dispatch } = useContext(WSContext)
+    const { wsState } = useContext(WSContext)
     const [ preventEndTimer, setPreventEndTimer ] = useState(false)
 
     useEffect(() => {
+        console.debug("Check prevent endTimer", wsState.game?.endTimer, !wsState.game?.endTimer || wsState.game.endTimer! < new Date().getTime())
         setPreventEndTimer(!wsState.game?.endTimer || wsState.game.endTimer! < new Date().getTime())
     }, [ wsState.game?.endTimer ])
 
@@ -20,7 +22,7 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
             console.debug("End timer prevented")
             return
         }
-        dispatch({ type: "finishTopic" })
+        WebsocketManager.finishTopic()
     }, [ preventEndTimer ])
 
 

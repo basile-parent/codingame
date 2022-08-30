@@ -7,6 +7,7 @@ import {Game} from "../../types/Game";
 import {GamePlayer, PlayerTopic} from "../../types/Player";
 import dateUtils from "../../utils/dateUtils";
 import {WSContext} from "../../common/context/WSContext";
+import WebsocketManager from "../../common/components/WebsocketManager";
 
 const _getPlayerTopic = (player: GamePlayer, game: Game): PlayerTopic => {
     return player.topics!.find(topic => topic.topicId === game.topic!.id)!;
@@ -50,7 +51,7 @@ const AfterGameFastestItem: FC<AfterGameFastestItemProps> = ({ game, player, onO
             {
                 !playerTopic.code && isLocalPlayer &&
                 <button className={"button is-info"}
-                        onClick={() => dispatch({ type: "shareCode" })}
+                        onClick={WebsocketManager.shareCode}
                 >
                   Partager votre code
                 </button>

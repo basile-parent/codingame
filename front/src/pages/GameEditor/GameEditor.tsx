@@ -1,5 +1,5 @@
-import {FC, useCallback, useContext, useEffect, useMemo, useState} from 'react';
-import { debounce } from 'lodash'
+import {FC, useCallback, useContext, useMemo, useState} from 'react';
+import {debounce} from 'lodash'
 import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsActions, UnitTestsList} from "./components";
 import styles from "./GameEditor.module.scss"
 import {WSContext} from "../../common/context/WSContext";
@@ -10,6 +10,7 @@ import InstructionsModal from "./components/InstructionsModal";
 import {UnitTestExecution, UnitTestExecutionStatus} from "../../types/Game";
 import ModalConfirm from "../../common/components/ModalConfirm/ModalConfirm";
 import playerUtils from "../../utils/playerUtils";
+import WebsocketManager from "../../common/components/WebsocketManager";
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
@@ -26,7 +27,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
 
     const saveTempCode = useMemo(() =>
             debounce(async (code: string) => {
-                dispatch({ type: "tempCode", payload: code })
+                WebsocketManager.saveTempCode(code)
             }, 1000)
         , [ dispatch ])
     const onCodeChange = useCallback((newCode: string) => {
@@ -84,7 +85,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     const commitCode = useCallback(() => {
         ModalConfirm.confirm({
             message: "Êtes-vous sûr de vouloir soumettre votre code ? Cette action est définitive.",
-            onConfirm: () => dispatch({ type: "commitCode", payload: code})
+            onConfirm: () => WebsocketManager.commitCode(code)
         })
     }, [ code ])
 

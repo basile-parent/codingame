@@ -74,26 +74,18 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
         width: 400px;
         left: -140px;
         text-shadow: 3px 3px 2px black;
-
-        .medal {
-          position: absolute;
-          top: -45px;
-          left: 179px;
-          width: 40px;
-          height: 40px;
-
-          img {
-            height: 100%;
-            width: 100%;
-            filter: drop-shadow(4px 4px 2px black);
-          }
-        }
       }
       &.score {
         top: -45px;
         opacity: 0;
         font-size: 20px;
         text-shadow: 3px 3px 2px black;
+      }
+    }
+
+    .medal {
+      img {
+        filter: drop-shadow(4px 0 2px black);
       }
     }
   }
@@ -153,25 +145,25 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
       $delay-score: $delay - $delay-beforeCountUp;
       animation: fadeIn 1s ease-in $delay-score forwards;
     }
+
+    $delay-player: $delay + $firstPositionSlideDuration + $delay-beforeShowPlayer;
     & p.player {
-      $delay-player: $delay + $firstPositionSlideDuration + $delay-beforeShowPlayer;
       animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    }
+    .radialStripes {
+      position:absolute;
+      top: -167px;
+      left: -38px;
+      width: 200px;
+      height: 200px;
+      animation: rotate 30s infinite linear;
 
-      .radialStripes {
-        position:absolute;
-        top: -77px;
-        left: 100px;
-        width: 200px;
-        height: 200px;
-        animation: rotate 30s infinite linear;
-
-        img {
-          height: 100%;
-          width: 100%;
-          opacity: 0;
-          $delay-stripes: $delay-player + 2s;
-          animation: fadeIn 1s ease-in $delay-stripes forwards;
-        }
+      img {
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        $delay-stripes: $delay-player + 2s;
+        animation: fadeIn 1s ease-in $delay-stripes forwards;
       }
     }
   }

@@ -14,7 +14,7 @@ type LandingPageProps = {
 }
 const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
     const [userName, setUsername] = useState<string | null>(playerUtils.getPlayerName())
-    const {wsState: { game, connected }, dispatch} = useContext(WSContext)
+    const {wsState: { game, connected }} = useContext(WSContext)
 
     const recordUsername = useCallback((newUserName: string): Promise<void> => {
         return new Promise((resolve, reject) => {
@@ -46,16 +46,6 @@ const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
                         !connected ?
                             <h2>Connection en cours...</h2>:
                             <PlayerList onChangeName={() => setUsername(null)} />
-                    }
-
-
-                    {
-                        mode === DisplayMode.ADMIN &&
-                        <button className={`button is-success ${styles.startGame}`}
-                                onClick={() => dispatch({ type: "startGame" })}
-                        >
-                          Démarrer le jeu
-                        </button>
                     }
                 </section>
 

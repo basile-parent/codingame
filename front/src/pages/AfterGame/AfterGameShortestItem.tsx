@@ -8,6 +8,7 @@ import {GamePlayer, PlayerTopic} from "../../types/Player";
 import {WSContext} from "../../common/context/WSContext";
 import dateUtils from "../../utils/dateUtils";
 import {DisplayMode} from "../../types/DisplayMode";
+import WebsocketManager from "../../common/components/WebsocketManager";
 
 const _getPlayerTopic = (player: GamePlayer, game: Game): PlayerTopic => {
     return player.topics!.find(topic => topic.topicId === game.topic!.id)!;
@@ -19,7 +20,7 @@ type AfterGameShortestItemProps = {
     onOpenCodeDialog: (code: string) => void,
 }
 const AfterGameShortestItem: FC<AfterGameShortestItemProps> = ({ game, player, onOpenCodeDialog }: AfterGameShortestItemProps) => {
-    const {wsState: { mode }, dispatch} = useContext(WSContext)
+    const {wsState: { mode }} = useContext(WSContext)
     const playerTopic = _getPlayerTopic(player, game)
     const isLocalPlayer = player.uuid === playerUtils.getPlayerUuid()
 
@@ -50,7 +51,7 @@ const AfterGameShortestItem: FC<AfterGameShortestItemProps> = ({ game, player, o
 
             {
                 !playerTopic.code && isLocalPlayer &&
-                <button className={"button is-info"} onClick={() => dispatch({ type: "shareCode" })}>Partager votre code</button>
+                <button className={"button is-info"} onClick={WebsocketManager.shareCode}>Partager votre code</button>
             }
             {
                 playerTopic.code && mode === DisplayMode.PLAYER &&

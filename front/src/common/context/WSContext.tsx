@@ -49,60 +49,11 @@ const wsStateReducer = (state: WSState, action: WSStateAction): WSState => {
         case ReducerAction.SET_PLAYERS().type: {
             return { ...state, players: action.payload }
         }
-
-        // case 'tempCode': {
-        //     state.ws?.saveTempCode(action.payload)
-        //     return state
-        // }
-        // case 'commitCode': {
-        //     state.ws?.commitCode(action.payload)
-        //     return state
-        // }
-        // case 'shareCode': {
-        //     state.ws?.shareCode()
-        //     return state
-        // }
-        // case 'startGame': {
-        //     state.ws?.startGame()
-        //     return state
-        // }
-        // case 'addTime': {
-        //     state.ws?.addTime(action.payload)
-        //     return state
-        // }
-        // case 'newEndTime': {
-        //     return { ...state, game: { ...state.game, endTimer: action.payload } as Game}
-        // }
-        // case 'reinitTopic': {
-        //     state.ws?.reinitTopic(action.payload)
-        //     return state
-        // }
-        // case 'finishTopic': {
-        //     state.ws?.finishTopic()
-        //     return state
-        // }
-        // case 'calculateScore': {
-        //     state.ws?.calculateScore()
-        //     return state
-        // }
-        // case 'showScores': {
-        //     state.ws?.showScores()
-        //     return state
-        // }
-        // case 'showPodium': {
-        //     state.ws?.showPodium()
-        //     return state
-        // }
-        // case 'startTopic': {
-        //     state.ws?.startTopic(action.payload)
-        //     return state
-        // }
-        // case 'resetGame': {
-        //     state.ws?.resetGame()
-        //     return state
-        // }
+        case ReducerAction.NEW_END_TIME().type: {
+            return { ...state, game: { ...state.game, endTimer: action.payload } as Game}
+        }
         // Just for debug
-        case 'delayedStatus': {
+        case ReducerAction.DELAYED_STATUS().type: {
             return { ...state, ...action.payload }
         }
         case ReducerAction.STATUS().type: {

@@ -66,8 +66,8 @@ class WebSocketServerHandler {
         console.log("Partie démarrée")
     }
 
-    private startTopic = (id: number) => {
-        this.GAME.startTopic(id, this.gameUpdateCb)
+    private startTopic = (payload: { id: number }) => {
+        this.GAME.startTopic(payload.id, this.gameUpdateCb)
     }
     private showScores = () => {
         this.GAME.showScores()
@@ -77,9 +77,9 @@ class WebSocketServerHandler {
         this.GAME.showPodium()
         this.gameUpdateCb()
     }
-    private reinitTopic = (id: number) => {
-        this.GAME.reinitTopic(id)
-        this.userHandler.reinitTopicForAllPlayers(id)
+    private reinitTopic = (payload: { id: number }) => {
+        this.GAME.reinitTopic(payload.id)
+        this.userHandler.reinitTopicForAllPlayers(payload.id)
         console.log("Topic reset")
         this.broadcastStatus()
     }
@@ -88,12 +88,12 @@ class WebSocketServerHandler {
         this.GAME.finishTopic(this.gameUpdateCb)
         const allUnfinishedPlayerTopics = this.userHandler._getAllUnfinishedPlayerTopics(this.GAME.topic.id)
         allUnfinishedPlayerTopics.forEach(playerTopic => {
-            this.submitCode(playerTopic.playerUuid, playerTopic.tempCode || "")
+            this.submitCode({ uuid: playerTopic.playerUuid, code: playerTopic.tempCode || "" })
         })
     }
 
-    private addTime = (time: number) => {
-        this.GAME.addTimeToTopic(time)
+    private addTime = (payload: { time: number }) => {
+        this.GAME.addTimeToTopic(payload.time)
         this.broadcast("newEndTime", this.GAME.endTimer)
     }
 
@@ -110,28 +110,28 @@ class WebSocketServerHandler {
         console.log("Partie réinitialisée")
     }
 
-    private setPlayerName = ({ uuid, name }) => {
-        this.userHandler.setPlayerName(uuid, name)
+    private setPlayerName = (payload: { uuid: string, name: string }) => {
+        this.userHandler.setPlayerName(payload.uuid, payload.name)
         this.logPlayers()
         this.broadcastLeaderboard()
     }
 
-    private saveTempCode = (uuid, code) => {
-        this.userHandler.setPlayerTempCode(uuid, code, this.GAME.topic)
+    private saveTempCode = (payload: { uuid: string, code: string }) => {
+        this.userHandler.setPlayerTempCode(payload.uuid, payload.code, this.GAME.topic)
         this.userHandler.broadcastAdmin("status", this.getAdminStatus())
     }
-    private submitCode = (uuid, code) => {
-        this.userHandler.setPlayerFinalCode(uuid, code, this.GAME.topic)
-        this.GAME.calculateCompletion(code)
+    private submitCode = (payload: { uuid: string, code: string }) => {
+        this.userHandler.setPlayerFinalCode(payload.uuid, payload.code, this.GAME.topic)
+        this.GAME.calculateCompletion(payload.code)
             .then(completion => {
-                this.userHandler.setPlayerTopicProps(uuid, this.GAME.topic, { completion } as PlayerTopic)
+                this.userHandler.setPlayerTopicProps(payload.uuid, this.GAME.topic, { completion } as PlayerTopic)
                 this.broadcastStatus()
             })
         this.broadcastStatus()
     }
 
-    private shareCode = (uuid) => {
-        this.userHandler.shareCode(uuid, this.GAME.topic)
+    private shareCode = (payload: { uuid: string }) => {
+        this.userHandler.shareCode(payload.uuid, this.GAME.topic)
         this.broadcastStatus()
     }
 
@@ -145,7 +145,7 @@ class WebSocketServerHandler {
     }
 
     private logPlayers = () => {
-        console.debug(this.userHandler.toString())
+        console.log(this.userHandler.toString())
     }
 
     private broadcastStatus = () => {
@@ -154,7 +154,7 @@ class WebSocketServerHandler {
         this.userHandler.broadcastPresentation("status", this.getAdminStatus())
     }
 
-    private getAdminStatus = (): WSStatus => {
+    public getAdminStatus = (): WSStatus => {
         return {
             screen: this.GAME.currentScreen,
             game: this.GAME.toAdminJson(),
@@ -188,4 +188,4 @@ export type GameUpdateOptions = {
     topic?: Topic,
 }
 
-export default WebSocketServerHandler
+export default new WebSocketServerHandler()

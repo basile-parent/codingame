@@ -20,7 +20,7 @@ class Presentation implements User {
     }
 
     public isAdmin(): boolean {
-        return false
+        return true
     }
 
     public toJson(): Presentation {

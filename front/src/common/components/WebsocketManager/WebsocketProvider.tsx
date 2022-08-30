@@ -16,7 +16,6 @@ const WebsocketProvider: FC<WebsocketProviderProps> = ({}: WebsocketProviderProp
     }, [dispatch])
 
     const handleSend = useCallback((action: WSAction) => {
-        console.log("SHOULD EMIT", action)
         socket?.emit(action)
     }, [dispatch])
 
@@ -31,7 +30,7 @@ const WebsocketProvider: FC<WebsocketProviderProps> = ({}: WebsocketProviderProp
 
 
     useEffect(() => {
-        dispatch(ReducerAction.USER_DISCONNECTED)
+        dispatch(ReducerAction.USER_DISCONNECTED())
         socket = new WebSocketHandler(VITE_SERVER_URL, handleMessage, {mode, path: VITE_WS_PATH})
     }, [dispatch])
 

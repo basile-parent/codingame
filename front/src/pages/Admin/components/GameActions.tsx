@@ -4,21 +4,22 @@ import {Screen} from "../../../types/Screen"
 import styles from "./GameActions.module.scss"
 import ModalConfirm from "../../../common/components/ModalConfirm/ModalConfirm";
 import {TopicStatus} from "../../../types/Game";
+import WebsocketManager from "../../../common/components/WebsocketManager";
 
 type GameActionsProps = {}
 const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
-    const { wsState: { screen, game }, dispatch } = useContext(WSContext)
+    const { wsState: { screen, game } } = useContext(WSContext)
 
     const handleTerminateTopic = useCallback(() => {
         ModalConfirm.confirm({
             message: "Etes-vous sûr de vouloir terminer l'exercice ?",
-            onConfirm: () => dispatch({ type: "finishTopic" })
+            onConfirm: WebsocketManager.finishTopic
         })
     }, [])
     const handleReset = useCallback(() => {
         ModalConfirm.confirm({
             message: "Etes-vous sûr de vouloir réinitialiser la partie ?",
-            onConfirm: () => dispatch({ type: "resetGame" })
+            onConfirm: WebsocketManager.resetGame
         })
     }, [])
 
@@ -26,7 +27,7 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
         <div className={styles.container}>
             <button className={`button is-small is-primary ${ styles.button }`}
                     disabled={game?.started}
-                    onClick={() => dispatch({ type: "startGame" })}
+                    onClick={WebsocketManager.startGame}
             >
                 Démarrer
             </button>
@@ -42,7 +43,7 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
             {
                 game?.topic &&
                     <>
-                      <AddTimeButton onAddTime={(time) => dispatch({ type: "addTime", payload: time })} />
+                      <AddTimeButton onAddTime={WebsocketManager.addTime} />
                       <button className={`button is-small is-primary ${ styles.button }`}
                               disabled={!game || screen !== Screen.GAME_EDITOR || game.topic.status === TopicStatus.FINISHED}
                               onClick={handleTerminateTopic}
@@ -51,13 +52,13 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                       </button>
                       <button className={`button is-small is-primary ${ styles.button }`}
                               disabled={!game || screen !== Screen.AFTER_GAME || game.topic.status === TopicStatus.SCORE_CALCULATED }
-                              onClick={() => dispatch({ type: "calculateScore" })}
+                              onClick={WebsocketManager.calculateTopicScore}
                       >
                         Calcul score
                       </button>
                       <button className={`button is-small is-primary ${ styles.button }`}
                               disabled={!game || screen === Screen.LEADERBOARD || game.topic.status !== TopicStatus.SCORE_CALCULATED }
-                              onClick={() => dispatch({ type: "showScores" })}
+                              onClick={WebsocketManager.showScores}
                       >
                         Tableau score
                       </button>
@@ -66,7 +67,7 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
 
             <button className={`button is-small is-warning ${ styles.button }`}
                     disabled={ game?.topic?.status === TopicStatus.IN_PROGRESS || screen === Screen.PODIUM }
-                    onClick={() => dispatch({ type: "showPodium" })}
+                    onClick={WebsocketManager.showPodium}
             >
                 Podium
             </button>

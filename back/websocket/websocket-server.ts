@@ -1,9 +1,6 @@
-import WebSocketHandler from "./websocket-handler"
-const handler = new WebSocketHandler()
-
 import {Server} from "socket.io"
 
-export const createWebSocketServer = http => {
+export const createWebSocketServer = (http, handler) => {
   const io = new Server(http, {
     cors: {
       origin: "*",

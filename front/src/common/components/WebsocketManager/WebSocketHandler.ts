@@ -58,27 +58,7 @@ class WebSocketHandler {
         })
     }
 
-    // setName(action: Actions) {
-    //     if (this.mode !== DisplayMode.PLAYER) {
-    //         return
-    //     }
-    //     this._emit("setName", action)
-    // }
-
     emit = (action: WSAction) => this._emit(action.type, action.payload)
-
-    startGame = () => this._emit("startGame")
-    startTopic = (topicId: number) => this._emit("startTopic", topicId)
-    addTime = (time: number) => this._emit("addTime", time)
-    reinitTopic = (topicId: number) => this._emit("reinitTopic", topicId)
-    finishTopic = () => this._emit("finishTopic")
-    calculateScore = () => this._emit("calculateTopicScore")
-    showScores = () => this._emit("showScores")
-    showPodium = () => this._emit("showPodium")
-    resetGame = () => this._emit("resetGame")
-    commitCode = (code: string) => this._emit("commitCode", playerUtils.getPlayerUuid(), code)
-    saveTempCode = (code: string) => this._emit("tempCode", playerUtils.getPlayerUuid(), code)
-    shareCode = () => this._emit("shareCode", playerUtils.getPlayerUuid())
 
     // _on = (channel: string, cb: () => {}) => {
     //     this.socket.on(channel, cb)

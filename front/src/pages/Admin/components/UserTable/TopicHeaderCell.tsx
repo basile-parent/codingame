@@ -1,9 +1,10 @@
 import {FC, useCallback, useContext, useMemo, useState} from 'react'
-import {Topic, TopicStatus} from "../../../../types/Game"
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import styles from "./TopicHeaderCell.module.scss"
+import {Topic, TopicStatus} from "../../../../types/Game"
 import {WSContext} from "../../../../common/context/WSContext";
+import WebsocketManager from "../../../../common/components/WebsocketManager";
+import styles from "./TopicHeaderCell.module.scss"
 
 type TopicHeaderCellProps = {
     topic: Topic,
@@ -11,15 +12,15 @@ type TopicHeaderCellProps = {
 }
 const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: TopicHeaderCellProps) => {
     const [ open, setOpen ] = useState(false)
-    const { wsState: { game }, dispatch } = useContext(WSContext)
+    const { wsState: { game } } = useContext(WSContext)
 
     const handleStartTopic = useCallback(() => {
-        dispatch({ type: "startTopic", payload: topic.id })
+        WebsocketManager.startTopic(topic.id)
         setOpen(false)
     }, [])
 
     const handleReinitTopic = useCallback(() => {
-        dispatch({ type: "reinitTopic", payload: topic.id })
+        WebsocketManager.reinitTopic(topic.id)
         setOpen(false)
     }, [])
 

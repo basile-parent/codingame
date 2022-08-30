@@ -42,9 +42,10 @@ process.on('uncaughtException', function (err) {
 /* ********** WEBSOCKETS ********** */
 import {createWebSocketServer} from "./websocket/websocket-server"
 import * as http from "http"
+import webSocketHandler from "./websocket/websocket-handler"
 
 const server = http.createServer(app)
-createWebSocketServer(server)
+createWebSocketServer(server, webSocketHandler)
 /* ********** END WEBSOCKETS ********** */
 
 /* ********** Démarrage du serveur ********** */

@@ -30,10 +30,6 @@ const Chart: FC<ChartProps> = ({}: ChartProps) => {
             <div className={styles.thirdPosition}>
                 <p className={styles.player}>
                     Toto
-
-                    <div className={styles.medal}>
-                        <img src={bronzeMedalUrl} />
-                    </div>
                 </p>
                 <p className={styles.score}>
                     <CountUp start={0}
@@ -42,17 +38,14 @@ const Chart: FC<ChartProps> = ({}: ChartProps) => {
                              delay={showThirdPositionStartTime}
                     />
                 </p>
+
+                <div className={styles.medal}>
+                    <img src={bronzeMedalUrl} />
+                </div>
             </div>
             <div className={styles.firstPosition}>
                 <p className={styles.player}>
                     Titi
-
-                    <div className={styles.medal}>
-                        <img src={goldMedalUrl} />
-                    </div>
-                    <div className={styles.radialStripes}>
-                        <img src={stripesUrl} />
-                    </div>
                 </p>
                 <p className={styles.score}>
                     <CountUp start={0}
@@ -61,14 +54,16 @@ const Chart: FC<ChartProps> = ({}: ChartProps) => {
                              delay={showFirstPositionStartTime}
                     />
                 </p>
+                <div className={styles.medal}>
+                    <img src={goldMedalUrl} />
+                </div>
+                <div className={styles.radialStripes}>
+                    <img src={stripesUrl} />
+                </div>
             </div>
             <div className={styles.secondPosition}>
                 <p className={styles.player}>
                     Tutu
-
-                    <div className={styles.medal}>
-                        <img src={silverMedalUrl} />
-                    </div>
                 </p>
                 <p className={styles.score}>
                     <CountUp start={0}
@@ -77,6 +72,10 @@ const Chart: FC<ChartProps> = ({}: ChartProps) => {
                              delay={showSecondPositionStartTime}
                     />
                 </p>
+
+                <div className={styles.medal}>
+                    <img src={silverMedalUrl} />
+                </div>
             </div>
 
             <div className={styles.baseLine} />
