@@ -39,8 +39,8 @@ If you don't know enough reasonable people, play something else.
 - [x] More visible disconnection on admin
 - [x] Presentation mode
 - [x] Final screen
-- [ ] Reinit game should clear local storage stored code
-- [ ] Calculate topic position (for AfterGame component) in the back
+- [x] ~~Reinit game should clear local storage stored code~~
+- [x] ~~Calculate topic position (for AfterGame component) in the back~~
 - [ ] Podium: Real players
 - [ ] Podium: Same position players
 - [ ] Podium: Only 1 or 2 players

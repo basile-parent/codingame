@@ -20,9 +20,8 @@ const AfterGameLeaderboard: FC<AfterGameLeaderboardProps> = ({ setCodeDialogCont
             {
                 players
                     .sort(comparator)
-                    .map((player, index) => (
+                    .map((player) => (
                         <li className={styles.player} key={`player-${player.uuid}`}>
-                            <span className={styles.position}>{index + 1}</span>
                             <ItemComponent player={player} game={game!} onOpenCodeDialog={setCodeDialogContent} />
                         </li>
                     ))

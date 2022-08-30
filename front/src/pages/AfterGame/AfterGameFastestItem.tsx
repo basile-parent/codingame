@@ -19,7 +19,6 @@ type AfterGameFastestItemProps = {
     onOpenCodeDialog: (code: string) => void,
 }
 const AfterGameFastestItem: FC<AfterGameFastestItemProps> = ({ game, player, onOpenCodeDialog }: AfterGameFastestItemProps) => {
-    const {dispatch} = useContext(WSContext)
     const playerTopic = _getPlayerTopic(player, game)
     const isLocalPlayer = player.uuid === playerUtils.getPlayerUuid()
 
