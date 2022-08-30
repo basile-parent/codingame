@@ -16,10 +16,10 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -20%);
 
   height: 400px;
-  width: 800px;
+  width: 1200px;
 
   // Mask
   &::after {
@@ -70,10 +70,18 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
       &.player {
         opacity: 0;
         top: -90px;
+        left: 50%;
         font-size: 30px;
         width: 400px;
-        left: -140px;
+        margin-left: -200px;
         text-shadow: 3px 3px 2px black;
+        line-height: 30px;
+
+        &.vacant {
+          color: $lowlight;
+          font-style: italic;
+          font-weight: normal;
+        }
       }
       &.score {
         top: -45px;
@@ -152,10 +160,11 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
     }
     .radialStripes {
       position:absolute;
-      top: -167px;
-      left: -38px;
-      width: 200px;
-      height: 200px;
+      top: -270px;
+      left: 50%;
+      width: 400px;
+      margin-left: -200px;
+      height: 400px;
       animation: rotate 30s infinite linear;
 
       img {
