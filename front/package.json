@@ -1,11 +1,11 @@
 {
   "name": "codingame",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
