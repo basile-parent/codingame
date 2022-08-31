@@ -18,7 +18,7 @@ pipeline {
                     }
                     steps {
                         sh 'chmod +x ./back/build-node.sh'
-                        sh "./back/build-node.sh $FOLDER_NAME $WORKSPACE"
+                        sh "./back/build-node.sh $FOLDER_NAME $WORKSPACE $CONTAINER_TAG"
 
                         sh "docker_stop $CONTAINER_NAME"
                         sh "docker run -d -p $PORT:3000 -v /tmp:/tmp --name $CONTAINER_NAME $CONTAINER_TAG"
