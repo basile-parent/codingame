@@ -9,8 +9,6 @@ pipeline {
                 sh 'env'
             }
         }
-        stage('Build both apps') {
-            parallel {
                 stage('Build websocket node application') {
                     environment {
                         PORT=3340
@@ -36,7 +34,5 @@ pipeline {
                         sh "./front/build-react.sh $FOLDER_NAME $WORKSPACE"
                     }
                 }
-            }
-        }
     }
 }

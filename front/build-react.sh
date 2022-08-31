@@ -4,7 +4,7 @@ set -e
 
 JENKINS_HOME="/var/jenkins_home"
 APPLICATION_NAME=$1
-WORKSPACE=$2/$APPLICATION_NAME/front
+WORKSPACE=$2/front
 
 EXPORT_FOLDER=$JENKINS_HOME/export_react_builds/$APPLICATION_NAME
 
@@ -13,7 +13,7 @@ mkdir -p $EXPORT_FOLDER
 rm -rf $EXPORT_FOLDER/*
 
 # Copy configuration
-cp -r /opt/configuration/$APPLICATION_NAME/.env.prod $WORKSPACE/.env
+cp -r /opt/configuration/$APPLICATION_NAME/.env.front.prod $WORKSPACE/.env
 
 # Building sources
 cd $WORKSPACE

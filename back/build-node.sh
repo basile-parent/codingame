@@ -5,11 +5,10 @@ set -e
 
 JENKINS_HOME="/var/jenkins_home"
 APPLICATION_NAME=$1
-WORKSPACE=$2/$APPLICATION_NAME/back/
+WORKSPACE=$2/back
 NODE_IMAGE_NAME=$4
 
-EXPORT_APP_NAME=$JENKINS_JOB_NAME-$APPLICATION_NAME
-EXPORT_FOLDER=$JENKINS_HOME/export_node_sources/apps/$EXPORT_APP_NAME
+EXPORT_FOLDER=$JENKINS_HOME/export_node_sources/apps/$APPLICATION_NAME
 
 # Create and clear destination folder
 mkdir -p $EXPORT_FOLDER
