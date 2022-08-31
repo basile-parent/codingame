@@ -1,4 +1,4 @@
-FROM node:basile
+FROM node-basile:npm-registry
 
 ARG APP_NAME
 
