@@ -10,23 +10,7 @@ pipeline {
             }
         }
 
-                stage('Build front application') {
-                    environment {
-                        FOLDER_NAME="codingame"
-                    }
-                    agent {
-                        docker {
-                            image 'node:basile'
-                            args '-v /opt/configuration:/opt/configuration'
-                        }
-                    }
-                    steps {
-                        dir("front") {
-                            sh 'chmod +x ./build-react.sh'
-                            sh "./build-react.sh $FOLDER_NAME $WORKSPACE"
-                        }
-                    }
-                }
+
                 stage('Build websocket node application') {
                     environment {
                         PORT=3340

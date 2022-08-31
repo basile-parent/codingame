@@ -18,9 +18,6 @@ cp -r /opt/configuration/$APPLICATION_NAME/.env.front.prod $WORKSPACE/.env
 # Building sources
 cd $WORKSPACE
 npm install
-
-cat package.json
-
 #npm run test
 npm run build
 
