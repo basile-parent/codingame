@@ -1,16 +1,13 @@
-FROM node:latest
+FROM node:basile
 
 ARG APP_NAME
-ENV START_ARGS="--env=prod"
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
-COPY package-lock.json ./
+COPY . .
 
 RUN npm install --force
-
-COPY dist .
+RUN npm run build
 
 EXPOSE 3000
-CMD ["sh", "-c", "npm start -- ${START_ARGS}"]
+CMD ["sh", "-c", "node dist/index.js"]
