@@ -30,6 +30,12 @@ pipeline {
                     environment {
                         FOLDER_NAME="codingame"
                     }
+                    agent {
+                        docker {
+                            image 'node:basile'
+                            args '-v /opt/configuration:/opt/configuration'
+                        }
+                    }
                     steps {
                         dir("front") {
                             sh 'chmod +x ./build-react.sh'
