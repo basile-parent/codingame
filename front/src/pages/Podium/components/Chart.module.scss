@@ -92,8 +92,12 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
     }
 
     .medal {
+      width: 100%;
+      text-align: center;
+
       img {
         filter: drop-shadow(4px 0 2px black);
+        width: 100px;
       }
     }
   }

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build --base=/codingame"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",

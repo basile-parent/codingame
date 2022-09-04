@@ -8,6 +8,7 @@ import {GamePlayer, PlayerTopic} from "../../types/Player";
 import dateUtils from "../../utils/dateUtils";
 import {WSContext} from "../../common/context/WSContext";
 import WebsocketManager from "../../common/components/WebsocketManager";
+import {DisplayMode} from "../../types/DisplayMode";
 
 const _getPlayerTopic = (player: GamePlayer, game: Game): PlayerTopic => {
     return player.topics!.find(topic => topic.topicId === game.topic!.id)!;
@@ -19,6 +20,7 @@ type AfterGameFastestItemProps = {
     onOpenCodeDialog: (code: string) => void,
 }
 const AfterGameFastestItem: FC<AfterGameFastestItemProps> = ({ game, player, onOpenCodeDialog }: AfterGameFastestItemProps) => {
+    const {wsState: { mode }} = useContext(WSContext)
     const playerTopic = _getPlayerTopic(player, game)
     const isLocalPlayer = player.uuid === playerUtils.getPlayerUuid()
 
@@ -56,7 +58,7 @@ const AfterGameFastestItem: FC<AfterGameFastestItemProps> = ({ game, player, onO
                 </button>
             }
             {
-                playerTopic.code &&
+                playerTopic.code && mode === DisplayMode.PLAYER &&
                 <button className={"button is-info is-light"}
                         onClick={() => onOpenCodeDialog(playerTopic.code!)}
                 >

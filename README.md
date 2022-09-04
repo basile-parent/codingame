@@ -41,13 +41,15 @@ If you don't know enough reasonable people, play something else.
 - [x] Final screen
 - [x] ~~Reinit game should clear local storage stored code~~
 - [x] ~~Calculate topic position (for AfterGame component) in the back~~
-- [X] Podium: Real players
+- [x] Podium: Real players
 - [x] Podium: Same position players
 - [x] Podium: Only 1 or 2 players
+- [ ] Bug prod: end timer loop
 - [ ] Admin: delete players
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [x] Refacto client WS => event based
 - [ ] Go Redux !
+- [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
 - [ ] Mutualise back and front (types and src)
 - [ ] Handicaps
