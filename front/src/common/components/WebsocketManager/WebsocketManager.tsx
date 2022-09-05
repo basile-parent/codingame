@@ -21,6 +21,10 @@ class WebsocketManager extends EventEmitter {
     showScores = () => this.emit("send", WSAction.SHOW_SCORES())
     showPodium = () => this.emit("send", WSAction.SHOW_PODIUM())
 
+    deletePlayer = (uuid: string) => this.emit("send", WSAction.DELETE_PLAYER(uuid))
+    deleteAdmin = (uuid: string) => this.emit("send", WSAction.DELETE_ADMIN(uuid))
+    deletePresentation = (uuid: string) => this.emit("send", WSAction.DELETE_PRESENTATION(uuid))
+
     addSendListener = (callback: (param: any) => void) => this.addListener("send", callback)
     removeSendListener = (callback: (param: any) => void) => this.removeListener("send", callback)
     addMessageListener = (callback: (param: any) => void) => this.addListener("message", callback)

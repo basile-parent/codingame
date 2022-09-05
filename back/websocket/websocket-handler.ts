@@ -5,6 +5,7 @@ import WSStatus from "../types/WSStatus";
 import Player from "../model/Player";
 import {PlayerTopic} from "../types/GamePlayer";
 import Topic from "../types/Topic";
+import GameScreen from "../types/GameScreen";
 
 class WebSocketServerHandler {
     private GAME: Game
@@ -18,7 +19,7 @@ class WebSocketServerHandler {
     public connect(socket: Socket) {
         let user
         try {
-            user = this.userHandler.connectUser(socket, this.GAME.started)
+            user = this.userHandler.connectUser(socket, this.GAME)
         } catch(e) {
             console.error(e.message)
             return
@@ -30,37 +31,48 @@ class WebSocketServerHandler {
             socket.emit("status", this.getAdminStatus())
         } else {
             socket.emit("status", this.getPlayerStatus(user as Player))
-            this.userHandler.broadcastAdmin("leaderboard", this.userHandler.getAllPlayers())
             this.userHandler.broadcastPresentation("leaderboard", this.userHandler.getAllPlayers())
         }
+
+        this.userHandler.broadcastAdmin("status", this.getAdminStatus())
 
         this.logPlayers()
 
         socket.on("setName", this.setPlayerName)
+
         socket.on("tempCode", this.saveTempCode)
         socket.on("commitCode", this.submitCode)
         socket.on("shareCode", this.shareCode)
+
         socket.on("calculateTopicScore", this.calculateScores)
         socket.on("showScores", this.showScores)
+
         socket.on("showPodium", this.showPodium)
+
         socket.on("disconnect", () => this.disconnectedUser(socket))
+
         socket.on("startGame", this.startGame)
+        socket.on("resetGame", this.resetGame)
+
+        socket.on("finishTopic", this.finishTopic)
         socket.on("startTopic", this.startTopic)
         socket.on("reinitTopic", this.reinitTopic)
         socket.on("addTime", this.addTime)
-        socket.on("finishTopic", this.finishTopic)
-        socket.on("resetGame", this.resetGame)
+
+        socket.on("deletePlayer", this.deletePlayer)
+        socket.on("deleteAdmin", this.deleteAdmin)
+        socket.on("deletePresentation", this.deletePresentation)
     }
 
     private disconnectedUser = (socket: Socket) => {
         this.userHandler.disconnectedUser(socket)
 
-        this.broadcastLeaderboard()
+        this.broadcastStatus()
         this.logPlayers()
     }
 
     private startGame = () => {
-        this.userHandler.setGameToPlayer(this.GAME)
+        this.userHandler.setGameToPlayers(this.GAME)
         this.GAME.startGame()
         this.broadcastStatus()
         console.log("Partie démarrée")
@@ -144,6 +156,22 @@ class WebSocketServerHandler {
         this.broadcastStatus()
     }
 
+    private deletePlayer = (payload: { uuid: string }) => {
+        this.userHandler.deletePlayer(payload.uuid)
+        this.logPlayers()
+        this.broadcastStatus()
+    }
+    private deleteAdmin = (payload: { uuid: string }) => {
+        this.userHandler.deleteAdmin(payload.uuid)
+        this.logPlayers()
+        this.broadcastStatus()
+    }
+    private deletePresentation = (payload: { uuid: string }) => {
+        this.userHandler.deletePresentation(payload.uuid)
+        this.logPlayers()
+        this.broadcastStatus()
+    }
+
     private logPlayers = () => {
         console.log(this.userHandler.toString())
     }
@@ -159,13 +187,15 @@ class WebSocketServerHandler {
             screen: this.GAME.currentScreen,
             game: this.GAME.toAdminJson(),
             players: this.userHandler.getAllPlayers(),
+            admins: this.userHandler.getAllAdmins(),
+            presentations: this.userHandler.getAllPresentations(),
             transitionTimeout: this.GAME.transitionTimeout
         }
     }
 
     private getPlayerStatus = (player: Player): WSStatus => {
         return {
-            screen: player.screen,
+            screen: player.waitForApprouval ? GameScreen.LANDING_PAGE : player.screen,
             game: this.GAME.toPublicJson(),
             players: this.userHandler.getLeaderboard(),
             transitionTimeout: this.GAME.transitionTimeout

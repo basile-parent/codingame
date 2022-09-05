@@ -37,4 +37,8 @@ export class WSAction extends Action {
     public static SHOW_SCORES = this._build("showScores")
     public static SHOW_PODIUM = this._build("showPodium")
 
+    public static DELETE_PLAYER = (uuid: string) => this._build("deletePlayer")({ uuid })
+    public static DELETE_ADMIN = (uuid: string) => this._build("deleteAdmin")({ uuid })
+    public static DELETE_PRESENTATION = (uuid: string) => this._build("deletePresentation")({ uuid })
+
 }

@@ -1,3 +1,32 @@
+@import "../../../../variables";
+
+.tabList {
+  border-bottom: 1px solid white;
+  height: 30px;
+  display: flex;
+
+  .tabButton {
+    background: transparent;
+    text-align: center;
+    width: 100px;
+    color: white;
+    padding: 3px 8px;
+    border: 1px solid white;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+
+    &[aria-selected=true] {
+      background-color: $lowlight;
+      font-weight: bold;
+    }
+  }
+}
+.tabContent {
+  padding: 15px 0;
+}
+
+
+
 .table {
   background-color: transparent;
 
@@ -35,5 +64,26 @@
 
   th.topicCell {
     padding: 0;
+  }
+
+  .iconButton {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      color: $lowlight;
+    }
+    &[disabled] {
+      color: $lowlight;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.adminTable {
+  .currentAdmin {
+    font-weight: 700;
   }
 }

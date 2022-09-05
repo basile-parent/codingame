@@ -7,88 +7,54 @@ import TopicStatus from "./TopicStatus"
 import styles from "./UserTable.module.scss"
 import TopicHeaderCell from "./TopicHeaderCell";
 import DetailModal from "./DetailModal";
+import PlayerTable from "./PlayerTable";
+import AdminTable from "./AdminTable";
 
 type UserTableProps = {}
 
 const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
-    const [ modalTopic, setModalTopic ] = useState<Topic | null>(null)
-    const {wsState: {game, players}} = useContext(WSContext)
+    const [ tab, setTab ] = useState<number>(0)
 
     return (
         <>
-            <table className={`table ${styles.table}`}>
-                <thead>
-                <tr>
-                    <th>Joueur</th>
-                    <th>Ecran</th>
-                    <th>Total</th>
-                    {
-                        game?.allTopics.map(topic =>
-                            <th key={`topic-${topic.id}`} className={styles.topicCell}>
-                                <TopicHeaderCell topic={topic} onDetailTopic={setModalTopic} />
-                            </th>
-                        )
-                    }
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    game &&
-                    players
-                        .sort(_usernameComoarator)
-                        .map((player) =>
-                            <UserRow player={player}
-                                     allTopics={game.allTopics}
-                                     key={`player-${player.name}`}
-                            />
-                        )
-                }
-                </tbody>
-            </table>
+            <div role="tablist" aria-label="Sample Tabs" className={styles.tabList}>
+                <TabButton currentTab={tab} targetTab={0} discriminant="player" onSetTab={setTab}>Joueurs</TabButton>
+                <TabButton currentTab={tab} targetTab={1} discriminant="admin" onSetTab={setTab}>Admin</TabButton>
+            </div>
 
-            {
-                modalTopic &&
-                <DetailModal topic={modalTopic} onClose={() => setModalTopic(null)} />
-            }
+            <TabContent currentTab={tab} targetTab={0} discriminant="player">
+                <PlayerTable />
+            </TabContent>
+
+            <TabContent currentTab={tab} targetTab={1} discriminant="admin">
+                <AdminTable />
+            </TabContent>
         </>
     )
 }
 
-const _usernameComoarator = (p1: GamePlayer, p2: GamePlayer) => {
-    if (!p1.name) {
-        return 1
-    }
-    if (!p2.name) {
-        return -1
-    }
-    return p1.name.localeCompare(p2.name)
-}
+const TabButton = (props: { currentTab: number, targetTab: number, onSetTab: (tab: number) => void, discriminant: string, children: string}) => (
+    <button role="tab"
+            aria-selected={props.currentTab === props.targetTab}
+            aria-controls={`panel-${ props.discriminant }`}
+            id={`tab-${ props.discriminant }`}
+            onClick={() => props.onSetTab(props.targetTab)}
+            className={styles.tabButton}
+    >
+        { props.children }
+    </button>
+)
 
-type UserRowProps = {
-    player: GamePlayer,
-    allTopics: Topic[],
-}
-const UserRow: FC<UserRowProps> = ({player, allTopics}) => {
-    return (
-        <tr>
-            <td className={styles.player}>
-                <span className={styles.connectedIcon}>
-                    <ConnectedIcon connected={player.connected}/>
-                </span>
-                {player.name || player.uuid}
-            </td>
-            <td>
-                {player.screen}
-            </td>
-            <td className={styles.score}>
-                {player.score}
-            </td>
-            {
-                allTopics.map(topic =>
-                    <TopicStatus player={player} topic={topic} key={`player-${player.uuid}-topic-${topic.id}`} />)
-            }
-        </tr>
-    )
-}
+const TabContent = (props: { currentTab: number, targetTab: number, discriminant: string, children: any}) => (
+    <div id={`panel-${ props.discriminant }`}
+         role="tabpanel"
+         tabIndex={0}
+         aria-labelledby={`tab-${ props.discriminant }`}
+         hidden={props.currentTab !== props.targetTab}
+         className={styles.tabContent}
+    >
+        { props.children }
+    </div>
+)
 
 export default UserTable

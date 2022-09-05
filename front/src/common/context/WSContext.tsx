@@ -9,6 +9,8 @@ type WSState = {
     mode: DisplayMode,
     connected: boolean,
     players: GamePlayer[],
+    admins?: GamePlayer[],
+    presentations?: GamePlayer[],
     screen: Screen,
     game: Game | null,
     transitionTimeout: number,

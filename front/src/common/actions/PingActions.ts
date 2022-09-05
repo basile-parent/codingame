@@ -8,7 +8,8 @@ const ping = (): Promise<boolean> => {
             "Content-Type": "application/json"
         },
     })
-        .then(_ => true)
+        .then(response => response.json())
+        .then(data => data.success && data.message === "PING OK")
         .catch(_ => false)
 }
 

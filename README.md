@@ -44,12 +44,14 @@ If you don't know enough reasonable people, play something else.
 - [x] Podium: Real players
 - [x] Podium: Same position players
 - [x] Podium: Only 1 or 2 players
-- [ ] Bug prod: end timer loop
-- [ ] Admin: delete players
+- [x] ~~Bug prod: end timer loop~~ cannot reproduce
+- [ ] Admin: delete players + accept players after start
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [x] Refacto client WS => event based
 - [ ] Go Redux !
 - [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
-- [ ] Mutualise back and front (types and src)
+- [ ] Cleanup type (Player / GamePlayer)
+- [ ] Mutualize back and front (types and src)
+- [ ] Cleanup backend
 - [ ] Handicaps

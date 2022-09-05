@@ -18,6 +18,8 @@ class WebSocketHandler {
     constructor(url: string, onMessage: (action: ReducerAction) => void, options?: WSOptions) {
         this.isConnected = false
         this.mode = options?.mode || DisplayMode.PLAYER
+
+        console.log("Websocket. Connecting on ", url, options)
         this.socket = io(url,
             {
                 path: options?.path,

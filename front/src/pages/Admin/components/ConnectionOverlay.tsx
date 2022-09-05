@@ -20,7 +20,10 @@ const ConnectionOverlay: FC<ConnectionOverlayProps> = ({}: ConnectionOverlayProp
             setPingOK(false)
             if (!pingInterval) {
                 setPingInterval(setInterval(() => {
-                    PingActions.ping().then(setPingOK)
+                    PingActions.ping().then(result => {
+                        console.debug("Ping to back: ", result)
+                        setPingOK(result)
+                    })
                 }, 1000))
             }
         }

@@ -9,7 +9,7 @@ class Presentation implements User {
     constructor(socket?: Socket, uuid?: string, connected?: boolean) {
         this.socket = socket
         this.uuid = uuid
-        this.connected = connected ?? true
+        this.connected = connected ?? false
     }
 
     public static fromJson(json: object): Presentation {
@@ -28,6 +28,13 @@ class Presentation implements User {
             ...this,
             socket: undefined,
             connected: undefined,
+        }
+    }
+
+    public toAdminUi(): Presentation {
+        return {
+            ...this,
+            socket: undefined,
         }
     }
 }

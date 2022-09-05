@@ -11,7 +11,7 @@ import DisplayMode from "../types/DisplayMode";
 import Presentation from "../model/Presentation";
 
 class UserHandler extends PersistentObject {
-    private PRESENTATIONS: Admin[] = []
+    private PRESENTATIONS: Presentation[] = []
     private ADMINS: Admin[] = []
     private PLAYERS: Player[] = []
 
@@ -23,7 +23,7 @@ class UserHandler extends PersistentObject {
         }
     }
 
-    public connectUser = (socket: Socket, isGameStarted: boolean): User => {
+    public connectUser = (socket: Socket, game: Game): User => {
         const uuid = <string>socket.handshake.headers["x-uuid"]
 
         const existingPresentationIndex = this.PRESENTATIONS.findIndex(a => a.uuid === uuid)
@@ -55,11 +55,13 @@ class UserHandler extends PersistentObject {
             newUser = new Admin(socket, uuid, true)
             this.PRESENTATIONS.push(newUser)
         } else {
+            const isGameStarted = game.started
+            newUser = new Player(socket, uuid, null, true, isGameStarted)
+
             if (isGameStarted) {
-                throw new Error(`Cannot accept new users when the game is started [${ uuid }]`)
+                this.setGameToPlayer(newUser, game)
             }
 
-            newUser = new Player(socket, uuid, null, true)
             this.PLAYERS.push(newUser)
         }
 
@@ -92,6 +94,10 @@ class UserHandler extends PersistentObject {
 
         console.log("Unfound player disconnected")
     }
+
+    public deletePlayer = (uuid: string): void => { this.PLAYERS = this.PLAYERS.filter(p => p.uuid !== uuid) }
+    public deleteAdmin = (uuid: string): void => { this.ADMINS = this.ADMINS.filter(p => p.uuid !== uuid) }
+    public deletePresentation = (uuid: string): void => { this.PRESENTATIONS = this.PRESENTATIONS.filter(p => p.uuid !== uuid) }
 
     public setPlayerName = (uuid, name): void => {
         console.log("Set player name", uuid, name)
@@ -154,13 +160,17 @@ class UserHandler extends PersistentObject {
         this.save()
     }
 
-    public setGameToPlayer = (game: Game): void => {
+    public setGameToPlayers = (game: Game): void => {
         this.PLAYERS.forEach(player => {
-            player.topics = game.allTopics.map(topic => ({ topicId: topic.id, playerUuid: player.uuid, status: GamePlayerStatus.WAITING, isCodeShared: false }))
+            this.setGameToPlayer(player, game)
         })
 
         this.save()
     }
+    public setGameToPlayer = (player: Player, game: Game): void => {
+        player.topics = game.allTopics.map(topic => ({ topicId: topic.id, playerUuid: player.uuid, status: GamePlayerStatus.WAITING, isCodeShared: false }))
+    }
+
     public resetGameOnPlayer = (): void => {
         this.PLAYERS.forEach(player => {
             player.screen = GameScreen.LANDING_PAGE
@@ -175,9 +185,15 @@ class UserHandler extends PersistentObject {
     public getAllPlayers = (): Player[] => {
         return this.PLAYERS.map(p => p.toAdminPlayer())
     }
+    public getAllAdmins = (): Admin[] => {
+        return this.ADMINS.map(a => a.toAdminUi())
+    }
+    public getAllPresentations = (): Presentation[] => {
+        return this.PRESENTATIONS.map(p => p.toAdminUi())
+    }
 
     public getLeaderboard = (): GamePlayer[] => {
-        return this.PLAYERS.filter(p => p.name).map(p => p.toPublicPlayer())
+        return this.PLAYERS.filter(p => p.name && !p.waitForApprouval).map(p => p.toPublicPlayer())
     }
 
     public getAllPlayerTopics(topic: Topic): PlayerTopic[] {
@@ -266,8 +282,16 @@ class UserHandler extends PersistentObject {
     }
 
     public toString = (): string => {
-        const adminLabel = `${this.ADMINS.length} admin${this.ADMINS.length > 1 ? "s" : ""}`
-        const presLabel = `${this.PRESENTATIONS.length} pres.`
+        const connectedAdmins = this.ADMINS.filter(a => a.connected)
+        const disconnectedAdmins = this.ADMINS.filter(a => !a.connected)
+        const connectedAdminLabel = `${connectedAdmins.length} admin${connectedAdmins.length > 1 ? "s" : ""}`
+        const disconnectedAdminLabel = disconnectedAdmins.length ? ` (+${ disconnectedAdmins.length })` : ""
+
+        const connectedPres = this.PRESENTATIONS.filter(a => a.connected)
+        const disconnectedPres = this.PRESENTATIONS.filter(a => !a.connected)
+        const connectedPresLabel = `${connectedPres.length} pres.`
+        const disconnectedPresLabel = disconnectedPres.length ? ` (+${ disconnectedPres.length })` : ""
+
         const connectedPlayers = this.PLAYERS.filter(p => p.connected)
         const disconnectedPlayers = this.PLAYERS.filter(p => !p.connected)
         const connectedPlayerLabel =
@@ -277,7 +301,7 @@ class UserHandler extends PersistentObject {
             `${disconnectedPlayers.length} disconnected player${disconnectedPlayers.length > 1 ? "s" : ""} : ` +
             `${disconnectedPlayers.map(p => p.toString()).join(", ") || "-"}`
             : ""
-        const labels = [adminLabel, presLabel, connectedPlayerLabel, disconnectedPlayerLabel].filter(label => label)
+        const labels = [connectedAdminLabel + disconnectedAdminLabel, connectedPresLabel + disconnectedPresLabel, connectedPlayerLabel, disconnectedPlayerLabel].filter(label => label)
         if (labels.length) {
             return `There is ${labels.join(", ")}`
         }
@@ -302,16 +326,6 @@ class UserHandler extends PersistentObject {
         this.broadcastAdmin(topic, ...args)
         this.broadcastPlayers(topic, ...args)
         this.broadcastPresentation(topic, ...args)
-    }
-
-    public sendMessageToPlayer = (uuid, topic, message): void => {
-        const player = this.PLAYERS.find(p => p.uuid === uuid)
-        if (player) {
-            console.debug(`Sending message to player [${player.toString()}] on topic [${topic}].`)
-            player.socket?.emit(topic, message)
-        } else {
-            console.error(`Cannot send message to player [${uuid}] : not connected to server.`)
-        }
     }
 
     toJson(): PersistentObject {
