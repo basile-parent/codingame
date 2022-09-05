@@ -1,4 +1,4 @@
-import {FC, SyntheticEvent, useCallback, useContext, useEffect, useState} from 'react'
+import {ComponentProps, FC, SyntheticEvent, useCallback, useContext, useEffect, useState} from 'react'
 import {WSContext} from "../../../../common/context/WSContext"
 import ConnectedIcon from "../../../../common/components/ConnectedIcon"
 import {GamePlayer} from "../../../../types/Player"
@@ -9,6 +9,9 @@ import TopicHeaderCell from "./TopicHeaderCell";
 import DetailModal from "./DetailModal";
 import PlayerTable from "./PlayerTable";
 import AdminTable from "./AdminTable";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {IconProp} from "@fortawesome/fontawesome-svg-core";
+import PresentationTable from "./PresentationTable";
 
 type UserTableProps = {}
 
@@ -19,7 +22,8 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
         <>
             <div role="tablist" aria-label="Sample Tabs" className={styles.tabList}>
                 <TabButton currentTab={tab} targetTab={0} discriminant="player" onSetTab={setTab}>Joueurs</TabButton>
-                <TabButton currentTab={tab} targetTab={1} discriminant="admin" onSetTab={setTab}>Admin</TabButton>
+                <TabButton currentTab={tab} targetTab={1} discriminant="admin" onSetTab={setTab}>Admins</TabButton>
+                <TabButton currentTab={tab} targetTab={2} discriminant="presentation" onSetTab={setTab}>Présentations</TabButton>
             </div>
 
             <TabContent currentTab={tab} targetTab={0} discriminant="player">
@@ -28,6 +32,10 @@ const UserTable: FC<UserTableProps> = ({}: UserTableProps) => {
 
             <TabContent currentTab={tab} targetTab={1} discriminant="admin">
                 <AdminTable />
+            </TabContent>
+
+            <TabContent currentTab={tab} targetTab={2} discriminant="presentation">
+                <PresentationTable />
             </TabContent>
         </>
     )
@@ -56,5 +64,14 @@ const TabContent = (props: { currentTab: number, targetTab: number, discriminant
         { props.children }
     </div>
 )
+
+export const IconButton = (props: ComponentProps<'button'> & { icon: IconProp }) => {
+    const { icon, ...buttonProps } = props
+    return (
+        <button className={styles.iconButton} { ...buttonProps }>
+            <FontAwesomeIcon icon={icon}/>
+        </button>
+    );
+}
 
 export default UserTable

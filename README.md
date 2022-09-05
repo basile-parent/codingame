@@ -51,7 +51,8 @@ If you don't know enough reasonable people, play something else.
 - [x] Refacto client WS => event based
 - [ ] Go Redux !
 - [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
-- [ ] Cleanup type (Player / GamePlayer)
+- [ ] Cleanup types (Player / GamePlayer)
 - [ ] Mutualize back and front (types and src)
-- [ ] Cleanup backend
+- [ ] Cleanup backend (things are gone pretty messy...)
+- [ ] Bug (not really): weird behaviour when you open 2 tabs on the same browser for 2 differents roles (admin and player for example)
 - [ ] Handicaps

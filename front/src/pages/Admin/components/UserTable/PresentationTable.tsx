@@ -10,51 +10,49 @@ import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfir
 import WebsocketManager from "../../../../common/components/WebsocketManager";
 import {IconButton} from "./UserTable";
 
-type AdminTableProps = {}
-const AdminTable: FC<AdminTableProps> = ({}: AdminTableProps) => {
-    const {wsState: {admins}} = useContext(WSContext)
-    const handleDeleteAdmin = useCallback((uuid: string) => {
+type PresentationTableProps = {}
+const PresentationTable: FC<PresentationTableProps> = ({}: PresentationTableProps) => {
+    const {wsState: {presentations}} = useContext(WSContext)
+    const handleDeletePresentation = useCallback((uuid: string) => {
             ModalConfirm.confirm({
                 message: "Etes-vous sûr de vouloir supprimer cet utilisateur ? Toutes ses données seront effacées. Cette action est définitive.",
-                onConfirm: () => WebsocketManager.deleteAdmin(uuid)
+                onConfirm: () => WebsocketManager.deletePresentation(uuid)
             })
         }, []
     )
 
     return (
         <>
-            <table className={`table ${styles.table} ${styles.adminTable}`}>
+            <table className={`table ${styles.table} ${styles.presentationTable}`}>
                 <thead>
                 <tr>
-                    <th>Admin</th>
+                    <th>Presentation</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {
-                    admins?.map(admin => (
-                        <tr key={`admin-${admin.uuid}`}>
+                    presentations?.map(presentation => (
+                        <tr key={`presentation-${presentation.uuid}`}>
                             <td>
                                 <span className={styles.connectedIcon}>
-                                    <ConnectedIcon connected={admin.connected}/>
+                                    <ConnectedIcon connected={presentation.connected}/>
                                 </span>
-                                <span className={ admin.uuid === playerUtils.getPlayerUuid() ? styles.currentAdmin : "" }>
-                                    {admin.uuid}
-                                </span>
+                                {presentation.uuid}
                             </td>
                             <td>
                                 <IconButton icon={faTrash}
-                                            onClick={() => handleDeleteAdmin(admin.uuid)}
-                                            disabled={ admin.connected } />
+                                            onClick={() => handleDeletePresentation(presentation.uuid)}
+                                            disabled={ presentation.connected } />
                             </td>
                         </tr>
                     ))
                 }
                 {
-                    !admins?.length &&
+                    !presentations?.length &&
                     <tr>
                         <td colSpan={2}>
-                            Aucun utilisateur "admin" enregistré
+                            Aucun utilisateur "présentation" enregistré
                         </td>
                     </tr>
                 }
@@ -64,4 +62,4 @@ const AdminTable: FC<AdminTableProps> = ({}: AdminTableProps) => {
     )
 }
 
-export default AdminTable
+export default PresentationTable

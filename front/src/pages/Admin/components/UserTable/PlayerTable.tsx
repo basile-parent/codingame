@@ -43,6 +43,15 @@ const PlayerTable: FC<PlayerTableProps> = ({}: PlayerTableProps) => {
                             />
                         )
                 }
+
+                {
+                    !players?.length &&
+                    <tr>
+                        <td colSpan={3 + (game?.allTopics.length || 0)}>
+                            Aucun joueur enregistré
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
 
