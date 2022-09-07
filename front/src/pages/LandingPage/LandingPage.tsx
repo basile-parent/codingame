@@ -14,7 +14,7 @@ type LandingPageProps = {
 }
 const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
     const [userName, setUsername] = useState<string | null>(playerUtils.getPlayerName())
-    const {wsState: { game, connected }} = useContext(WSContext)
+    const {wsState: { game, connected, waitForApprouval }} = useContext(WSContext)
 
     const recordUsername = useCallback((newUserName: string): Promise<void> => {
         return new Promise((resolve, reject) => {
@@ -44,15 +44,17 @@ const LandingPage: FC<LandingPageProps> = ({ mode }: LandingPageProps) => {
 
                     {
                         !connected ?
-                            <h2>Connection en cours...</h2>:
-                            <PlayerList onChangeName={() => setUsername(null)} />
+                            <h2>Connection en cours...</h2> :
+                            waitForApprouval ?
+                                <h2>L'administrateur doit approuver votre demande d'accès...</h2> :
+                                <PlayerList onChangeName={() => setUsername(null)} />
                     }
                 </section>
 
                 {
                     mode === DisplayMode.PRESENTATION &&
                     <aside className={`${styles.gameLink} ${ game?.started ? styles.connectionOver : ""}`}>
-                      Pour rejoindre: <span>https://codingame.basileparent.fr</span>
+                      Pour rejoindre: <span>https://app.basileparent.fr/codingame</span>
                     </aside>
                 }
             </article>

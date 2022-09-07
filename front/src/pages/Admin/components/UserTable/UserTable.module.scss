@@ -73,7 +73,7 @@
     cursor: pointer;
 
     &:hover {
-      color: $lowlight;
+      color: $highlight;
     }
     &[disabled] {
       color: $lowlight;

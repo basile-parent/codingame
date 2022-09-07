@@ -95,12 +95,13 @@ class UserHandler extends PersistentObject {
         console.log("Unfound player disconnected")
     }
 
+    public approvePlayer = (uuid: string): void => { this.PLAYERS.find(p => p.uuid === uuid).waitForApprouval = false }
     public deletePlayer = (uuid: string): void => { this.PLAYERS = this.PLAYERS.filter(p => p.uuid !== uuid) }
     public deleteAdmin = (uuid: string): void => { this.ADMINS = this.ADMINS.filter(p => p.uuid !== uuid) }
     public deletePresentation = (uuid: string): void => { this.PRESENTATIONS = this.PRESENTATIONS.filter(p => p.uuid !== uuid) }
 
     public setPlayerName = (uuid, name): void => {
-        console.log("Set player name", uuid, name)
+        console.debug("Set player name", uuid, name)
         const index = this.PLAYERS.findIndex(p => p.uuid === uuid)
         const player = this.PLAYERS[index]
         player.name = name
@@ -168,6 +169,7 @@ class UserHandler extends PersistentObject {
         this.save()
     }
     public setGameToPlayer = (player: Player, game: Game): void => {
+        player.screen = game.currentScreen
         player.topics = game.allTopics.map(topic => ({ topicId: topic.id, playerUuid: player.uuid, status: GamePlayerStatus.WAITING, isCodeShared: false }))
     }
 

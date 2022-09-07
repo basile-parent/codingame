@@ -1,14 +1,13 @@
-import {ComponentProps, FC, useCallback, useContext} from 'react'
+import {FC, useCallback, useContext} from 'react'
 import {WSContext} from "../../../../common/context/WSContext"
 import styles from "./UserTable.module.scss"
 import ConnectedIcon from "../../../../common/components/ConnectedIcon";
 import playerUtils from "../../../../utils/playerUtils";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import {IconProp} from "@fortawesome/fontawesome-svg-core";
 import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm";
 import WebsocketManager from "../../../../common/components/WebsocketManager";
 import {IconButton} from "./UserTable";
+import {GamePlayer} from "../../../../types/Player";
 
 type AdminTableProps = {}
 const AdminTable: FC<AdminTableProps> = ({}: AdminTableProps) => {
@@ -32,23 +31,26 @@ const AdminTable: FC<AdminTableProps> = ({}: AdminTableProps) => {
                 </thead>
                 <tbody>
                 {
-                    admins?.map(admin => (
-                        <tr key={`admin-${admin.uuid}`}>
-                            <td>
+                    admins
+                        ?.sort(uuidComparator)
+                        .map(admin => (
+                            <tr key={`admin-${admin.uuid}`}>
+                                <td>
                                 <span className={styles.connectedIcon}>
                                     <ConnectedIcon connected={admin.connected}/>
                                 </span>
-                                <span className={ admin.uuid === playerUtils.getPlayerUuid() ? styles.currentAdmin : "" }>
+                                    <span
+                                        className={admin.uuid === playerUtils.getPlayerUuid() ? styles.currentAdmin : ""}>
                                     {admin.uuid}
                                 </span>
-                            </td>
-                            <td>
-                                <IconButton icon={faTrash}
-                                            onClick={() => handleDeleteAdmin(admin.uuid)}
-                                            disabled={ admin.connected } />
-                            </td>
-                        </tr>
-                    ))
+                                </td>
+                                <td>
+                                    <IconButton icon={faTrash}
+                                                onClick={() => handleDeleteAdmin(admin.uuid)}
+                                                disabled={admin.connected}/>
+                                </td>
+                            </tr>
+                        ))
                 }
                 {
                     !admins?.length &&
@@ -62,6 +64,10 @@ const AdminTable: FC<AdminTableProps> = ({}: AdminTableProps) => {
             </table>
         </>
     )
+}
+
+export const uuidComparator = (p1: GamePlayer, p2: GamePlayer) => {
+    return p1.uuid.localeCompare(p2.uuid)
 }
 
 export default AdminTable

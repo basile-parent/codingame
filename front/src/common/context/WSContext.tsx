@@ -15,6 +15,7 @@ type WSState = {
     game: Game | null,
     transitionTimeout: number,
     delayedState: WSState | null,
+    waitForApprouval: boolean,
 }
 type WSStateAction = {
     type: string,
@@ -29,6 +30,7 @@ const INTIAL_STATE: WSState = {
     game: null,
     transitionTimeout: 0,
     delayedState: null,
+    waitForApprouval: false,
 }
 const WSContext = createContext<{ wsState: WSState, dispatch: Dispatch<any> }>({ wsState: INTIAL_STATE, dispatch: () => null })
 

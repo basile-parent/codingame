@@ -10,7 +10,7 @@ type PlayerListProps = {
     onChangeName?: () => void
 }
 const PlayerList: FC<PlayerListProps> = ({ onChangeName }: PlayerListProps) => {
-    const {wsState} = useContext(WSContext);
+    const {wsState} = useContext(WSContext)
 
     return (
         <div className={styles.waitingPlayerList}>

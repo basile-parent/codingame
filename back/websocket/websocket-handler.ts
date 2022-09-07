@@ -59,6 +59,7 @@ class WebSocketServerHandler {
         socket.on("reinitTopic", this.reinitTopic)
         socket.on("addTime", this.addTime)
 
+        socket.on("approvePlayer", this.approvePlayer)
         socket.on("deletePlayer", this.deletePlayer)
         socket.on("deleteAdmin", this.deleteAdmin)
         socket.on("deletePresentation", this.deletePresentation)
@@ -156,6 +157,13 @@ class WebSocketServerHandler {
         this.broadcastStatus()
     }
 
+    private approvePlayer = (payload: { uuid: string }) => {
+        this.userHandler.approvePlayer(payload.uuid)
+        // @ts-ignore
+        console.log(this.userHandler.PLAYERS)
+        this.logPlayers()
+        this.broadcastStatus()
+    }
     private deletePlayer = (payload: { uuid: string }) => {
         this.userHandler.deletePlayer(payload.uuid)
         this.logPlayers()
@@ -189,7 +197,8 @@ class WebSocketServerHandler {
             players: this.userHandler.getAllPlayers(),
             admins: this.userHandler.getAllAdmins(),
             presentations: this.userHandler.getAllPresentations(),
-            transitionTimeout: this.GAME.transitionTimeout
+            transitionTimeout: this.GAME.transitionTimeout,
+            waitForApprouval: false,
         }
     }
 
@@ -198,7 +207,8 @@ class WebSocketServerHandler {
             screen: player.waitForApprouval ? GameScreen.LANDING_PAGE : player.screen,
             game: this.GAME.toPublicJson(),
             players: this.userHandler.getLeaderboard(),
-            transitionTimeout: this.GAME.transitionTimeout
+            transitionTimeout: this.GAME.transitionTimeout,
+            waitForApprouval: player.waitForApprouval,
         }
     }
 

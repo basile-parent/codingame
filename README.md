@@ -45,13 +45,16 @@ If you don't know enough reasonable people, play something else.
 - [x] Podium: Same position players
 - [x] Podium: Only 1 or 2 players
 - [x] ~~Bug prod: end timer loop~~ cannot reproduce
-- [ ] Admin: delete players + accept players after start
+- [x] Admin: delete players + accept players after start
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [x] Refacto client WS => event based
 - [ ] Go Redux !
 - [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
+- [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 - [ ] Cleanup types (Player / GamePlayer)
+- [ ] Externalize ModalConfirm to a specific repo
+- [ ] Externalize WebSocketManager to a specific repo ?
 - [ ] Mutualize back and front (types and src)
 - [ ] Cleanup backend (things are gone pretty messy...)
 - [ ] Bug (not really): weird behaviour when you open 2 tabs on the same browser for 2 differents roles (admin and player for example)

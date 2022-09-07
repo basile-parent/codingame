@@ -1,4 +1,5 @@
-import {FC, useContext, useState} from 'react'
+import {FC, useCallback, useContext, useState} from 'react'
+import {faCheck, faTrash} from "@fortawesome/free-solid-svg-icons"
 import {WSContext} from "../../../../common/context/WSContext"
 import ConnectedIcon from "../../../../common/components/ConnectedIcon"
 import {GamePlayer} from "../../../../types/Player"
@@ -7,12 +8,23 @@ import TopicStatus from "./TopicStatus"
 import styles from "./UserTable.module.scss"
 import TopicHeaderCell from "./TopicHeaderCell"
 import DetailModal from "./DetailModal"
+import {IconButton} from "./UserTable"
+import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm"
+import WebsocketManager from "../../../../common/components/WebsocketManager"
 
 type PlayerTableProps = {}
 
 const PlayerTable: FC<PlayerTableProps> = ({}: PlayerTableProps) => {
     const [ modalTopic, setModalTopic ] = useState<Topic | null>(null)
     const {wsState: {game, players}} = useContext(WSContext)
+    const handleDeletePlayer = useCallback((uuid: string) => {
+            ModalConfirm.confirm({
+                message: "Etes-vous sûr de vouloir supprimer cet utilisateur ? Toutes ses données seront effacées. Cette action est définitive.",
+                onConfirm: () => WebsocketManager.deletePlayer(uuid)
+            })
+        }, []
+    )
+    const handleApprovePlayer = useCallback((uuid: string) => WebsocketManager.approvePlayer(uuid), [])
 
     return (
         <>
@@ -29,6 +41,7 @@ const PlayerTable: FC<PlayerTableProps> = ({}: PlayerTableProps) => {
                             </th>
                         )
                     }
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,8 +51,10 @@ const PlayerTable: FC<PlayerTableProps> = ({}: PlayerTableProps) => {
                         .sort(_usernameComparator)
                         .map((player) =>
                             <PlayerRow player={player}
-                                     allTopics={game.allTopics}
-                                     key={`player-${player.name}`}
+                                       allTopics={game.allTopics}
+                                       key={`player-${player.name}`}
+                                       onDeletePlayer={handleDeletePlayer}
+                                       onApprovePlayer={handleApprovePlayer}
                             />
                         )
                 }
@@ -47,7 +62,7 @@ const PlayerTable: FC<PlayerTableProps> = ({}: PlayerTableProps) => {
                 {
                     !players?.length &&
                     <tr>
-                        <td colSpan={3 + (game?.allTopics.length || 0)}>
+                        <td colSpan={4 + (game?.allTopics.length || 0)}>
                             Aucun joueur enregistré
                         </td>
                     </tr>
@@ -76,8 +91,10 @@ const _usernameComparator = (p1: GamePlayer, p2: GamePlayer) => {
 type PlayerRowProps = {
     player: GamePlayer,
     allTopics: Topic[],
+    onDeletePlayer: (uuid: string) => void,
+    onApprovePlayer: (uuid: string) => void,
 }
-const PlayerRow: FC<PlayerRowProps> = ({player, allTopics}) => {
+const PlayerRow: FC<PlayerRowProps> = ({player, allTopics, onDeletePlayer, onApprovePlayer }) => {
     return (
         <tr>
             <td className={styles.player}>
@@ -96,6 +113,21 @@ const PlayerRow: FC<PlayerRowProps> = ({player, allTopics}) => {
                 allTopics.map(topic =>
                     <TopicStatus player={player} topic={topic} key={`player-${player.uuid}-topic-${topic.id}`} />)
             }
+            <td>
+                <IconButton icon={faTrash}
+                            title={"Supprimer ce joueur (toute sa progression sera supprimée)."}
+                            onClick={() => onDeletePlayer(player.uuid)}
+                            disabled={ player.connected }
+                />
+
+                { player.waitForApprouval &&
+                    <IconButton icon={faCheck}
+                                title={"Approuver l'ajout du joueur à la partie"}
+                                onClick={() => onApprovePlayer(player.uuid)}
+                                disabled={ !player.connected }
+                    />
+                }
+            </td>
         </tr>
     )
 }

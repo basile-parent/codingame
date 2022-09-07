@@ -15,7 +15,8 @@ export type GamePlayer = {
     score: number,
     position?: number,
     previousPosition?: number,
-    topics?: PlayerTopic[]
+    topics?: PlayerTopic[],
+    waitForApprouval: boolean,
 }
 
 export type PlayerTopic = {

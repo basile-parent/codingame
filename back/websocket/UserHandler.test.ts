@@ -62,4 +62,23 @@ describe("Userhandler tests", () => {
 
     })
 
+
+    describe('approvePlayer tests', function () {
+        it("approvePlayer should update the designed player", () => {
+            // Given
+            const userHandler = new UserHandler()
+            userHandler["PLAYERS"] = [
+                {uuid: "a", waitForApprouval: true,} as Player,
+                {uuid: "b", waitForApprouval: true,} as Player,
+            ]
+
+            // When
+            userHandler.approvePlayer("a")
+
+            // Then
+            expect(userHandler["PLAYERS"][0].waitForApprouval).toBeFalsy()
+            expect(userHandler["PLAYERS"][1].waitForApprouval).toBeTruthy()
+        })
+    })
+
 })

@@ -1,14 +1,12 @@
-import {ComponentProps, FC, useCallback, useContext} from 'react'
+import {FC, useCallback, useContext} from 'react'
 import {WSContext} from "../../../../common/context/WSContext"
 import styles from "./UserTable.module.scss"
-import ConnectedIcon from "../../../../common/components/ConnectedIcon";
-import playerUtils from "../../../../utils/playerUtils";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import {IconProp} from "@fortawesome/fontawesome-svg-core";
-import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm";
-import WebsocketManager from "../../../../common/components/WebsocketManager";
-import {IconButton} from "./UserTable";
+import ConnectedIcon from "../../../../common/components/ConnectedIcon"
+import {faTrash} from "@fortawesome/free-solid-svg-icons"
+import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm"
+import WebsocketManager from "../../../../common/components/WebsocketManager"
+import {IconButton} from "./UserTable"
+import {uuidComparator} from "./AdminTable"
 
 type PresentationTableProps = {}
 const PresentationTable: FC<PresentationTableProps> = ({}: PresentationTableProps) => {
@@ -32,7 +30,9 @@ const PresentationTable: FC<PresentationTableProps> = ({}: PresentationTableProp
                 </thead>
                 <tbody>
                 {
-                    presentations?.map(presentation => (
+                    presentations
+                        ?.sort(uuidComparator)
+                        .map(presentation => (
                         <tr key={`presentation-${presentation.uuid}`}>
                             <td>
                                 <span className={styles.connectedIcon}>
