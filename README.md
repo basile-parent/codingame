@@ -49,6 +49,7 @@ If you don't know enough reasonable people, play something else.
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [x] Refacto client WS => event based
+- [ ] Remove time as a factor of points in the shortest mode
 - [ ] Go Redux !
 - [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
@@ -59,3 +60,4 @@ If you don't know enough reasonable people, play something else.
 - [ ] Cleanup backend (things are gone pretty messy...)
 - [ ] Bug (not really): weird behaviour when you open 2 tabs on the same browser for 2 differents roles (admin and player for example)
 - [ ] Handicaps
+- [ ] Other modes: survival, ...

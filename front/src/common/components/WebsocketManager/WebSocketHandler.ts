@@ -2,20 +2,32 @@ import io from "socket.io-client"
 import {Socket} from "socket.io-client/build/esm/socket"
 import playerUtils from "../../../utils/playerUtils"
 import {DisplayMode} from "../../../types/DisplayMode"
-import {ReducerAction, WSAction} from "../../../types/Actions"
+import {WSAction} from "../../../types/Actions"
 import WebsocketManager from "./WebsocketManager";
+import {PayloadAction} from "@reduxjs/toolkit";
+import {ReduxActions, RootState} from "../../store";
+import {GamePlayer} from "../../../types/Player";
 
 type WSOptions = {
     mode?: DisplayMode,
-    path?: string
+    path?: string,
+    onConnect: () => void,
+    onDisconnect: () => void,
+    onSetPlayers: (players: GamePlayer[]) => void,
+    onNewEndTime: (newEndTime: number) => void,
+    onUpdate: (newStatus: RootState) => void,
 }
 class WebSocketHandler {
     private socket: Socket
-    private readonly onMessage: (action: ReducerAction) => void
+    private readonly onConnect: () => void
+    private readonly onDisconnect: () => void
+    private readonly onSetPlayers: (players: GamePlayer[]) => void
+    private readonly onNewEndTime: (newEndTime: number) => void
+    private readonly onUpdate: (newStatus: RootState) => void
     public isConnected: boolean
     private readonly mode: DisplayMode
 
-    constructor(url: string, onMessage: (action: ReducerAction) => void, options?: WSOptions) {
+    constructor(url: string, options: WSOptions) {
         this.isConnected = false
         this.mode = options?.mode || DisplayMode.PLAYER
 
@@ -30,7 +42,11 @@ class WebSocketHandler {
                     "X-UUID": playerUtils.getPlayerUuid()
                 }
             })
-        this.onMessage = onMessage
+        this.onConnect = options.onConnect
+        this.onDisconnect = options.onDisconnect
+        this.onSetPlayers = options.onSetPlayers
+        this.onNewEndTime = options.onNewEndTime
+        this.onUpdate = options.onUpdate
 
         this._initSocket()
     }
@@ -38,26 +54,36 @@ class WebSocketHandler {
     _initSocket() {
         this.socket.on("connect", () => {})
         this.socket.on("confirmConnect", () => {
+            this._logMessage("confirmConnect")
             this.isConnected = true
-            this.onMessage(ReducerAction.USER_CONNECTED())
+            this.onConnect()
             const userName = playerUtils.getPlayerName()
             if (userName) {
                 WebsocketManager.setName(userName)
             }
         })
         this.socket.on("disconnect", () => {
+            this._logMessage("disconnect")
             this.isConnected = false
-            this.onMessage(ReducerAction.USER_DISCONNECTED())
+            this.onDisconnect()
         })
         this.socket.on("leaderboard", (players) => {
-            this.onMessage(ReducerAction.SET_PLAYERS(players))
+            this._logMessage("leaderboard", players)
+            this.onSetPlayers(players)
         })
         this.socket.on("status", (wsStatus) => {
-            this.onMessage(ReducerAction.STATUS(wsStatus))
+            this._logMessage("status", wsStatus)
+            this.onUpdate(wsStatus)
         })
         this.socket.on("newEndTime", (endTimer: number) => {
-            this.onMessage(ReducerAction.NEW_END_TIME(endTimer))
+            this._logMessage("newEndTime", endTimer)
+            this.onNewEndTime(endTimer)
         })
+    }
+
+    _debugStyle = "color: grey"
+    _logMessage = (messageId: string, payload?: any) => {
+        console.debug(`%c< [MESSAGE] ${ messageId }`, this._debugStyle, payload)
     }
 
     emit = (action: WSAction) => this._emit(action.type, action.payload)

@@ -68,16 +68,16 @@ describe("Userhandler tests", () => {
             // Given
             const userHandler = new UserHandler()
             userHandler["PLAYERS"] = [
-                {uuid: "a", waitForApprouval: true,} as Player,
-                {uuid: "b", waitForApprouval: true,} as Player,
+                {uuid: "a", waitForApproval: true,} as Player,
+                {uuid: "b", waitForApproval: true,} as Player,
             ]
 
             // When
             userHandler.approvePlayer("a")
 
             // Then
-            expect(userHandler["PLAYERS"][0].waitForApprouval).toBeFalsy()
-            expect(userHandler["PLAYERS"][1].waitForApprouval).toBeTruthy()
+            expect(userHandler["PLAYERS"][0].waitForApproval).toBeFalsy()
+            expect(userHandler["PLAYERS"][1].waitForApproval).toBeTruthy()
         })
     })
 

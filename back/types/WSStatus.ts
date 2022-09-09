@@ -12,7 +12,7 @@ type WSStatus = {
     presentations?: Presentation[],
     game: Game | null,
     transitionTimeout: number,
-    waitForApprouval: boolean,
+    waitForApproval: boolean,
 }
 
 export default WSStatus

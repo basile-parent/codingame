@@ -1,17 +1,18 @@
-import {FC, useContext, useState, useEffect} from 'react'
+import {FC, useEffect, useState} from 'react'
 import styles from "./ConnectionOverlay.module.scss"
-import {WSContext} from "../../../common/context/WSContext";
-import ConnectedIcon from "../../../common/components/ConnectedIcon";
-import PingActions from "../../../common/actions/PingActions";
+import ConnectedIcon from "../../../common/components/ConnectedIcon"
+import PingActions from "../../../common/actions/PingActions"
+import {useSelector} from "react-redux"
+import {RootState} from "../../../common/store"
 
 type ConnectionOverlayProps = {}
 const ConnectionOverlay: FC<ConnectionOverlayProps> = ({}: ConnectionOverlayProps) => {
-    const { wsState } = useContext(WSContext)
-    const [pingOK, setPingOK] = useState<boolean>(wsState.connected)
+    const connected = useSelector((state: RootState) => state.connected)
+    const [pingOK, setPingOK] = useState<boolean>(connected)
     const [pingInterval, setPingInterval] = useState<ReturnType<typeof setInterval> | null>(null)
 
     useEffect(() => {
-        if (wsState.connected) {
+        if (connected) {
             if (pingInterval) {
                 clearInterval(pingInterval)
                 setPingInterval(null)
@@ -27,10 +28,10 @@ const ConnectionOverlay: FC<ConnectionOverlayProps> = ({}: ConnectionOverlayProp
                 }, 1000))
             }
         }
-    }, [ wsState.connected, pingInterval ])
+    }, [ connected, pingInterval ])
 
     return (
-        <div className={`${styles.container} ${ wsState.connected ? styles.hidden : "" }`}>
+        <div className={`${styles.container} ${ connected ? styles.hidden : "" }`}>
             <div className={styles.content}>
                 <p className={styles.title}>Vous êtes déconnecté du serveur</p>
                 <p className={styles.title}>

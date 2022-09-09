@@ -1,15 +1,16 @@
-import {FC, useContext} from 'react'
-import {WSContext} from "../context/WSContext";
+import {FC} from 'react'
 import styles from "./ConnectedIcon.module.scss"
 import ConnectedIcon from "./ConnectedIcon";
+import {useSelector} from "react-redux";
+import {RootState} from "../store";
 
 type ConnectedAppIconProps = {}
 const ConnectedAppIcon: FC<ConnectedAppIconProps> = ({}: ConnectedAppIconProps) => {
-    const { wsState } = useContext(WSContext)
+    const connected = useSelector((state: RootState) => state.connected)
 
     return (
         <div className={styles.wrapper}>
-            <ConnectedIcon connected={wsState.connected} />
+            <ConnectedIcon connected={connected} />
         </div>
     )
 }

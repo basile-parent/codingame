@@ -1,14 +1,16 @@
-import {FC, useCallback, useContext, useEffect, useMemo, useState} from 'react'
-import {WSContext} from "../../../common/context/WSContext"
+import {FC, useCallback, useEffect, useMemo, useState} from 'react'
+import {useSelector} from "react-redux"
 import {Screen} from "../../../types/Screen"
 import styles from "./GameActions.module.scss"
-import ModalConfirm from "../../../common/components/ModalConfirm/ModalConfirm";
-import {TopicStatus} from "../../../types/Game";
-import WebsocketManager from "../../../common/components/WebsocketManager";
+import ModalConfirm from "../../../common/components/ModalConfirm/ModalConfirm"
+import {TopicStatus} from "../../../types/Game"
+import WebsocketManager from "../../../common/components/WebsocketManager"
+import {RootState} from "../../../common/store"
 
 type GameActionsProps = {}
 const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
-    const { wsState: { screen, game } } = useContext(WSContext)
+    const screen = useSelector((state: RootState) => state.screen)
+    const game = useSelector((state: RootState) => state.game)
 
     const handleTerminateTopic = useCallback(() => {
         ModalConfirm.confirm({
@@ -80,7 +82,8 @@ type AddTimeButtonProps = {
     onAddTime: (time: number) => void
 }
 const AddTimeButton: FC<AddTimeButtonProps> = ({ onAddTime }) => {
-    const { wsState: { screen, game } } = useContext(WSContext)
+    const screen = useSelector((state: RootState) => state.screen)
+    const game = useSelector((state: RootState) => state.game)
     const [ open, setOpen ] = useState(false)
     const [ customTime, setCustomTime ] = useState<number>(0)
     const disabled = useMemo(() => !game || screen !== Screen.GAME_EDITOR || game.topic?.status === TopicStatus.FINISHED, [game, screen])

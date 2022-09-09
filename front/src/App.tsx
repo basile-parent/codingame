@@ -1,25 +1,31 @@
-import {FC, useContext} from "react"
-import {WSContext} from "./common/context/WSContext"
+import {FC, useEffect} from "react"
 import ConnectedAppIcon from "./common/components/ConnectedAppIcon"
 import GameEditor from "./pages/GameEditor"
 import LandingPage from "./pages/LandingPage"
 import {Screen} from "./types/Screen"
 import AfterGame from "./pages/AfterGame/AfterGame"
 import TransitionTimer from "./common/components/TransitionTimer"
-import Leaderboard from "./pages/Leaderboard/Leaderboard";
-import ModalConfirmDialog from "./common/components/ModalConfirm/ModalConfirmDialog";
-import Podium from "./pages/Podium/Podium";
-import {DisplayMode} from "./types/DisplayMode";
-import PresentationTopic from "./pages/PresentationTopic/PresentationTopic";
-import ThankYou from "./pages/ThankYou/ThankYou";
-import WebsocketProvider from "./common/components/WebsocketManager/WebsocketProvider";
+import Leaderboard from "./pages/Leaderboard/Leaderboard"
+import ModalConfirmDialog from "./common/components/ModalConfirm/ModalConfirmDialog"
+import Podium from "./pages/Podium/Podium"
+import {DisplayMode} from "./types/DisplayMode"
+import PresentationTopic from "./pages/PresentationTopic/PresentationTopic"
+import ThankYou from "./pages/ThankYou/ThankYou"
+import WebsocketProvider from "./common/components/WebsocketManager/WebsocketProvider"
+import {useDispatch, useSelector} from "react-redux"
+import {ReduxActions, RootState} from "./common/store"
 
 type AppProps = {}
 const App: FC<AppProps> = ({}) => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(ReduxActions.mode.setMode(DisplayMode.PLAYER))
+    })
+
     return (
         <>
             <ModalConfirmDialog />
-            <WebsocketProvider />
+            <WebsocketProvider mode={DisplayMode.PLAYER} />
 
             <aside><ConnectedAppIcon /></aside>
             <aside><TransitionTimer /></aside>
@@ -31,7 +37,8 @@ const App: FC<AppProps> = ({}) => {
 
 type CurrentPageProps = {}
 const CurrentPage: FC<CurrentPageProps> = () => {
-    const { wsState: { screen, mode } } = useContext(WSContext)
+    const screen = useSelector((state: RootState) => state.screen)
+    const mode = useSelector((state: RootState) => state.mode)
 
     if (screen === Screen.GAME_EDITOR) {
         if (mode === DisplayMode.PRESENTATION) {

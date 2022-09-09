@@ -1,16 +1,17 @@
-import {FC, useCallback, useContext} from 'react'
-import {WSContext} from "../../../../common/context/WSContext"
+import {FC, useCallback} from 'react'
+import {useSelector} from "react-redux"
+import {faTrash} from "@fortawesome/free-solid-svg-icons"
 import styles from "./UserTable.module.scss"
 import ConnectedIcon from "../../../../common/components/ConnectedIcon"
-import {faTrash} from "@fortawesome/free-solid-svg-icons"
 import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm"
 import WebsocketManager from "../../../../common/components/WebsocketManager"
 import {IconButton} from "./UserTable"
 import {uuidComparator} from "./AdminTable"
+import {RootState} from "../../../../common/store"
 
 type PresentationTableProps = {}
 const PresentationTable: FC<PresentationTableProps> = ({}: PresentationTableProps) => {
-    const {wsState: {presentations}} = useContext(WSContext)
+    const presentations = useSelector((state: RootState) => state.presentations)
     const handleDeletePresentation = useCallback((uuid: string) => {
             ModalConfirm.confirm({
                 message: "Etes-vous sûr de vouloir supprimer cet utilisateur ? Toutes ses données seront effacées. Cette action est définitive.",

@@ -1,17 +1,18 @@
-import {FC, useCallback, useContext} from 'react'
-import {WSContext} from "../../../../common/context/WSContext"
+import {FC, useCallback} from 'react'
 import styles from "./UserTable.module.scss"
-import ConnectedIcon from "../../../../common/components/ConnectedIcon";
-import playerUtils from "../../../../utils/playerUtils";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm";
-import WebsocketManager from "../../../../common/components/WebsocketManager";
-import {IconButton} from "./UserTable";
-import {GamePlayer} from "../../../../types/Player";
+import ConnectedIcon from "../../../../common/components/ConnectedIcon"
+import playerUtils from "../../../../utils/playerUtils"
+import {faTrash} from "@fortawesome/free-solid-svg-icons"
+import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm"
+import WebsocketManager from "../../../../common/components/WebsocketManager"
+import {IconButton} from "./UserTable"
+import {GamePlayer} from "../../../../types/Player"
+import {useSelector} from "react-redux"
+import {RootState} from "../../../../common/store"
 
 type AdminTableProps = {}
 const AdminTable: FC<AdminTableProps> = ({}: AdminTableProps) => {
-    const {wsState: {admins}} = useContext(WSContext)
+    const admins = useSelector((state: RootState) => state.admins)
     const handleDeleteAdmin = useCallback((uuid: string) => {
             ModalConfirm.confirm({
                 message: "Etes-vous sûr de vouloir supprimer cet utilisateur ? Toutes ses données seront effacées. Cette action est définitive.",

@@ -1,6 +1,5 @@
-import {FC, useCallback, useContext, useState} from 'react'
+import {FC, useCallback, useState} from 'react'
 import {faCheck, faTrash} from "@fortawesome/free-solid-svg-icons"
-import {WSContext} from "../../../../common/context/WSContext"
 import ConnectedIcon from "../../../../common/components/ConnectedIcon"
 import {GamePlayer} from "../../../../types/Player"
 import {Topic} from "../../../../types/Game"
@@ -11,12 +10,15 @@ import DetailModal from "./DetailModal"
 import {IconButton} from "./UserTable"
 import ModalConfirm from "../../../../common/components/ModalConfirm/ModalConfirm"
 import WebsocketManager from "../../../../common/components/WebsocketManager"
+import {useSelector} from "react-redux"
+import {RootState} from "../../../../common/store"
 
 type PlayerTableProps = {}
 
 const PlayerTable: FC<PlayerTableProps> = ({}: PlayerTableProps) => {
     const [ modalTopic, setModalTopic ] = useState<Topic | null>(null)
-    const {wsState: {game, players}} = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
+    const players = useSelector((state: RootState) => state.players)
     const handleDeletePlayer = useCallback((uuid: string) => {
             ModalConfirm.confirm({
                 message: "Etes-vous sûr de vouloir supprimer cet utilisateur ? Toutes ses données seront effacées. Cette action est définitive.",
@@ -120,7 +122,7 @@ const PlayerRow: FC<PlayerRowProps> = ({player, allTopics, onDeletePlayer, onApp
                             disabled={ player.connected }
                 />
 
-                { player.waitForApprouval &&
+                { player.waitForApproval &&
                     <IconButton icon={faCheck}
                                 title={"Approuver l'ajout du joueur à la partie"}
                                 onClick={() => onApprovePlayer(player.uuid)}

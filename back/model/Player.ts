@@ -9,19 +9,19 @@ class Player implements User {
     public name: string
     public screen: GameScreen
     public connected: boolean
-    public waitForApprouval: boolean
+    public waitForApproval: boolean
     public previousScore: number
     public score: number
     public position?: number
     public previousPosition?: number
     public topics?: PlayerTopic[]
 
-    constructor(socket?: Socket, uuid?: string, name?: string, connected?: boolean, waitForApprouval?: boolean) {
+    constructor(socket?: Socket, uuid?: string, name?: string, connected?: boolean, waitForApproval?: boolean) {
         this.socket = socket
         this.uuid = uuid
         this.name = name
         this.connected = connected ?? false
-        this.waitForApprouval = waitForApprouval ?? false
+        this.waitForApproval = waitForApproval ?? false
         this.previousScore = 0
         this.score = 0
         this.screen = GameScreen.LANDING_PAGE

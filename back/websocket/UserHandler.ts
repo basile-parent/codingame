@@ -95,7 +95,7 @@ class UserHandler extends PersistentObject {
         console.log("Unfound player disconnected")
     }
 
-    public approvePlayer = (uuid: string): void => { this.PLAYERS.find(p => p.uuid === uuid).waitForApprouval = false }
+    public approvePlayer = (uuid: string): void => { this.PLAYERS.find(p => p.uuid === uuid).waitForApproval = false }
     public deletePlayer = (uuid: string): void => { this.PLAYERS = this.PLAYERS.filter(p => p.uuid !== uuid) }
     public deleteAdmin = (uuid: string): void => { this.ADMINS = this.ADMINS.filter(p => p.uuid !== uuid) }
     public deletePresentation = (uuid: string): void => { this.PRESENTATIONS = this.PRESENTATIONS.filter(p => p.uuid !== uuid) }
@@ -195,7 +195,9 @@ class UserHandler extends PersistentObject {
     }
 
     public getLeaderboard = (): GamePlayer[] => {
-        return this.PLAYERS.filter(p => p.name && !p.waitForApprouval).map(p => p.toPublicPlayer())
+        return this.PLAYERS
+            .filter(p => p.connected && p.name && !p.waitForApproval)
+            .map(p => p.toPublicPlayer())
     }
 
     public getAllPlayerTopics(topic: Topic): PlayerTopic[] {

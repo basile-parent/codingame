@@ -16,7 +16,7 @@ export type GamePlayer = {
     position?: number,
     previousPosition?: number,
     topics?: PlayerTopic[],
-    waitForApprouval: boolean,
+    waitForApproval: boolean,
 }
 
 export type PlayerTopic = {

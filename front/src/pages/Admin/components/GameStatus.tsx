@@ -1,20 +1,23 @@
-import {FC, useCallback, useContext, useEffect, useState} from 'react'
-import {WSContext} from "../../../common/context/WSContext"
+import {FC, useCallback, useEffect, useState} from 'react'
+import {useSelector} from "react-redux"
 import GameActions from "./GameActions"
 import styles from "./GameStatus.module.scss"
-import Timer from "../../../common/components/Timer";
-import {toTopicStatusLabel} from "../../../types/Game";
-import WebsocketManager from "../../../common/components/WebsocketManager";
+import Timer from "../../../common/components/Timer"
+import {toTopicStatusLabel} from "../../../types/Game"
+import WebsocketManager from "../../../common/components/WebsocketManager"
+import {RootState} from "../../../common/store"
 
 type GameStatusProps = {}
 const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
-    const { wsState } = useContext(WSContext)
+    const screen = useSelector((state: RootState) => state.screen)
+    const game = useSelector((state: RootState) => state.game)
+    const transitionTimeout = useSelector((state: RootState) => state.transitionTimeout)
     const [ preventEndTimer, setPreventEndTimer ] = useState(false)
 
     useEffect(() => {
-        console.debug("Check prevent endTimer", wsState.game?.endTimer, !wsState.game?.endTimer || wsState.game.endTimer! < new Date().getTime())
-        setPreventEndTimer(!wsState.game?.endTimer || wsState.game.endTimer! < new Date().getTime())
-    }, [ wsState.game?.endTimer ])
+        console.debug("Check prevent endTimer", game?.endTimer, !game?.endTimer || game.endTimer! < new Date().getTime())
+        setPreventEndTimer(!game?.endTimer || game.endTimer! < new Date().getTime())
+    }, [ game?.endTimer ])
 
     const handleEndTimer = useCallback(() => {
         if (preventEndTimer) {
@@ -30,20 +33,20 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
         <article className={styles.wrapper}>
             <section className={styles.status}>
                 <ul>
-                    <li><label>Ecran: </label>{ wsState.screen }</li>
+                    <li><label>Ecran: </label>{ screen }</li>
                     {
-                        wsState.game?.topic && (
+                        game?.topic && (
                             <>
-                                <li><label>Exercice: </label> ({ wsState.game.topic.gameMode }) #{ wsState.game.topic.id }: { wsState.game.topic.summary }</li>
-                                <li><label>Statut: </label> { toTopicStatusLabel(wsState.game.topic.status) }</li>
-                                <li><label>Timer: </label><Timer endTimer={ wsState.game.endTimer! } onEndTimer={handleEndTimer} /></li>
+                                <li><label>Exercice: </label> ({ game.topic.gameMode }) #{ game.topic.id }: { game.topic.summary }</li>
+                                <li><label>Statut: </label> { toTopicStatusLabel(game.topic.status) }</li>
+                                <li><label>Timer: </label><Timer endTimer={ game.endTimer! } onEndTimer={handleEndTimer} /></li>
                             </>
                         )
                     }
                     {
-                        wsState.transitionTimeout > 0 && (
+                        transitionTimeout > 0 && (
                             <>
-                                <li><label>Countdown: </label><Timer endTimer={ new Date().getTime() + wsState.transitionTimeout } /></li>
+                                <li><label>Countdown: </label><Timer endTimer={ new Date().getTime() + transitionTimeout } /></li>
                             </>
                         )
                     }

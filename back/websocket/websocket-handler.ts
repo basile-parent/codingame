@@ -198,17 +198,17 @@ class WebSocketServerHandler {
             admins: this.userHandler.getAllAdmins(),
             presentations: this.userHandler.getAllPresentations(),
             transitionTimeout: this.GAME.transitionTimeout,
-            waitForApprouval: false,
+            waitForApproval: false,
         }
     }
 
     private getPlayerStatus = (player: Player): WSStatus => {
         return {
-            screen: player.waitForApprouval ? GameScreen.LANDING_PAGE : player.screen,
+            screen: player.waitForApproval ? GameScreen.LANDING_PAGE : player.screen,
             game: this.GAME.toPublicJson(),
             players: this.userHandler.getLeaderboard(),
             transitionTimeout: this.GAME.transitionTimeout,
-            waitForApprouval: player.waitForApprouval,
+            waitForApproval: player.waitForApproval,
         }
     }
 

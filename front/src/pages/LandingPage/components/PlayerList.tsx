@@ -1,26 +1,28 @@
-import {FC, useContext} from 'react'
-import {faUser} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import styles from "./PlayerList.module.scss";
-import {WSContext} from "../../../common/context/WSContext";
-import playerUtils from "../../../utils/playerUtils";
-import {GamePlayer} from "../../../types/Player";
+import {FC} from 'react'
+import {faUser} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import styles from "./PlayerList.module.scss"
+import playerUtils from "../../../utils/playerUtils"
+import {GamePlayer} from "../../../types/Player"
+import {useSelector} from "react-redux"
+import {RootState} from "../../../common/store"
 
 type PlayerListProps = {
     onChangeName?: () => void
 }
+
 const PlayerList: FC<PlayerListProps> = ({ onChangeName }: PlayerListProps) => {
-    const {wsState} = useContext(WSContext)
+    const players = useSelector((state: RootState) => state.players)
 
     return (
         <div className={styles.waitingPlayerList}>
             {
-                !wsState.players.length ?
+                !players.length ?
                     <p>En attente de joueurs...</p>:
                     <ul>
                         {
-                            wsState.players
-                                .sort((p1, p2) => p1.name.localeCompare(p2.name))
+                            [...players]
+                                .sort(_nameComparator)
                                 .map((player, index) => (
                                 <Player key={`player-${ index }`} player={player} onChangeName={onChangeName} />
                             ))
@@ -30,6 +32,8 @@ const PlayerList: FC<PlayerListProps> = ({ onChangeName }: PlayerListProps) => {
         </div>
     )
 }
+
+const _nameComparator = (p1: GamePlayer, p2: GamePlayer) => p1.name.localeCompare(p2.name)
 
 type PlayerProps = {
     player: GamePlayer,
