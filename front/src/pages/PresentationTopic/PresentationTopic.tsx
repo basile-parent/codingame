@@ -1,25 +1,25 @@
-import {FC, useContext, useEffect, useState} from "react"
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
-import Timer from "../../common/components/Timer"
-import {WSContext} from "../../common/context/WSContext"
+import {FC, useEffect, useState} from "react"
+import {useSelector} from "react-redux"
+import {CountdownCircleTimer} from 'react-countdown-circle-timer'
 import styles from "./PresentationTopic.module.scss"
-import dateUtils from "../../utils/dateUtils";
-import AfterGameLeaderboard from "../AfterGame/AfterGameLeaderboard";
+import dateUtils from "../../utils/dateUtils"
+import AfterGameLeaderboard from "../AfterGame/AfterGameLeaderboard"
+import {RootState} from "../../common/store"
 
 type PresentationTopicProps = {}
 const PresentationTopic: FC<PresentationTopicProps> = ({}: PresentationTopicProps) => {
-    const { wsState } = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
     const [remainingTime, setRemainingTime] = useState<number>(0)
 
     useEffect(() => {
-        setRemainingTime(Math.round((wsState.game!.endTimer! - new Date().getTime()) / 1000))
-    }, [ wsState ])
+        setRemainingTime(Math.round((game!.endTimer! - new Date().getTime()) / 1000))
+    }, [ game!.endTimer ])
 
-    if (!wsState.game?.topic?.timer || !remainingTime) {
+    if (!game?.topic?.timer || !remainingTime) {
         return <>Laoding...</>
     }
 
-    let duration = wsState.game?.topic?.timer / 1000;
+    let duration = game?.topic?.timer / 1000
     console.log("duration", duration)
     console.log("remainingTime", remainingTime)
 

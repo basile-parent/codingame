@@ -51,6 +51,7 @@ If you don't know enough reasonable people, play something else.
 - [x] Refacto client WS => event based
 - [ ] Remove time as a factor of points in the shortest mode
 - [ ] Go Redux !
+- [ ] Save temp code => throttle
 - [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 - [ ] Cleanup types (Player / GamePlayer)

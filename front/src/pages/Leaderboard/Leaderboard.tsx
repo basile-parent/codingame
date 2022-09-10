@@ -1,9 +1,10 @@
-import {FC, useContext, useEffect, useState} from 'react'
-import {WSContext} from "../../common/context/WSContext"
+import {FC, useEffect, useState} from 'react'
+import {useSelector} from "react-redux"
 import {GamePlayer} from "../../types/Player"
 import styles from "./Leaderboard.module.scss"
 import LeaderboardPlayerItem from "./LeaderboardPlayerItem"
-import FixFlipMove from "./FixFlipMove";
+import FixFlipMove from "./FixFlipMove"
+import {RootState} from "../../common/store"
 
 const _previousScoreComparator = (p1: GamePlayer, p2: GamePlayer) => {
     return p2.previousScore - p1.previousScore
@@ -16,7 +17,7 @@ type LeaderboardProps = {}
 const Leaderboard: FC<LeaderboardProps> = ({}: LeaderboardProps) => {
     const [ sortComparator, setSortComparator ] = useState(() => _previousScoreComparator)
     const [ animationEnded, setAnimationEnded ] = useState(false)
-    const {wsState: {players}} = useContext(WSContext)
+    const players = useSelector((state: RootState) => state.players)
 
     useEffect(() => {
         setTimeout(() => {

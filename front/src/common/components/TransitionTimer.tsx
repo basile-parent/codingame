@@ -1,20 +1,21 @@
-import {FC, useContext, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
+import {useSelector} from "react-redux"
 import styles from "./TransitionTimer.module.scss"
-import {WSContext} from "../context/WSContext";
+import {RootState} from "../store"
 
 type TransitionTimeoutProps = {}
 const TransitionTimer: FC<TransitionTimeoutProps> = ({}: TransitionTimeoutProps) => {
-    const { wsState } = useContext(WSContext)
-    const [ transitionTimeout, setTransitionTimeout ] = useState(wsState.transitionTimeout ? wsState.transitionTimeout / 1000 : 0)
+    const storeTransitionTimeout = useSelector((state: RootState) => state.transitionTimeout)
+    const [ transitionTimeout, setTransitionTimeout ] = useState(storeTransitionTimeout ? storeTransitionTimeout / 1000 : 0)
 
     useEffect(() => {
-        const newTransitionTimeout = wsState.transitionTimeout
+        const newTransitionTimeout = storeTransitionTimeout
         if (newTransitionTimeout) {
             setTransitionTimeout(newTransitionTimeout / 1000)
         } else {
             setTransitionTimeout(0)
         }
-    }, [ wsState.transitionTimeout ])
+    }, [ storeTransitionTimeout ])
 
     if (!transitionTimeout) {
         return <></>

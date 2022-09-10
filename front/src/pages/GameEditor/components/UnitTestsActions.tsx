@@ -1,15 +1,17 @@
-import {FC, useContext} from 'react'
-import {faPlay, faCheck} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FC} from 'react'
+import {useSelector} from "react-redux"
+import {faCheck, faPlay} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import styles from "./UnitTestActions.module.scss"
-import {WSContext} from "../../../common/context/WSContext";
+import {RootState} from "../../../common/store"
 
 type UnitTestsActionsProps = {
     onPlayAllTest: () => void,
     onCommitCode: () => void,
 }
 const UnitTestsActions: FC<UnitTestsActionsProps> = ({ onPlayAllTest, onCommitCode }: UnitTestsActionsProps) => {
-    const { wsState } = useContext(WSContext)
+    const connected = useSelector((state: RootState) => state.connected)
+    
     return (
         <>
             <button className={`button is-light ${ styles.unitTestsExecuteAll }`}
@@ -19,7 +21,7 @@ const UnitTestsActions: FC<UnitTestsActionsProps> = ({ onPlayAllTest, onCommitCo
             </button>
             <button className={`button is-light ${ styles.submitSolution }`}
                     onClick={onCommitCode}
-                    disabled={!wsState.connected}
+                    disabled={!connected}
             >
                 <FontAwesomeIcon icon={faCheck} /> Soumettre
             </button>

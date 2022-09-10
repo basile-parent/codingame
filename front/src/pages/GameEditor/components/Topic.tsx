@@ -1,12 +1,13 @@
-import {FC, useContext} from 'react'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
+import {FC} from 'react'
+import {useSelector} from "react-redux"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faPaperPlane} from "@fortawesome/free-solid-svg-icons"
 import styles from "./Topic.module.scss"
-import {WSContext} from "../../../common/context/WSContext";
+import {RootState} from "../../../common/store"
 
 type TopicProps = {}
 const Topic: FC<TopicProps> = ({}: TopicProps) => {
-    const {wsState: {game}} = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
 
     const topic = game!.topic!
 

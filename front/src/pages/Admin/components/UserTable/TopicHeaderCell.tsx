@@ -1,10 +1,11 @@
-import {FC, useCallback, useContext, useMemo, useState} from 'react'
+import {FC, useCallback, useMemo, useState} from 'react'
+import {useSelector} from "react-redux"
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Topic, TopicStatus} from "../../../../types/Game"
-import {WSContext} from "../../../../common/context/WSContext";
-import WebsocketManager from "../../../../common/components/WebsocketManager";
+import WebsocketManager from "../../../../common/components/WebsocketManager"
 import styles from "./TopicHeaderCell.module.scss"
+import {RootState} from "../../../../common/store"
 
 type TopicHeaderCellProps = {
     topic: Topic,
@@ -12,7 +13,7 @@ type TopicHeaderCellProps = {
 }
 const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: TopicHeaderCellProps) => {
     const [ open, setOpen ] = useState(false)
-    const { wsState: { game } } = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
 
     const handleStartTopic = useCallback(() => {
         WebsocketManager.startTopic(topic.id)
@@ -27,7 +28,7 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
     const handleDetails = useCallback(() => {
         onDetailTopic(topic)
         setOpen(false)
-    }, []);
+    }, [])
 
     const isDisabled = useMemo<boolean>(() => !game?.started || !!game?.topic, [ game ])
 

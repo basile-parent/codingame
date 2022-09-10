@@ -32,7 +32,7 @@ const AdminTable: FC<AdminTableProps> = ({}: AdminTableProps) => {
                 </thead>
                 <tbody>
                 {
-                    admins
+                    [ ...admins ]
                         ?.sort(uuidComparator)
                         .map(admin => (
                             <tr key={`admin-${admin.uuid}`}>

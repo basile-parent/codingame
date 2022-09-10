@@ -1,15 +1,17 @@
-import {FC, useContext, useEffect, useState} from 'react'
+import {FC, useEffect, useState} from 'react'
+import {useSelector} from "react-redux"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faHourglass, faPuzzlePiece} from '@fortawesome/free-solid-svg-icons'
 import {ReactComponent as AtecnaIcon} from "../../../assets/logo-cube.svg"
 import styles from "./Header.module.scss"
-import {WSContext} from "../../../common/context/WSContext";
-import Timer from "../../../common/components/Timer";
-import gameModeUtils from "../../../utils/gameModeUtils";
+import Timer from "../../../common/components/Timer"
+import gameModeUtils from "../../../utils/gameModeUtils"
+import {RootState} from "../../../common/store"
 
 type HeaderProps = {}
 const Header: FC<HeaderProps> = ({}: HeaderProps) => {
-    const {wsState: { game }} = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
+    
     const [ endTimer, setEndTimer ] = useState<number>(game!.endTimer!)
 
     useEffect(() => {
@@ -24,7 +26,7 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
             </h1>
             <p className={styles.gameMode}>
                 <FontAwesomeIcon icon={faPuzzlePiece}/>
-                Mode de jeu : &nbsp;
+                Mode de jeu : &nbsp
                 {
                     gameModeUtils.informations[game!.topic!.gameMode || ""]?.title || "???"
                 }

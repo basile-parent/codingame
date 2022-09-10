@@ -49,7 +49,7 @@ const PlayerTable: FC<PlayerTableProps> = ({}: PlayerTableProps) => {
                 <tbody>
                 {
                     game &&
-                    players
+                    [ ...players ]
                         .sort(_usernameComparator)
                         .map((player) =>
                             <PlayerRow player={player}

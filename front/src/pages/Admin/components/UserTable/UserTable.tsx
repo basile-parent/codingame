@@ -1,12 +1,5 @@
-import {ComponentProps, FC, SyntheticEvent, useCallback, useContext, useEffect, useState} from 'react'
-import {WSContext} from "../../../../common/context/WSContext"
-import ConnectedIcon from "../../../../common/components/ConnectedIcon"
-import {GamePlayer} from "../../../../types/Player"
-import {Topic} from "../../../../types/Game"
-import TopicStatus from "./TopicStatus"
+import {ComponentProps, FC, useState} from 'react'
 import styles from "./UserTable.module.scss"
-import TopicHeaderCell from "./TopicHeaderCell";
-import DetailModal from "./DetailModal";
 import PlayerTable from "./PlayerTable";
 import AdminTable from "./AdminTable";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

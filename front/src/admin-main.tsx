@@ -8,12 +8,10 @@ import {Provider} from "react-redux"
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     // <React.StrictMode>
-    //     <WSProvider mode={DisplayMode.ADMIN}>
-        <Provider store={store}>
-            <AdminContextProvider>
-                <AdminApp/>
-            </AdminContextProvider>
-        </Provider>
-        // </WSProvider>
+    <Provider store={store}>
+        <AdminContextProvider>
+            <AdminApp/>
+        </AdminContextProvider>
+    </Provider>
     // </React.StrictMode>
 )

@@ -1,12 +1,13 @@
-import {FC, useContext} from "react"
-import styles from "./Chart.module.scss"
+import {FC} from "react"
 import CountUp from "react-countup"
+import {useSelector} from "react-redux"
+import styles from "./Chart.module.scss"
 import stripesUrl from "./radial-stripes.png"
 import bronzeMedalUrl from "./medal-bronze.svg"
 import silverMedalUrl from "./medal-silver.svg"
 import goldMedalUrl from "./medal-gold.svg"
-import {GamePlayer} from "../../../types/Player";
-import {WSContext} from "../../../common/context/WSContext";
+import {GamePlayer} from "../../../types/Player"
+import {RootState} from "../../../common/store"
 
 const delayBaseLine = 4.5
 const delayStartShowPosition = delayBaseLine + 2
@@ -33,7 +34,7 @@ type PlayerNameWithScore = {
 
 type ChartProps = {}
 const Chart: FC<ChartProps> = ({}: ChartProps) => {
-    const { wsState: {players}} = useContext(WSContext)
+    const players = useSelector((state: RootState) => state.players)
 
     const thirdPositionPlayers = reducePlayersByPosition(players, 3)
     const secondPositionPlayers = reducePlayersByPosition(players, 2)

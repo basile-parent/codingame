@@ -1,16 +1,17 @@
-import {FC, useContext} from 'react'
-import {WSContext} from "../../../common/context/WSContext"
+import {FC} from 'react'
+import {useSelector} from "react-redux"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import styles from "./InstructionsModal.module.scss"
 import gameModeUtils from "../../../utils/gameModeUtils"
 import dateUtils from "../../../utils/dateUtils"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {RootState} from "../../../common/store"
 
 type InstructionsModalProps = {
     open: boolean,
     onClose: () => void
 }
 const InstructionsModal: FC<InstructionsModalProps> = ({open, onClose}: InstructionsModalProps) => {
-    const {wsState: { game }} = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
     const topic = game!.topic!
     const informations = gameModeUtils.informations[topic.gameMode || ""]
 

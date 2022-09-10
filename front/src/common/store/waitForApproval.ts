@@ -1,10 +1,17 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {RootState} from "./index";
 
 export const waitForApprovalSlice = createSlice({
     name: 'waitForApproval',
     initialState: false,
     reducers: {
         setWaitForApproval: (state, action: PayloadAction<boolean>) => action.payload,
+    },
+    extraReducers: (builder) => {
+        builder.addCase(
+            createAction<RootState>('update_store'),
+            (state, action) => action.payload.waitForApproval
+        )
     },
 })
 

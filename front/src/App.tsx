@@ -15,17 +15,19 @@ import WebsocketProvider from "./common/components/WebsocketManager/WebsocketPro
 import {useDispatch, useSelector} from "react-redux"
 import {ReduxActions, RootState} from "./common/store"
 
-type AppProps = {}
-const App: FC<AppProps> = ({}) => {
+type AppProps = {
+    mode: DisplayMode
+}
+const App: FC<AppProps> = ({ mode }) => {
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(ReduxActions.mode.setMode(DisplayMode.PLAYER))
+        dispatch(ReduxActions.mode.setMode(mode))
     })
 
     return (
         <>
             <ModalConfirmDialog />
-            <WebsocketProvider mode={DisplayMode.PLAYER} />
+            <WebsocketProvider mode={mode} />
 
             <aside><ConnectedAppIcon /></aside>
             <aside><TransitionTimer /></aside>

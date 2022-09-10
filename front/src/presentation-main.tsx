@@ -1,14 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.scss'
+import App from "./App"
+import store from "./common/store"
+import {Provider} from "react-redux"
 import {DisplayMode} from "./types/DisplayMode";
-import {WSProvider} from "./common/context/WSContext";
-import App from "./App";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     // <React.StrictMode>
-        <WSProvider mode={DisplayMode.PRESENTATION}>
-            <App />
-        </WSProvider>
+    <Provider store={store}>
+        <App mode={DisplayMode.PRESENTATION}/>
+    </Provider>
     // </React.StrictMode>
 )

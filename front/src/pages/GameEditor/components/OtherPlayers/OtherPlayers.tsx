@@ -1,17 +1,19 @@
-import {FC, useContext, useMemo} from 'react'
-import styles from './OtherPlayers.module.scss'
+import {FC, useMemo} from 'react'
+import {useSelector} from "react-redux"
 import {faUsers} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import styles from './OtherPlayers.module.scss'
 import OtherPlayerFastestItem from "./OtherPlayerFastestItem"
-import {WSContext} from "../../../../common/context/WSContext"
 import {GamePlayer} from "../../../../types/Player"
 import {Game, GameMode} from "../../../../types/Game"
 import leaderboardUtils from "../../../../utils/leaderboardUtils"
-import OtherPlayerShortestItem from "./OtherPlayerShortestItem";
+import OtherPlayerShortestItem from "./OtherPlayerShortestItem"
+import {RootState} from "../../../../common/store"
 
 type OtherPlayersProps = {}
 const OtherPlayers: FC<OtherPlayersProps> = ({}: OtherPlayersProps) => {
-    const {wsState: { game, players }} = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
+    const players = useSelector((state: RootState) => state.players)
     const comparator = useMemo(() => leaderboardUtils.getTopicPlayerDisplayProps(game!.topic!), [ game!.topic! ])
 
     return (

@@ -1,15 +1,16 @@
-import {FC, useContext, useEffect, useMemo, useState} from 'react'
-import {WSContext} from "../../common/context/WSContext"
+import {FC, useEffect, useMemo, useState} from 'react'
+import {useSelector} from "react-redux"
 import styles from "./Aftergame.module.scss"
 import {TopicStatus} from "../../types/Game"
 import Timer from "../../common/components/Timer"
 import CodeDialog from "./CodeDialog"
 import playerUtils from "../../utils/playerUtils"
 import AfterGameLeaderboard from "./AfterGameLeaderboard"
+import {RootState} from "../../common/store"
 
 type AfterGameProps = {}
 const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
-    const {wsState: {game}} = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
     const isFinished = useMemo(() => [ TopicStatus.FINISHED, TopicStatus.SCORE_CALCULATED ].includes(game!.topic!.status), [ game!.topic!.status ])
 
     const [ codeDialogContent, setCodeDialogContent ] = useState<string | null>(null)

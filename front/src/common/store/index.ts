@@ -1,62 +1,55 @@
-import {combineReducers, configureStore, PayloadAction} from "@reduxjs/toolkit"
-import _ from "lodash"
+import {configureStore, PayloadAction} from "@reduxjs/toolkit"
 import playersReducer, {setPlayers} from "./players"
 import adminsReducer, {setAdmins} from "./admins"
 import presentationsReducer, {setPresentations} from "./presentations"
 import modeReducer, {setMode} from "./mode"
 import screenReducer, {setScreen} from "./screen"
 import connectedReducer, {connect, disconnect} from "./connected"
-import gameReducer, {setGame, newEndTime} from "./game"
+import gameReducer, {newEndTime, setGame} from "./game"
 import waitForApprovalReducer, {setWaitForApproval} from "./waitForApproval"
 import transitionTimeoutReducer, {setTransitionTimeout} from "./transitionTimeout"
+import delayedStateReducer, {setDelayedState} from "./delayedState"
+import {DisplayMode} from "../../types/DisplayMode"
+import {GamePlayer} from "../../types/Player"
+import {Screen} from "../../types/Screen"
+import {Game} from "../../types/Game"
 
-const combinedReducer = combineReducers({
-    players: playersReducer,
-    admins: adminsReducer,
-    presentations: presentationsReducer,
-    mode: modeReducer,
-    screen: screenReducer,
-    connected: connectedReducer,
-    game: gameReducer,
-    waitForApproval: waitForApprovalReducer,
-    transitionTimeout: transitionTimeoutReducer,
-})
-
-// TODO Add state type
-const rootReducer = (state: any, action: PayloadAction<any>) => {
-    if (action.type === 'update_store') {
-        state = action.payload
-    }
-    return combinedReducer(state, action)
+export type RootState = {
+    mode: DisplayMode,
+    connected: boolean,
+    players: GamePlayer[],
+    admins: GamePlayer[],
+    presentations: GamePlayer[],
+    screen: Screen,
+    game: Game | null,
+    transitionTimeout: number,
+    delayedState: RootState | null,
+    waitForApproval: boolean,
 }
 
-const store = configureStore({
-    reducer: rootReducer
+const store = configureStore<RootState>({
+    reducer: {
+        mode: modeReducer,
+        connected: connectedReducer,
+        players: playersReducer,
+        admins: adminsReducer,
+        presentations: presentationsReducer,
+        screen: screenReducer,
+        game: gameReducer,
+        transitionTimeout: transitionTimeoutReducer,
+        waitForApproval: waitForApprovalReducer,
+        delayedState: delayedStateReducer,
+    }
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
+// export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {players: PlayersState, mode: ModeState, ...}
 export type AppDispatch = typeof store.dispatch
 
 // TODO delayedState
-const updateStore = (currentState: RootState, newState: RootState): PayloadAction<RootState> => {
-    console.log(rootReducer)
-    if (!_.isEqual(currentState.players, newState.players)) { setPlayers(newState.players) }
-    if (!_.isEqual(currentState.admins, newState.admins)) { setPlayers(newState.admins) }
-    if (!_.isEqual(currentState.presentations, newState.presentations)) { setPlayers(newState.presentations) }
-    if (currentState.mode !== newState.mode) { setMode(newState.mode) }
-    if (currentState.screen !== newState.screen) { setScreen(newState.screen) }
-    if (currentState.connected !== newState.connected) {
-        newState.connected ? connect() : disconnect()
-    }
-    if (!_.isEqual(currentState.game, newState.game)) {
-        setGame(newState.game!)
-    }
-    if (currentState.waitForApproval !== newState.waitForApproval) { setWaitForApproval(newState.waitForApproval) }
-    if (currentState.transitionTimeout !== newState.transitionTimeout) { setTransitionTimeout(newState.transitionTimeout) }
-
-    return { type: "update_store", payload: newState }
+const updateStore = (newState: RootState, meta?: string): PayloadAction<RootState, string, string | undefined> => {
+    return { type: "update_store", payload: newState, meta }
 }
 
 export const ReduxActions = {
@@ -69,6 +62,7 @@ export const ReduxActions = {
     game: { setGame, newEndTime },
     waitForApproval: { setWaitForApproval },
     transitionTimeout: { setTransitionTimeout },
+    delayedState: { setDelayedState },
     updateStore
 }
 

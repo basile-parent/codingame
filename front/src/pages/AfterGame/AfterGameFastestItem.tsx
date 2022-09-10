@@ -1,27 +1,28 @@
-import {FC, useContext} from 'react'
-import playerUtils from "../../utils/playerUtils";
-import styles from "./Aftergame.module.scss";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner, faUser} from "@fortawesome/free-solid-svg-icons";
-import {Game} from "../../types/Game";
-import {GamePlayer, PlayerTopic} from "../../types/Player";
-import dateUtils from "../../utils/dateUtils";
-import {WSContext} from "../../common/context/WSContext";
-import WebsocketManager from "../../common/components/WebsocketManager";
-import {DisplayMode} from "../../types/DisplayMode";
+import {FC} from 'react'
+import {useSelector} from "react-redux"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faSpinner, faUser} from "@fortawesome/free-solid-svg-icons"
+import playerUtils from "../../utils/playerUtils"
+import styles from "./Aftergame.module.scss"
+import {Game} from "../../types/Game"
+import {GamePlayer, PlayerTopic} from "../../types/Player"
+import dateUtils from "../../utils/dateUtils"
+import WebsocketManager from "../../common/components/WebsocketManager"
+import {DisplayMode} from "../../types/DisplayMode"
+import {RootState} from "../../common/store"
 
 const _getPlayerTopic = (player: GamePlayer, game: Game): PlayerTopic => {
-    return player.topics!.find(topic => topic.topicId === game.topic!.id)!;
+    return player.topics!.find(topic => topic.topicId === game.topic!.id)!
 }
 
 type AfterGameFastestItemProps = {
-    game: Game,
     player: GamePlayer,
     onOpenCodeDialog: (code: string) => void,
 }
-const AfterGameFastestItem: FC<AfterGameFastestItemProps> = ({ game, player, onOpenCodeDialog }: AfterGameFastestItemProps) => {
-    const {wsState: { mode }} = useContext(WSContext)
-    const playerTopic = _getPlayerTopic(player, game)
+const AfterGameFastestItem: FC<AfterGameFastestItemProps> = ({ player, onOpenCodeDialog }: AfterGameFastestItemProps) => {
+    const mode = useSelector((state: RootState) => state.mode)
+    const game = useSelector((state: RootState) => state.game)
+    const playerTopic = _getPlayerTopic(player, game!)
     const isLocalPlayer = player.uuid === playerUtils.getPlayerUuid()
 
     return (

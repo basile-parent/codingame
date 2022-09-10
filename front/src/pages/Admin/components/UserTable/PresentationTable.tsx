@@ -31,7 +31,7 @@ const PresentationTable: FC<PresentationTableProps> = ({}: PresentationTableProp
                 </thead>
                 <tbody>
                 {
-                    presentations
+                    [ ...presentations ]
                         ?.sort(uuidComparator)
                         .map(presentation => (
                         <tr key={`presentation-${presentation.uuid}`}>

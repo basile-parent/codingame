@@ -1,17 +1,19 @@
-import {FC, useContext, useEffect, useMemo} from 'react'
+import {FC, useEffect, useMemo} from 'react'
 import CodeFlask from "codeflask"
+import {useSelector} from "react-redux"
 import styles from "./Editor.module.scss"
 import "./Editor.ide.scss"
-import {WSContext} from "../../../common/context/WSContext";
-import {DisplayMode} from "../../../types/DisplayMode";
-import {GameMode} from "../../../types/Game";
+import {DisplayMode} from "../../../types/DisplayMode"
+import {GameMode} from "../../../types/Game"
+import {RootState} from "../../../common/store"
 
 type EditorProps = {
     code: string,
     updateCode: (code: string) => void
 }
 const Editor: FC<EditorProps> = ({ code, updateCode }) => {
-    const { wsState: { game, mode } } = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
+    const mode = useSelector((state: RootState) => state.mode)
     const isShortestTopic = useMemo(() => game!.topic!.gameMode === GameMode.SHORTEST, [ game!.topic! ])
 
     useEffect(() => {
@@ -21,10 +23,10 @@ const Editor: FC<EditorProps> = ({ code, updateCode }) => {
             lineNumbers: true,
             defaultTheme: false,
             readonly: mode === DisplayMode.ADMIN,
-        });
+        })
 
-        codeFlask.updateCode(code);
-        codeFlask.onUpdate(updateCode);
+        codeFlask.updateCode(code)
+        codeFlask.onUpdate(updateCode)
     }, [])
 
 

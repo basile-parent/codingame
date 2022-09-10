@@ -1,20 +1,23 @@
-import {FC, useCallback, useContext, useMemo, useState} from 'react';
+import {FC, useCallback, useMemo, useState} from 'react'
 import {debounce} from 'lodash'
-import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsActions, UnitTestsList} from "./components";
+import {useSelector} from "react-redux"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faCheck} from "@fortawesome/free-solid-svg-icons"
+import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsActions, UnitTestsList} from "./components"
 import styles from "./GameEditor.module.scss"
-import {WSContext} from "../../common/context/WSContext";
-import {DisplayMode} from "../../types/DisplayMode";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck} from "@fortawesome/free-solid-svg-icons";
-import InstructionsModal from "./components/InstructionsModal";
-import {UnitTestExecution, UnitTestExecutionStatus} from "../../types/Game";
-import ModalConfirm from "../../common/components/ModalConfirm/ModalConfirm";
-import playerUtils from "../../utils/playerUtils";
-import WebsocketManager from "../../common/components/WebsocketManager";
+import {DisplayMode} from "../../types/DisplayMode"
+import InstructionsModal from "./components/InstructionsModal"
+import {UnitTestExecution, UnitTestExecutionStatus} from "../../types/Game"
+import ModalConfirm from "../../common/components/ModalConfirm/ModalConfirm"
+import playerUtils from "../../utils/playerUtils"
+import WebsocketManager from "../../common/components/WebsocketManager"
+import {RootState} from "../../common/store"
 
 type GameEditorProps = {}
 const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
-    const {wsState: {game, mode}, dispatch} = useContext(WSContext)
+    const game = useSelector((state: RootState) => state.game)
+    const mode = useSelector((state: RootState) => state.mode)
+
     const [code, setCode] = useState<string>(playerUtils.getSavedCode() || game!.topic!.defaultCode || "")
     const [dialogOpen, setDialogOpen] = useState<boolean>(true)
 
@@ -29,7 +32,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
             debounce(async (code: string) => {
                 WebsocketManager.saveTempCode(code)
             }, 1000)
-        , [ dispatch ])
+        , [])
     const onCodeChange = useCallback((newCode: string) => {
         setSelectedUnitTest(null)
         setUnitTests(unitTests => unitTests.map(unitTest => ({
@@ -144,7 +147,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
             </article>
         </>
     )
-};
+}
 
 const runTest = (code: string, args: any[], expectedResult: any): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -159,8 +162,8 @@ const runTest = (code: string, args: any[], expectedResult: any): Promise<string
         worker.addEventListener('message', e => {
             switch (e.data.action) {
                 // case "debug":
-                //     console.log(...e.data.value);
-                //     break;
+                //     console.log(...e.data.value)
+                //     break
                 case "notifyResult":
                     const {isSuccess, details} = e.data.value
                     if (isSuccess) {
@@ -170,9 +173,9 @@ const runTest = (code: string, args: any[], expectedResult: any): Promise<string
                     }
                     worker.terminate()
                     workerTimeout && clearTimeout(workerTimeout)
-                    break;
+                    break
             }
-        });
+        })
 
         workerTimeout = setTimeout(() => {
             console.warn("Test terminated by timeout")
@@ -181,7 +184,7 @@ const runTest = (code: string, args: any[], expectedResult: any): Promise<string
 
         worker.postMessage({action: "runTest", value: {code, args, expectedResult}})
     })
-};
+}
 
 
-export default GameEditor;
+export default GameEditor

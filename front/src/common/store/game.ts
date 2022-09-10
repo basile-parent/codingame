@@ -1,5 +1,6 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Game} from "../../types/Game";
+import {RootState} from "./index";
 
 export const gameSlice = createSlice({
     name: 'game',
@@ -7,6 +8,12 @@ export const gameSlice = createSlice({
     reducers: {
         setGame: (state, action: PayloadAction<Game>) => action.payload,
         newEndTime: (state, action: PayloadAction<number>) => ({ ...state, endTimer: action.payload }) as Game,
+    },
+    extraReducers: (builder) => {
+        builder.addCase(
+            createAction<RootState>('update_store'),
+            (state, action) => action.payload.game
+        )
     },
 })
 
