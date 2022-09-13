@@ -1,13 +1,11 @@
-import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAction, createSlice} from '@reduxjs/toolkit'
 import {GamePlayer} from "../../types/Player"
 import {RootState} from "./index";
 
 export const presentationsSlice = createSlice({
     name: 'presentations',
     initialState: [] as GamePlayer[],
-    reducers: {
-        setPresentations: (state, action: PayloadAction<GamePlayer[]>) => action.payload,
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
@@ -15,8 +13,5 @@ export const presentationsSlice = createSlice({
         )
     },
 })
-
-// Action creators are generated for each case reducer function
-export const { setPresentations } = presentationsSlice.actions
 
 export default presentationsSlice.reducer

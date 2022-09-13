@@ -6,7 +6,6 @@ export const gameSlice = createSlice({
     name: 'game',
     initialState: null as Game | null,
     reducers: {
-        setGame: (state, action: PayloadAction<Game>) => action.payload,
         newEndTime: (state, action: PayloadAction<number>) => ({ ...state, endTimer: action.payload }) as Game,
     },
     extraReducers: (builder) => {
@@ -18,6 +17,6 @@ export const gameSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setGame, newEndTime } = gameSlice.actions
+export const { newEndTime } = gameSlice.actions
 
 export default gameSlice.reducer

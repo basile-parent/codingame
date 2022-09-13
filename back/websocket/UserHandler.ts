@@ -103,6 +103,10 @@ class UserHandler extends PersistentObject {
     public setPlayerName = (uuid, name): void => {
         console.debug("Set player name", uuid, name)
         const index = this.PLAYERS.findIndex(p => p.uuid === uuid)
+        if (index < 0) {
+            const allUuids = this.PLAYERS.map(p => p.uuid).join(",")
+            throw new Error(`Cannot set name "${ name }" for player ${ uuid }: uuid not found (list of all player uuids: ${ allUuids })`)
+        }
         const player = this.PLAYERS[index]
         player.name = name
 

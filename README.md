@@ -20,45 +20,48 @@ The application was created to animate a game with reasonable people.
 If you don't know enough reasonable people, play something else.
 
 ## TODO
-- [x] Shortest mode
-- [x] Bug when you left a debug instruction (0% completion)
-- [x] Game modes : icons + hide code length if not shortest
-- [x] Code flask bug when scroll (invisible)
-- [x] Confirm before submit
-- [x] Share code
-- [x] After game: Add duration
-- [x] Bug when the round ends but a player is disconnected
-- [x] Save code on local storage
-- [x] Delete forceSubmit
-- [x] Bug on shortest score calculation: shortest code is in first position even if not complete
-- [x] Same place if same score on score board
-- [x] Bug on timer (/ 1000 is not set everywhere)
-- [x] Bug on admin timer: when topic is finished manually => still appear
-- [x] Save game between restarts
-- [x] Toaster / disable if action (submit) cannot be done because server is disconnected
-- [x] More visible disconnection on admin
-- [x] Presentation mode
-- [x] Final screen
-- [x] ~~Reinit game should clear local storage stored code~~
-- [x] ~~Calculate topic position (for AfterGame component) in the back~~
-- [x] Podium: Real players
-- [x] Podium: Same position players
-- [x] Podium: Only 1 or 2 players
-- [x] ~~Bug prod: end timer loop~~ cannot reproduce
-- [x] Admin: delete players + accept players after start
+- [ ] Bug timer admin => refresh toutes les 2 secondes parfois
+- [ ] Présentation => bug sur localeCompare (complètement KO)
+- [ ] Slides: Bien expliquer le mode shortest
+- [ ] Popup instruction : timer décrémente
+- [ ] Share code: Popup: ajouter de la transparence + bouton de fermeture
+- [ ] Silver medal : couleur trop similaire aux items 4+
+- [ ] debug is not defined
+- [ ] "Tous les tests" ne s'arrête pas quand ça fail
+- [ ] Popup info: "Entrée" pour fermer
+- [ ] Onglet fermé = timer 5:00, non validation = timer 4:59
+- [ ] Code à 0% si timer fini
+```js
+const s=inputArray[0]+inputArray[1]
+return s
+```
+```js
+const a = inputArray;
+// Pour debugger, dans la sortie standard, utiliser la fonction "debug". Exemple: debug(inputArray)
+// Faire un "return" de la solution au problème
+return a[0]+a[1]
+```
+- [ ] Reverse mode (CSS + Calculation)
+- [ ] Admin: delete players
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
-- [x] Refacto client WS => event based
 - [ ] Remove time as a factor of points in the shortest mode
 - [ ] Go Redux !
 - [ ] Save temp code => throttle
-- [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
-- [ ] Cleanup types (Player / GamePlayer)
+- [ ] Bug lors du set du nom ==> uuid toujours présent
+
+## TODO later
+- [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
 - [ ] Externalize ModalConfirm to a specific repo
 - [ ] Externalize WebSocketManager to a specific repo ?
-- [ ] Mutualize back and front (types and src)
+- [ ] Cleanup types (Player / GamePlayer)
 - [ ] Cleanup backend (things are gone pretty messy...)
-- [ ] Bug (not really): weird behaviour when you open 2 tabs on the same browser for 2 differents roles (admin and player for example)
+- [ ] Mutualise back and front (types and src)
+- [ ] Force clean (disconnect all players + refresh there page)
 - [ ] Handicaps
 - [ ] Other modes: survival, ...
+- [ ] Better handle of different modes in different tabs (example: one tab is player, another is admin)
+- [ ] Securize admin
+- [ ] Create rooms
+- [ ] Better looking admin

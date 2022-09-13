@@ -1,12 +1,10 @@
-import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAction, createSlice} from '@reduxjs/toolkit'
 import {RootState} from "./index"
 
 export const delayedStateSlice = createSlice({
     name: 'delayedState',
     initialState: null as RootState | null,
-    reducers: {
-        setDelayedState: (state, action: PayloadAction<RootState>) => action.payload,
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
@@ -14,8 +12,5 @@ export const delayedStateSlice = createSlice({
         )
     },
 })
-
-// Action creators are generated for each case reducer function
-export const { setDelayedState } = delayedStateSlice.actions
 
 export default delayedStateSlice.reducer

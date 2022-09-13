@@ -1,14 +1,14 @@
 import {configureStore, PayloadAction} from "@reduxjs/toolkit"
 import playersReducer, {setPlayers} from "./players"
-import adminsReducer, {setAdmins} from "./admins"
-import presentationsReducer, {setPresentations} from "./presentations"
+import adminsReducer from "./admins"
+import presentationsReducer from "./presentations"
 import modeReducer, {setMode} from "./mode"
-import screenReducer, {setScreen} from "./screen"
+import screenReducer from "./screen"
 import connectedReducer, {connect, disconnect} from "./connected"
-import gameReducer, {newEndTime, setGame} from "./game"
-import waitForApprovalReducer, {setWaitForApproval} from "./waitForApproval"
-import transitionTimeoutReducer, {setTransitionTimeout} from "./transitionTimeout"
-import delayedStateReducer, {setDelayedState} from "./delayedState"
+import gameReducer, {newEndTime} from "./game"
+import waitForApprovalReducer from "./waitForApproval"
+import transitionTimeoutReducer from "./transitionTimeout"
+import delayedStateReducer from "./delayedState"
 import {DisplayMode} from "../../types/DisplayMode"
 import {GamePlayer} from "../../types/Player"
 import {Screen} from "../../types/Screen"
@@ -54,15 +54,9 @@ const updateStore = (newState: RootState, meta?: string): PayloadAction<RootStat
 
 export const ReduxActions = {
     players: { setPlayers },
-    admins: { setAdmins },
-    presentations: { setPresentations },
     mode: { setMode },
-    screen: { setScreen },
     connected: { connect, disconnect },
-    game: { setGame, newEndTime },
-    waitForApproval: { setWaitForApproval },
-    transitionTimeout: { setTransitionTimeout },
-    delayedState: { setDelayedState },
+    game: { newEndTime },
     updateStore
 }
 
