@@ -20,10 +20,10 @@ The application was created to animate a game with reasonable people.
 If you don't know enough reasonable people, play something else.
 
 ## TODO
-- [ ] Bug timer admin => refresh toutes les 2 secondes parfois
-- [ ] Présentation => bug sur localeCompare (complètement KO)
+- [x] ~~Bug timer admin => refresh toutes les 2 secondes parfois~~
+- [x] Présentation => bug sur localeCompare (complètement KO)
 - [ ] Slides: Bien expliquer le mode shortest
-- [ ] Popup instruction : timer décrémente
+- [x] Popup instruction : timer décrémente + retirer la marge de 2 secondes
 - [ ] Share code: Popup: ajouter de la transparence + bouton de fermeture
 - [ ] Silver medal : couleur trop similaire aux items 4+
 - [ ] debug is not defined
@@ -50,6 +50,7 @@ return a[0]+a[1]
 - [ ] Save temp code => throttle
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 - [ ] Bug lors du set du nom ==> uuid toujours présent
+- [ ] Timer : la première seconde ne s'affiche pas (--:--)
 
 ## TODO later
 - [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
@@ -65,3 +66,5 @@ return a[0]+a[1]
 - [ ] Securize admin
 - [ ] Create rooms
 - [ ] Better looking admin
+- [ ] Reactive UI
+- [ ] Customize styling (a less codingame copycat)

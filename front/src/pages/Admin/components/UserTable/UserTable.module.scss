@@ -22,6 +22,7 @@
   }
 }
 .tabContent {
+  flex: 1;
   padding: 15px 0;
   width: 100%;
   overflow: auto;
@@ -52,7 +53,7 @@
   }
 
   td.player {
-    max-width: 150px;
+    width: 150px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

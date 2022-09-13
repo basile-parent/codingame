@@ -5,6 +5,7 @@ import styles from "./InstructionsModal.module.scss"
 import gameModeUtils from "../../../utils/gameModeUtils"
 import dateUtils from "../../../utils/dateUtils"
 import {RootState} from "../../../common/store"
+import TopicTimer from "../../../common/components/TopicTimer";
 
 type InstructionsModalProps = {
     open: boolean,
@@ -30,7 +31,7 @@ const InstructionsModal: FC<InstructionsModalProps> = ({open, onClose}: Instruct
                 {
                     topic.timer &&
                     <p className={styles.timer}>
-                      Limite de temps: {dateUtils.timeToString(topic.timer / 1000)}
+                      Limite de temps: <TopicTimer />
                     </p>
                 }
 

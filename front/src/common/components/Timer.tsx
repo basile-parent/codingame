@@ -1,7 +1,7 @@
 import {FC, useEffect, useState} from 'react'
 import styles from "./Timer.module.scss"
 
-type TimerProps = {
+export type TimerProps = {
     endTimer: number,
     onEndTimer?: () => void,
     className?: string,

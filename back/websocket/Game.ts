@@ -7,8 +7,8 @@ import {GameUpdateOptions} from "./websocket-handler";
 import PersistentObject from "./PersistentObject";
 import topicUtils from "../utils/topicUtils";
 
-export const TIME_MARGIN = 2000;
-export const TRANSITION_TIMEOUT = 3000;
+export const TIME_MARGIN = 0
+export const TRANSITION_TIMEOUT = 3000
 
 class Game extends PersistentObject {
     public started: boolean

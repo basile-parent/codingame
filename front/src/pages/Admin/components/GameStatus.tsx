@@ -6,6 +6,7 @@ import Timer from "../../../common/components/Timer"
 import {toTopicStatusLabel} from "../../../types/Game"
 import WebsocketManager from "../../../common/components/WebsocketManager"
 import {RootState} from "../../../common/store"
+import TopicTimer from "../../../common/components/TopicTimer"
 
 type GameStatusProps = {}
 const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
@@ -39,7 +40,7 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
                             <>
                                 <li><label>Exercice: </label> ({ game.topic.gameMode }) #{ game.topic.id }: { game.topic.summary }</li>
                                 <li><label>Statut: </label> { toTopicStatusLabel(game.topic.status) }</li>
-                                <li><label>Timer: </label><Timer endTimer={ game.endTimer! } onEndTimer={handleEndTimer} /></li>
+                                <li><label>Timer: </label><TopicTimer onEndTimer={handleEndTimer} /></li>
                             </>
                         )
                     }

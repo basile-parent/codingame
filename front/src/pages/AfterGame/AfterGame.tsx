@@ -7,6 +7,7 @@ import CodeDialog from "./CodeDialog"
 import playerUtils from "../../utils/playerUtils"
 import AfterGameLeaderboard from "./AfterGameLeaderboard"
 import {RootState} from "../../common/store"
+import TopicTimer from "../../common/components/TopicTimer";
 
 type AfterGameProps = {}
 const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
@@ -23,7 +24,7 @@ const AfterGame: FC<AfterGameProps> = ({}: AfterGameProps) => {
         <div className={styles.container}>
             {
                 !isFinished &&
-                <p className={styles.timer}>Temps restant: <Timer endTimer={game!.endTimer!} /></p>
+                <p className={styles.timer}>Temps restant: <TopicTimer /></p>
             }
             <h1>{isFinished ? "Manche terminée" : "Vous avez validé votre code"}</h1>
             <h2>Résultats de la manche</h2>
