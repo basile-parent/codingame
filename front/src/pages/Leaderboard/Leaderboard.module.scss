@@ -37,14 +37,16 @@
         margin-right: 10px;
         font-weight: 700;
         padding: 3px 8px;
-        background-color: $lowlight;
         font-size: 14px;
         text-shadow: 0 0 1px black, 1px 1px 0 black;
+
+        background-color: transparent;
+        border: 2px solid white;
       }
 
-      .position1 { background-color: $gold-medal; }
-      .position2 { background-color: $silver-medal; }
-      .position3 { background-color: $bronze-medal; }
+      .position1 { background-color: $gold-medal; border: none; }
+      .position2 { background-color: $silver-medal; border: none; }
+      .position3 { background-color: $bronze-medal; border: none; }
 
       .highlightPosition {
         animation: 0.7s highlightPositionAnimation forwards ease;

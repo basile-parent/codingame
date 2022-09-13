@@ -25,12 +25,11 @@ If you don't know enough reasonable people, play something else.
 - [ ] Slides: Bien expliquer le mode shortest
 - [x] Popup instruction : timer décrémente + retirer la marge de 2 secondes
 - [x] Share code: Popup: ajouter de la transparence + bouton de fermeture
-- [ ] Silver medal : couleur trop similaire aux items 4+
-- [ ] debug is not defined
-- [ ] "Tous les tests" ne s'arrête pas quand ça fail
+- [x] Silver medal : couleur trop similaire aux items 4+
+- [x] ~~debug is not defined~~
+- [x] ~~"Tous les tests" ne s'arrête pas quand ça fail~~
 - [x] Popup info: "Entrée" pour fermer
-- [ ] Onglet fermé = timer 5:00, non validation = timer 4:59
-- [ ] Code à 0% si timer fini
+- [x] ~~Code à 0% si timer fini~~
 ```js
 const s=inputArray[0]+inputArray[1]
 return s
@@ -43,6 +42,7 @@ return a[0]+a[1]
 ```
 - [ ] Reverse mode (CSS + Calculation)
 - [x] Admin: delete players
+- [ ] Bug Onglet fermé = timer 5:00, non validation = timer 4:59
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [ ] Remove time as a factor of points in the shortest mode
@@ -52,6 +52,8 @@ return a[0]+a[1]
 - [ ] Bug lors du set du nom ==> uuid toujours présent
 - [ ] Timer : la première seconde ne s'affiche pas (--:--)
 - [ ] Share code: pas de scroll dispo
+- [ ] Selectionner un test déjà exécuté pour voir l'output
+- [ ] Ne pas effacer l'output des tests quand on modifie le code
 
 ## TODO later
 - [ ] ESLint (+ prettier ?)

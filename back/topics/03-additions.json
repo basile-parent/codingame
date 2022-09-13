@@ -4,7 +4,7 @@
   "timer": 300000,
   "points": 5000,
   "maxPointsTimer": 60000,
-  "gameMode": "fastest",
+  "gameMode": "reverse",
   "subject": "Vous recevez 2 entiers <strong>A</strong> et <strong>B</strong> en entrée. Le résultat doit être la somme des 2 entiers.",
   "inputs": "Les entiers <strong>A</strong> et <strong>B</strong> tels que inputArray = [ A, B ]",
   "output": "Retourne un entier qui est la somme de <strong>A</strong> et <strong>B</strong>.",
