@@ -8,7 +8,7 @@ export const waitForApprovalSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.waitForApproval
+            (state, action) => action.payload.waitForApproval || false
         )
     },
 })

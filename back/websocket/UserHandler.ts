@@ -9,6 +9,7 @@ import GameScreen from "../types/GameScreen";
 import PersistentObject from "./PersistentObject";
 import DisplayMode from "../types/DisplayMode";
 import Presentation from "../model/Presentation";
+import user from "../model/User";
 
 class UserHandler extends PersistentObject {
     private PRESENTATIONS: Presentation[] = []
@@ -96,9 +97,19 @@ class UserHandler extends PersistentObject {
     }
 
     public approvePlayer = (uuid: string): void => { this.PLAYERS.find(p => p.uuid === uuid).waitForApproval = false }
-    public deletePlayer = (uuid: string): void => { this.PLAYERS = this.PLAYERS.filter(p => p.uuid !== uuid) }
-    public deleteAdmin = (uuid: string): void => { this.ADMINS = this.ADMINS.filter(p => p.uuid !== uuid) }
-    public deletePresentation = (uuid: string): void => { this.PRESENTATIONS = this.PRESENTATIONS.filter(p => p.uuid !== uuid) }
+    public deletePlayer = (uuid: string): void => { this._deleteUser("PLAYERS", uuid) }
+    public deleteAdmin = (uuid: string): void => { this._deleteUser("ADMINS", uuid) }
+    public deletePresentation = (uuid: string): void => { this._deleteUser("PRESENTATIONS", uuid) }
+
+    private _deleteUser = (userProperty: string, userUuid: string) => {
+        const index = this[userProperty].findIndex(user => user.uuid === userUuid)
+        if (index < 0) {
+            const allUuids = this[userProperty].map(user => user.uuid).join(", ")
+            throw new Error(`Cannot delete ${ userProperty } with uuid ${ userUuid }: uuid not found (list of available uuid: ${ allUuids })`)
+        }
+        this[userProperty] = this[userProperty].filter(user => user.uuid !== userUuid)
+        console.debug(`${ userProperty } ${ userUuid } deleted`)
+    }
 
     public setPlayerName = (uuid, name): void => {
         console.debug("Set player name", uuid, name)

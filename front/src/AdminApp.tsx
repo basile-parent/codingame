@@ -12,7 +12,7 @@ type AdminAppProps = {}
 const AdminApp: FC<AdminAppProps> = ({}) => {
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(ReduxActions.mode.setMode(DisplayMode.ADMIN))
+        dispatch(ReduxActions.mode.set(DisplayMode.ADMIN))
     })
 
     return (

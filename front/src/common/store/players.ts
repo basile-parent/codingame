@@ -11,7 +11,7 @@ export const playersSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.players
+            (state, action) => action.payload.players || []
         )
     },
 })

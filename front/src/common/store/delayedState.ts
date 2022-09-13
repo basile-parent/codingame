@@ -8,7 +8,7 @@ export const delayedStateSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.delayedState
+            (state, action) => action.payload.delayedState || null
         )
     },
 })

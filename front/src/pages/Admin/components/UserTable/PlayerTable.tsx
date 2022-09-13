@@ -99,7 +99,7 @@ type PlayerRowProps = {
 const PlayerRow: FC<PlayerRowProps> = ({player, allTopics, onDeletePlayer, onApprovePlayer }) => {
     return (
         <tr>
-            <td className={styles.player}>
+            <td className={styles.player} title={player.uuid}>
                 <span className={styles.connectedIcon}>
                     <ConnectedIcon connected={player.connected}/>
                 </span>

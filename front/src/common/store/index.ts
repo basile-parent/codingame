@@ -7,7 +7,7 @@ import screenReducer from "./screen"
 import connectedReducer, {connect, disconnect} from "./connected"
 import gameReducer, {newEndTime} from "./game"
 import waitForApprovalReducer from "./waitForApproval"
-import transitionTimeoutReducer from "./transitionTimeout"
+import transitionTimeoutReducer, { setTransitionTimeout } from "./transitionTimeout"
 import delayedStateReducer from "./delayedState"
 import {DisplayMode} from "../../types/DisplayMode"
 import {GamePlayer} from "../../types/Player"
@@ -47,16 +47,16 @@ const store = configureStore<RootState>({
 // Inferred type: {players: PlayersState, mode: ModeState, ...}
 export type AppDispatch = typeof store.dispatch
 
-// TODO delayedState
 const updateStore = (newState: RootState, meta?: string): PayloadAction<RootState, string, string | undefined> => {
     return { type: "update_store", payload: newState, meta }
 }
 
 export const ReduxActions = {
-    players: { setPlayers },
-    mode: { setMode },
+    players: { set: setPlayers },
+    mode: { set: setMode },
     connected: { connect, disconnect },
     game: { newEndTime },
+    transitionTimeout: { set: setTransitionTimeout },
     updateStore
 }
 

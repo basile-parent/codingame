@@ -24,7 +24,7 @@ const OtherPlayers: FC<OtherPlayersProps> = ({}: OtherPlayersProps) => {
             </h2>
             <ul>
                 {
-                    players
+                    [ ...players ]
                         .sort(comparator)
                         .map(player =>
                         <OtherPlayerItem player={player}

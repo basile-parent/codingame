@@ -11,7 +11,7 @@ export const gameSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.game
+            (state, action) => action.payload.game || null
         )
     },
 })

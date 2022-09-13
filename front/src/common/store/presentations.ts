@@ -9,7 +9,7 @@ export const presentationsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.presentations
+            (state, action) => action.payload.presentations || []
         )
     },
 })

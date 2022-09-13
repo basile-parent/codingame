@@ -1,16 +1,21 @@
-import {createAction, createSlice} from '@reduxjs/toolkit'
-import {RootState} from "./index";
+import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {RootState} from "./index"
 
 export const transitionTimeoutSlice = createSlice({
     name: 'transitionTimeout',
     initialState: 0,
-    reducers: {},
+    reducers: {
+        setTransitionTimeout: (state, action: PayloadAction<number>) => action.payload,
+    },
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.transitionTimeout
+            (state, action) => action.payload.transitionTimeout || 0
         )
     },
 })
+
+// Action creators are generated for each case reducer function
+export const { setTransitionTimeout } = transitionTimeoutSlice.actions
 
 export default transitionTimeoutSlice.reducer

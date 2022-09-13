@@ -9,7 +9,7 @@ export const adminsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.admins
+            (state, action) => action.payload.admins || []
         )
     },
 })

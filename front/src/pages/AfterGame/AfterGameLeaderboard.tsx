@@ -20,7 +20,7 @@ const AfterGameLeaderboard: FC<AfterGameLeaderboardProps> = ({ setCodeDialogCont
     return (
         <ul className={`${styles.playerList} ${className}`}>
             {
-                players
+                [ ...players ]
                     .sort(comparator)
                     .map((player) => (
                         <li className={styles.player} key={`player-${player.uuid}`}>

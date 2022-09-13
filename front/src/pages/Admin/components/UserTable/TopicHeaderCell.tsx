@@ -30,15 +30,12 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
         setOpen(false)
     }, [])
 
-    const isDisabled = useMemo<boolean>(() => !game?.started || !!game?.topic, [ game ])
-
     return (
         <>
             <div className={`dropdown is-right ${ open && "is-active" } ${ styles.container }`}>
                 <div className="dropdown-trigger">
                     <button className={styles.openButton}
                             onClick={() => setOpen(o => !o)}
-                            disabled={isDisabled}
                     >
                         #{topic.id}
                         <FontAwesomeIcon icon={faAngleDown} className={styles.icon}/>
@@ -53,7 +50,7 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
                         </button>
                         <button className={`dropdown-item ${ styles.dropdownButton }`}
                                 onClick={handleStartTopic}
-                                disabled={topic.status !== TopicStatus.WAITING}
+                                disabled={topic.status !== TopicStatus.WAITING || !game?.started}
                         >
                             Démarrer
                         </button>

@@ -21,17 +21,17 @@ const WebsocketProvider: FC<WebsocketProviderProps> = ({mode}: WebsocketProvider
     }, [dispatch])
 
     const handleUpdate = useCallback((newState: RootState) => {
-        dispatch(ReduxActions.updateStore(newState))
-
         if (newState.transitionTimeout) {
+            dispatch(ReduxActions.transitionTimeout.set(newState.transitionTimeout))
             setTimeout(() => {
                 dispatch(ReduxActions.updateStore({
-                        ...newState.delayedState,
-                        transitionTimeout: 0,
-                        delayedState: null
+                        ...newState,
+                        transitionTimeout: 0
                     } as RootState,
                     "delayedStatus"))
             }, newState.transitionTimeout)
+        } else {
+            dispatch(ReduxActions.updateStore(newState))
         }
     }, [dispatch])
 
@@ -56,7 +56,7 @@ const WebsocketProvider: FC<WebsocketProviderProps> = ({mode}: WebsocketProvider
             path: VITE_WS_PATH,
             onConnect: () => handleMessage(ReduxActions.connected.connect()),
             onDisconnect: () => handleMessage(ReduxActions.connected.disconnect()),
-            onSetPlayers: (players) => handleMessage(ReduxActions.players.setPlayers(players)),
+            onSetPlayers: (players) => handleMessage(ReduxActions.players.set(players)),
             onNewEndTime: (newEndTime) => handleMessage(ReduxActions.game.newEndTime(newEndTime)),
             onUpdate: (newState) => handleUpdate(newState),
         })

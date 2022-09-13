@@ -40,7 +40,7 @@ const InstructionsModal: FC<InstructionsModalProps> = ({open, onClose}: Instruct
                     </button>
                 </div>
             </div>
-            <button className="modal-close" aria-label="close" onClick={onClose}/>
+            <button className="modal-close" aria-label="close" onClick={onClose} autoFocus />
         </div>
     )
 }

@@ -9,7 +9,7 @@ export const screenSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             createAction<RootState>('update_store'),
-            (state, action) => action.payload.screen
+            (state, action) => action.payload.screen || Screen.LANDING_PAGE
         )
     },
 })

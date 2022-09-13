@@ -21,7 +21,7 @@ type AppProps = {
 const App: FC<AppProps> = ({ mode }) => {
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(ReduxActions.mode.setMode(mode))
+        dispatch(ReduxActions.mode.set(mode))
     })
 
     return (

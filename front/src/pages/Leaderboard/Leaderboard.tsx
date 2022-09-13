@@ -40,7 +40,7 @@ const Leaderboard: FC<LeaderboardProps> = ({}: LeaderboardProps) => {
                       leaveAnimation="accordionVertical"
             >
             {
-                players
+                [ ...players ]
                     .sort(sortComparator)
                     .map(player => (
                         <LeaderboardPlayerItem player={player}

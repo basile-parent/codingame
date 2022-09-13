@@ -3,10 +3,9 @@ import {Socket} from "socket.io-client/build/esm/socket"
 import playerUtils from "../../../utils/playerUtils"
 import {DisplayMode} from "../../../types/DisplayMode"
 import {WSAction} from "../../../types/Actions"
-import WebsocketManager from "./WebsocketManager";
-import {PayloadAction} from "@reduxjs/toolkit";
-import {ReduxActions, RootState} from "../../store";
-import {GamePlayer} from "../../../types/Player";
+import WebsocketManager from "./WebsocketManager"
+import {RootState} from "../../store"
+import {GamePlayer} from "../../../types/Player"
 
 type WSOptions = {
     mode?: DisplayMode,

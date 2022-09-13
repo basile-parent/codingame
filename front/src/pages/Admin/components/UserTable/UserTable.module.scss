@@ -50,7 +50,10 @@
   }
 
   td.player {
-    min-width: 120px;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   td.score {
     width: 80px;

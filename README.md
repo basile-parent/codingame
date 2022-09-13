@@ -28,7 +28,7 @@ If you don't know enough reasonable people, play something else.
 - [ ] Silver medal : couleur trop similaire aux items 4+
 - [ ] debug is not defined
 - [ ] "Tous les tests" ne s'arrête pas quand ça fail
-- [ ] Popup info: "Entrée" pour fermer
+- [x] Popup info: "Entrée" pour fermer
 - [ ] Onglet fermé = timer 5:00, non validation = timer 4:59
 - [ ] Code à 0% si timer fini
 ```js
@@ -42,11 +42,11 @@ const a = inputArray;
 return a[0]+a[1]
 ```
 - [ ] Reverse mode (CSS + Calculation)
-- [ ] Admin: delete players
+- [x] Admin: delete players
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [ ] Remove time as a factor of points in the shortest mode
-- [ ] Go Redux !
+- [x] Go Redux !
 - [ ] Save temp code => throttle
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 - [ ] Bug lors du set du nom ==> uuid toujours présent
