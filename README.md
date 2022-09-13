@@ -24,7 +24,7 @@ If you don't know enough reasonable people, play something else.
 - [x] Présentation => bug sur localeCompare (complètement KO)
 - [ ] Slides: Bien expliquer le mode shortest
 - [x] Popup instruction : timer décrémente + retirer la marge de 2 secondes
-- [ ] Share code: Popup: ajouter de la transparence + bouton de fermeture
+- [x] Share code: Popup: ajouter de la transparence + bouton de fermeture
 - [ ] Silver medal : couleur trop similaire aux items 4+
 - [ ] debug is not defined
 - [ ] "Tous les tests" ne s'arrête pas quand ça fail
@@ -51,14 +51,18 @@ return a[0]+a[1]
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 - [ ] Bug lors du set du nom ==> uuid toujours présent
 - [ ] Timer : la première seconde ne s'affiche pas (--:--)
+- [ ] Share code: pas de scroll dispo
 
 ## TODO later
+- [ ] ESLint (+ prettier ?)
 - [ ] Leaderboard: Bug with scroll when the score appear (the animation of the green score create a temporary overflow)
 - [ ] Externalize ModalConfirm to a specific repo
 - [ ] Externalize WebSocketManager to a specific repo ?
 - [ ] Cleanup types (Player / GamePlayer)
 - [ ] Cleanup backend (things are gone pretty messy...)
-- [ ] Mutualise back and front (types and src)
+- [ ] Mutualize back and front (types and src)
+- [ ] Better animation on front
+- [ ] Unit tests
 - [ ] Force clean (disconnect all players + refresh there page)
 - [ ] Handicaps
 - [ ] Other modes: survival, ...

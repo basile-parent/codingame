@@ -16,7 +16,7 @@
     { "inputs": [1, 2], "output": "3" },
     { "inputs": [5, 0], "output": "5" }
   ],
-  "defaultCode": "const myInputArray = inputArray\n// Pour debugger, dans la sortie standard, utiliser la fonction \"debug\". Exemple: debug(inputArray)\n// Faire un \"return\" de la solution au problème\n\nreturn \"your solution\"",
+  "defaultCode": "const myInputArray = inputArray\n// Pour debugger, dans la sortie standard, utiliser la fonction \"debug\". Exemple: debug(inputArray)\n// Faire un \"return\" de la solution au problème\n\nreturn inputArray[0] + inputArray[1]",
   "tests": [
     { "inputs": [1, 2], "output": 3 },
     { "inputs": [5, 0], "output": 5 },

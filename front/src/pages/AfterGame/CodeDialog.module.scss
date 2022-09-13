@@ -2,6 +2,18 @@
   width : 800px;
   height: 500px;
 
+  .backButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    padding: 5px 15px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    z-index: 10;
+  }
+
   :global(.codeflask) {
     position: initial;
   }

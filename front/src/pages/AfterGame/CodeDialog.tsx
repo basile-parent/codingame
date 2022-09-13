@@ -4,6 +4,7 @@ import Modal from "../../common/components/Modal"
 import styles from "./CodeDialog.module.scss"
 
 let codeFlask: CodeFlask
+const divId = "shared-code"
 
 type CodeDialogProps = {
     code: string,
@@ -13,8 +14,7 @@ type CodeDialogProps = {
 const CodeDialog: FC<CodeDialogProps> = ({code, open, onClose}: CodeDialogProps) => {
 
     useEffect(() => {
-        const id = "shared-code"
-        codeFlask = new CodeFlask(`#${id}`, {
+        codeFlask = new CodeFlask(`#${divId}`, {
             language: 'js',
             lineNumbers: true,
             defaultTheme: false,
@@ -31,7 +31,8 @@ const CodeDialog: FC<CodeDialogProps> = ({code, open, onClose}: CodeDialogProps)
                onClose={onClose}
                className={styles.modal}
         >
-            <div id="shared-code"/>
+            <button className={styles.backButton} onClick={onClose}>↼ Retour</button>
+            <div id={divId} />
         </Modal>
     )
 }
