@@ -1,5 +1,5 @@
 import {FC, useCallback, useMemo, useState} from 'react'
-import {debounce} from 'lodash'
+import {throttle} from 'lodash'
 import {useSelector} from "react-redux"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faCheck} from "@fortawesome/free-solid-svg-icons"
@@ -29,7 +29,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     const [selectedUnitTest, setSelectedUnitTest] = useState<UnitTestExecution | null>(null)
 
     const saveTempCode = useMemo(() =>
-            debounce(async (code: string) => {
+            throttle(async (code: string) => {
                 WebsocketManager.saveTempCode(code)
             }, 1000)
         , [])

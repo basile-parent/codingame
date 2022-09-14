@@ -20,7 +20,7 @@ const Header: FC<HeaderProps> = ({}: HeaderProps) => {
             </h1>
             <p className={styles.gameMode}>
                 <FontAwesomeIcon icon={faPuzzlePiece}/>
-                Mode de jeu : &nbsp
+                Mode de jeu : &nbsp;
                 {
                     gameModeUtils.informations[game!.topic!.gameMode || ""]?.title || "???"
                 }
