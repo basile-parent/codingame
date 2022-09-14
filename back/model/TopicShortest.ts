@@ -21,16 +21,12 @@ class TopicShortest extends TopicCommon {
         if (p2.completion - p1.completion !== 0) {
             return p2.completion - p1.completion
         }
-        if (p1.codeLength - p2.codeLength !== 0) {
-            return p1.codeLength - p2.codeLength
-        }
 
-        return p1.duration - p2.duration
+        return p1.codeLength - p2.codeLength
     }
 
     _isSamePosition(p1: PlayerTopic, p2: PlayerTopic) {
         return p1.completion === p2.completion && p1.codeLength === p2.codeLength
-                && p1.duration === p2.duration
     }
 
     _calculatePosition(playerTopics: PlayerTopic[]): PlayerTopicWithPosition[] {

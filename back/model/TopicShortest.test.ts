@@ -1,6 +1,6 @@
-import TopicShortest from "./TopicShortest";
-import Topic from "../types/Topic";
-import {PlayerTopic} from "../types/GamePlayer";
+import TopicShortest from "./TopicShortest"
+import Topic from "../types/Topic"
+import {PlayerTopic} from "../types/GamePlayer"
 
 describe("Topic Shortest tests", () => {
     describe("Position calculation tests", () => {
@@ -43,7 +43,7 @@ describe("Topic Shortest tests", () => {
             expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player3").position).toEqual(3)
         })
 
-        it("should calculate the position based on the duration if the completion and code length are the same", () => {
+        it("should calculate the position ignoring the duration if the completion and code length are the same", () => {
             // Given
             const initialTopic = {} as Topic
             const topic = new TopicShortest(initialTopic)
@@ -57,28 +57,9 @@ describe("Topic Shortest tests", () => {
             const playerTopicsWithPosition = topic._calculatePosition(playerTopics)
 
             // Then
-            expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player1").position).toEqual(2)
-            expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player2").position).toEqual(1)
-            expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player3").position).toEqual(3)
-        })
-
-        it("should set the same position based on the duration if the completion, code length and duration are the same", () => {
-            // Given
-            const initialTopic = {} as Topic
-            const topic = new TopicShortest(initialTopic)
-            let playerTopics = [
-                {playerUuid: "player1", completion: 1, codeLength: 200, duration: 123000} as PlayerTopic,
-                {playerUuid: "player2", completion: 1, codeLength: 200, duration: 123000} as PlayerTopic,
-                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 345000} as PlayerTopic,
-            ]
-
-            // When
-            const playerTopicsWithPosition = topic._calculatePosition(playerTopics)
-
-            // Then
             expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player1").position).toEqual(1)
             expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player2").position).toEqual(1)
-            expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player3").position).toEqual(3) // Set to 3 because there is 2 first places
+            expect(playerTopicsWithPosition.find(pt => pt.playerUuid === "player3").position).toEqual(1)
         })
 
     })
@@ -114,9 +95,9 @@ describe("Topic Shortest tests", () => {
             } as Topic
             const topic = new TopicShortest(initialTopic)
             let playerTopics = [
-                {playerUuid: "player1", completion: 1, codeLength: 100, duration: 123000} as PlayerTopic, // Calculated position = 1
-                {playerUuid: "player2", completion: 1, codeLength: 100, duration: 123000} as PlayerTopic, // Calculated position = 1
-                {playerUuid: "player3", completion: 1, codeLength: 200, duration: 234000} as PlayerTopic, // Calculated position = 3
+                {playerUuid: "player1", completion: 1, codeLength: 100} as PlayerTopic, // Calculated position = 1
+                {playerUuid: "player2", completion: 1, codeLength: 100} as PlayerTopic, // Calculated position = 1
+                {playerUuid: "player3", completion: 1, codeLength: 200} as PlayerTopic, // Calculated position = 3
             ]
 
             // When
@@ -161,8 +142,8 @@ describe("Topic Shortest tests", () => {
             } as Topic
             const topic = new TopicShortest(initialTopic)
             let playerTopics = [
-                {playerUuid: "player1", completion: 1, codeLength: 1500000, duration: 1000000} as PlayerTopic,
-                {playerUuid: "player2", completion: 0.99, codeLength: 1, duration: 1} as PlayerTopic,
+                {playerUuid: "player1", completion: 1, codeLength: 1500000} as PlayerTopic,
+                {playerUuid: "player2", completion: 0.99, codeLength: 1} as PlayerTopic,
             ]
 
             // When

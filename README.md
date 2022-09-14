@@ -45,11 +45,11 @@ return a[0]+a[1]
 - [x] ~~Bug Onglet fermé = timer 5:00, non validation = timer 4:59~~
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
-- [ ] Remove time as a factor of points in the shortest mode
+- [x] Remove time as a factor of points in the shortest mode
 - [x] Go Redux !
 - [ ] Save temp code => throttle
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
-- [ ] Bug lors du set du nom ==> uuid toujours présent
+- [x] ~~Bug lors du set du nom ==> uuid toujours présent~~
 - [ ] Timer : la première seconde ne s'affiche pas (--:--)
 - [ ] Share code: pas de scroll dispo
 - [ ] Selectionner un test déjà exécuté pour voir l'output
