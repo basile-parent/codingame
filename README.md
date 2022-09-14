@@ -40,9 +40,9 @@ const a = inputArray;
 // Faire un "return" de la solution au problème
 return a[0]+a[1]
 ```
-- [ ] Reverse mode (CSS + Calculation)
+- [x] Reverse mode (CSS + Calculation)
 - [x] Admin: delete players
-- [ ] Bug Onglet fermé = timer 5:00, non validation = timer 4:59
+- [x] ~~Bug Onglet fermé = timer 5:00, non validation = timer 4:59~~
 - [ ] Deployment & CD
 - [ ] Podium: Manual launch
 - [ ] Remove time as a factor of points in the shortest mode

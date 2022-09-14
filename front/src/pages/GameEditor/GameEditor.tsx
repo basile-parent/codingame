@@ -3,7 +3,7 @@ import {debounce} from 'lodash'
 import {useSelector} from "react-redux"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faCheck} from "@fortawesome/free-solid-svg-icons"
-import {Editor, Header, OtherPlayers, OutputConsole, Topic, UnitTestsActions, UnitTestsList} from "./components"
+import {Editor, Header, OtherPlayers, OutputConsole, TopicInstructions, UnitTestsActions, UnitTestsList} from "./components"
 import styles from "./GameEditor.module.scss"
 import {DisplayMode} from "../../types/DisplayMode"
 import InstructionsModal from "./components/InstructionsModal"
@@ -100,7 +100,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                     <Header/>
 
                     <section className={styles.upperSectionContent}>
-                        <Topic/>
+                        <TopicInstructions />
                         <Editor code={code} updateCode={onCodeChange}/>
                     </section>
                 </section>
