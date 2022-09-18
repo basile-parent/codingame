@@ -54,7 +54,7 @@ return a[0]+a[1]
 - [ ] Share code: pas de scroll dispo
 - [ ] Selectionner un test déjà exécuté pour voir l'output
 - [ ] Ne pas effacer l'output des tests quand on modifie le code
-- [ ] Mettre à jour le code en direct dans l'admin + throttle sur l'envoi du status à l'admin (sinon trop de messages)
+- [x] Mettre à jour le code en direct dans l'admin + throttle sur l'envoi du status à l'admin (sinon trop de messages)
 - [x] Bug sur le démarrage d'un topic : on peut le faire si le précédent n'est pas calculé
 - [ ] WS Rest pour mettre à jour la partie manuellement.
 - [ ] Admin: dropdown click away listener

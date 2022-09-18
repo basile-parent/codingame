@@ -1,11 +1,12 @@
 import {Socket} from "socket.io"
 import Game from "./Game"
-import UserHandler from "./UserHandler";
-import WSStatus from "../types/WSStatus";
-import Player from "../model/Player";
-import {PlayerTopic} from "../types/GamePlayer";
-import Topic from "../types/Topic";
-import GameScreen from "../types/GameScreen";
+import UserHandler from "./UserHandler"
+import WSStatus from "../types/WSStatus"
+import Player from "../model/Player"
+import {PlayerTopic} from "../types/GamePlayer"
+import Topic from "../types/Topic"
+import GameScreen from "../types/GameScreen"
+import * as _ from "lodash"
 
 class WebSocketServerHandler {
     private GAME: Game
@@ -131,8 +132,12 @@ class WebSocketServerHandler {
 
     private saveTempCode = (payload: { uuid: string, code: string }) => {
         this.userHandler.setPlayerTempCode(payload.uuid, payload.code, this.GAME.topic)
-        this.userHandler.broadcastAdmin("status", this.getAdminStatus())
+        this.throttlingBroadcastAdminStatus(this.getAdminStatus())
     }
+    private throttlingBroadcastAdminStatus = _.throttle((status: WSStatus) => {
+        this.userHandler.broadcastAdmin("status", status)
+    }, 500)
+
     private submitCode = (payload: { uuid: string, code: string }) => {
         this.userHandler.setPlayerFinalCode(payload.uuid, payload.code, this.GAME.topic)
         this.GAME.calculateCompletion(payload.code)

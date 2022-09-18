@@ -1,15 +1,14 @@
-import {Socket} from "socket.io";
-import {GamePlayer, GamePlayerStatus, PlayerTopic} from "../types/GamePlayer";
-import Admin from "../model/Admin";
-import Player from "../model/Player";
-import User from "../model/User";
-import Game, {TIME_MARGIN, TRANSITION_TIMEOUT} from "./Game";
-import Topic from "../types/Topic";
-import GameScreen from "../types/GameScreen";
-import PersistentObject from "./PersistentObject";
-import DisplayMode from "../types/DisplayMode";
-import Presentation from "../model/Presentation";
-import user from "../model/User";
+import {Socket} from "socket.io"
+import {GamePlayer, GamePlayerStatus, PlayerTopic} from "../types/GamePlayer"
+import Admin from "../model/Admin"
+import Player from "../model/Player"
+import User from "../model/User"
+import Game, {TIME_MARGIN, TRANSITION_TIMEOUT} from "./Game"
+import Topic from "../types/Topic"
+import GameScreen from "../types/GameScreen"
+import PersistentObject from "./PersistentObject"
+import DisplayMode from "../types/DisplayMode"
+import Presentation from "../model/Presentation"
 
 class UserHandler extends PersistentObject {
     private PRESENTATIONS: Presentation[] = []
