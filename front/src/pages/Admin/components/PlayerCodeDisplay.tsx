@@ -4,12 +4,16 @@ import styles from "./PlayerCodeDisplay.module.scss"
 import editorStyles from "../../GameEditor/components/Editor.module.scss"
 import "../../GameEditor/components/Editor.ide.scss"
 import {AdminContext} from "../../../common/context/AdminContext";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../common/store";
+import {GamePlayer, PlayerTopic} from "../../../types/Player";
 
 let codeFlask: CodeFlask
 
 type PlayerCodeDisplayProps = {}
 const PlayerCodeDisplay: FC<PlayerCodeDisplayProps> = ({}: PlayerCodeDisplayProps) => {
     const { adminState: { selectedPlayerTopic }, dispatch } = useContext(AdminContext)
+    const players = useSelector((state: RootState) => state.players)
     const [ code, setCode ] = useState<string | null>(null)
 
     useEffect(() => {
@@ -23,10 +27,13 @@ const PlayerCodeDisplay: FC<PlayerCodeDisplayProps> = ({}: PlayerCodeDisplayProp
     }, [])
 
     useEffect(() => {
-        const newCode = selectedPlayerTopic?.tempCode || selectedPlayerTopic?.code
+        const selectedPlayer: GamePlayer | undefined = players.find(p => p.uuid === selectedPlayerTopic?.playerUuid)
+        const storePlayerTopic = selectedPlayer?.topics?.find((t: PlayerTopic) => t.topicId === selectedPlayerTopic?.topicId)
+
+        const newCode = storePlayerTopic?.tempCode || storePlayerTopic?.code
         codeFlask?.updateCode(newCode || "")
-        setCode(newCode || selectedPlayerTopic ? "" : null)
-    }, [ selectedPlayerTopic ])
+        setCode(newCode || storePlayerTopic ? "" : null)
+    }, [ selectedPlayerTopic, players ])
 
     return (
         <article className={`${ styles.container } ${ code === null ? styles.hidden : "" }`}>

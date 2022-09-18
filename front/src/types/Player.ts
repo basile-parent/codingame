@@ -20,6 +20,7 @@ export type GamePlayer = {
 }
 
 export type PlayerTopic = {
+    playerUuid: string,
     topicId: number,
     codeLength?: number,
     tempCode?: string,
