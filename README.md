@@ -50,7 +50,7 @@ return a[0]+a[1]
 - [x] Save temp code => throttle
 - [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 - [x] ~~Bug lors du set du nom ==> uuid toujours présent~~
-- [ ] Timer : la première seconde ne s'affiche pas (--:--)
+- [x] Timer : la première seconde ne s'affiche pas (--:--)
 - [ ] Share code: pas de scroll dispo
 - [ ] Selectionner un test déjà exécuté pour voir l'output
 - [ ] Ne pas effacer l'output des tests quand on modifie le code

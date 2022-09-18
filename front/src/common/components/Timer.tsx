@@ -1,5 +1,6 @@
 import {FC, useEffect, useState} from 'react'
 import styles from "./Timer.module.scss"
+import dateUtils from "../../utils/dateUtils";
 
 export type TimerProps = {
     endTimer: number,
@@ -7,12 +8,12 @@ export type TimerProps = {
     className?: string,
 }
 const Timer: FC<TimerProps> = ({ endTimer, onEndTimer, className }: TimerProps) => {
-    const [timerString, setTimerString] = useState<string>("--:--")
+    const [timerString, setTimerString] = useState<string>(_getInitFormattedTime(endTimer))
     const [isEnding, setIsEnding] = useState<boolean>(false)
 
     useEffect(() => {
         if (endTimer) {
-            const worker = runTimer(new Date(endTimer).toISOString(), setTimerString, setIsEnding, onEndTimer)
+            const worker = _runTimer(new Date(endTimer).toISOString(), setTimerString, setIsEnding, onEndTimer)
             return () => worker.terminate()
         }
     }, [ endTimer, onEndTimer ])
@@ -26,18 +27,22 @@ const Timer: FC<TimerProps> = ({ endTimer, onEndTimer, className }: TimerProps) 
     )
 }
 
-const runTimer = (date: string,
-                  setTimerString: (s: string) => void,
-                  setIsEnding: (b: boolean) => void,
-                  onEndTimer?: () => void): Worker => {
+const _getInitFormattedTime = (endTimer: number) => {
+    const diff = new Date(endTimer).getTime() - new Date().getTime()
+    return dateUtils.timeToString(diff / 1000)
+}
+
+const _runTimer = (endDate: string,
+                   setTimerString: (s: string) => void,
+                   setIsEnding: (b: boolean) => void,
+                   onEndTimer?: () => void): Worker => {
     const worker = new Worker(new URL('./Timer.worker.js', import.meta.url))
 
     worker.addEventListener('message', e => {
         switch (e.data.action) {
             case "updateCountdown":
-                const {minutes, seconds, remainingInSeconds} = e.data.value
-                const countdown = (minutes + "").padStart(2, "0") + ":" + (seconds + "").padStart(2, "0")
-                setTimerString(countdown)
+                const {remainingInSeconds} = e.data.value
+                setTimerString(dateUtils.timeToString(remainingInSeconds))
                 setIsEnding(remainingInSeconds < 60)
                 break;
             case "endCountdown":
@@ -46,7 +51,7 @@ const runTimer = (date: string,
         }
     });
 
-    worker.postMessage({action: "setupEndDate", date})
+    worker.postMessage({action: "setupEndDate", date: endDate})
     worker.postMessage({action: "startCountdown"})
 
     return worker

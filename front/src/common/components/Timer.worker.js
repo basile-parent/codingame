@@ -17,6 +17,7 @@ self.addEventListener('message', e => {
 const setupCountdown = endDate => {
   END_DATE = new Date(endDate);
   COUNTDOWN = _calculateCountdown()
+  console.log("Initial update", COUNTDOWN)
   updateCountdown();
 };
 
@@ -37,7 +38,5 @@ const _calculateCountdown = () => {
 }
 
 const updateCountdown = () => {
-  const minutes = Math.floor(COUNTDOWN / 60000);
-  const seconds = Math.floor((COUNTDOWN % 60000) / 1000);
-  self.postMessage({ action: "updateCountdown", value: { minutes, seconds, remainingInSeconds: COUNTDOWN / 1000 } });
+  self.postMessage({ action: "updateCountdown", value: { remainingInSeconds: Math.round(COUNTDOWN / 1000) } });
 };
