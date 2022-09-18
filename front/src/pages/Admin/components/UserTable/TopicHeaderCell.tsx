@@ -14,6 +14,7 @@ type TopicHeaderCellProps = {
 const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: TopicHeaderCellProps) => {
     const [ open, setOpen ] = useState(false)
     const game = useSelector((state: RootState) => state.game)
+    const currentGameTopic = useMemo(() => game?.topic, [ game ])
 
     const handleStartTopic = useCallback(() => {
         WebsocketManager.startTopic(topic.id)
@@ -50,7 +51,7 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
                         </button>
                         <button className={`dropdown-item ${ styles.dropdownButton }`}
                                 onClick={handleStartTopic}
-                                disabled={topic.status !== TopicStatus.WAITING || !game?.started}
+                                disabled={!game?.started || [TopicStatus.IN_PROGRESS, TopicStatus.FINISHED].includes(currentGameTopic?.status!) }
                         >
                             Démarrer
                         </button>
