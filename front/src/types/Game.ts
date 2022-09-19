@@ -51,6 +51,7 @@ export const toTopicStatusLabel = (topicStatus: TopicStatus) => {
 }
 
 type Test = {
+    name?: string,
     inputs: (string | number)[],
     output: (string | number)
 }
@@ -58,7 +59,8 @@ type Test = {
 export type UnitTestExecution = Test & {
     id: number,
     status: UnitTestExecutionStatus,
-    consoleOutput?: any
+    consoleOutput?: any,
+    outdated: boolean,
 }
 
 export enum UnitTestExecutionStatus {

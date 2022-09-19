@@ -27,6 +27,7 @@ export enum GameMode {
 }
 
 export type Test = {
+    name?: string,
     inputs: (string | number)[],
     output: (string | number),
     hidden?: boolean,

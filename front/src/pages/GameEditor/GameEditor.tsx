@@ -24,7 +24,8 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
     const [unitTests, setUnitTests] = useState<UnitTestExecution[]>(game!.topic!.tests.map((test, index) => ({
         ...test,
         id: index,
-        status: UnitTestExecutionStatus.WAIT
+        status: UnitTestExecutionStatus.WAIT,
+        outdated: false
     })))
     const [selectedUnitTest, setSelectedUnitTest] = useState<UnitTestExecution | null>(null)
 
@@ -34,29 +35,38 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
             }, 1000)
         , [])
     const onCodeChange = useCallback((newCode: string) => {
-        setSelectedUnitTest(null)
+        // setSelectedUnitTest(null)
+        // setUnitTests(unitTests => unitTests.map(unitTest => ({
+        //     ...unitTest,
+        //     status: UnitTestExecutionStatus.WAIT,
+        //     consoleOutput: undefined
+        // })))
         setUnitTests(unitTests => unitTests.map(unitTest => ({
             ...unitTest,
-            status: UnitTestExecutionStatus.WAIT,
-            consoleOutput: undefined
+            outdated: !!unitTest.consoleOutput
         })))
         playerUtils.saveCode(newCode)
         saveTempCode(newCode)
         setCode(newCode)
     }, [])
     const executeTest = useCallback((testExecution: UnitTestExecution) => {
-        setSelectedUnitTest(testExecution)
-        return runTest(code, testExecution.inputs, testExecution.output)
+        const updatedTestExecution = { ...testExecution, outdated: false };
+        setSelectedUnitTest(updatedTestExecution)
+        setUnitTests(unitTests => unitTests.map(unitTest => ({
+            ...unitTest,
+            outdated: unitTest.id === testExecution.id ? false : unitTest.outdated
+        })))
+        return runTest(code, updatedTestExecution.inputs, updatedTestExecution.output)
             .then((details: string) => {
                 return {
-                    ...testExecution,
+                    ...updatedTestExecution,
                     status: UnitTestExecutionStatus.SUCCESS,
                     consoleOutput: details
                 } as UnitTestExecution
             })
             .catch(details => {
                 return {
-                    ...testExecution,
+                    ...updatedTestExecution,
                     status: UnitTestExecutionStatus.FAIL,
                     consoleOutput: details
                 } as UnitTestExecution
@@ -74,6 +84,9 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                     throw newExecutionValue.consoleOutput
                 }
             })
+    }, [code])
+    const onSelectTest = useCallback((testExecution: UnitTestExecution) => {
+        setSelectedUnitTest(testExecution)
     }, [code])
 
     const executeAllTest = useCallback(() => {
@@ -122,6 +135,7 @@ const GameEditor: FC<GameEditorProps> = ({}: GameEditorProps) => {
                               <section className={styles.unitTestsList}>
                                 <UnitTestsList unitTests={unitTests}
                                                onPlayTest={executeTest}
+                                               onSelectTest={onSelectTest}
                                                selectedUnitTest={selectedUnitTest}
                                 />
                               </section>

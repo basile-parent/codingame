@@ -43,21 +43,21 @@ return a[0]+a[1]
 - [x] Reverse mode (CSS + Calculation)
 - [x] Admin: delete players
 - [x] ~~Bug Onglet fermé = timer 5:00, non validation = timer 4:59~~
-- [ ] Deployment & CD
-- [ ] Podium: Manual launch
 - [x] Remove time as a factor of points in the shortest mode
 - [x] Go Redux !
 - [x] Save temp code => throttle
-- [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 - [x] ~~Bug lors du set du nom ==> uuid toujours présent~~
 - [x] Timer : la première seconde ne s'affiche pas (--:--)
-- [ ] Share code: pas de scroll dispo
-- [ ] Selectionner un test déjà exécuté pour voir l'output
-- [ ] Ne pas effacer l'output des tests quand on modifie le code
+- [x] Selectionner un test déjà exécuté pour voir l'output
+- [x] Ne pas effacer l'output des tests quand on modifie le code
 - [x] Mettre à jour le code en direct dans l'admin + throttle sur l'envoi du status à l'admin (sinon trop de messages)
 - [x] Bug sur le démarrage d'un topic : on peut le faire si le précédent n'est pas calculé
+- [ ] Podium: Manual launch
 - [ ] WS Rest pour mettre à jour la partie manuellement.
+- [ ] Share code: pas de scroll dispo
 - [ ] Admin: dropdown click away listener
+- [ ] Deployment & CD
+- [ ] CSS bug on firefox with multiple columns ul (landing page when only 1 user)
 
 ## TODO later
 - [ ] ESLint (+ prettier ?)
