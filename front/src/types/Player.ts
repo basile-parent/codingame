@@ -11,6 +11,7 @@ export type GamePlayer = {
     connected: boolean,
     name: string,
     screen: GameScreen,
+    additionalScreenProps: string[],
     previousScore: number,
     score: number,
     position?: number,

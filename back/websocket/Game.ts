@@ -13,6 +13,7 @@ export const TRANSITION_TIMEOUT = 3000
 class Game extends PersistentObject {
     public started: boolean
     public currentScreen: GameScreen
+    public additionalScreenProps: string[] = []
     public allTopics: Topic[]
     public topic: Topic | null = null
     public topicIndex: number | null = null
@@ -24,6 +25,7 @@ class Game extends PersistentObject {
 
         if (!this.load()) {
             this.currentScreen = GameScreen.LANDING_PAGE
+            this.additionalScreenProps = []
             this.allTopics = this._initTopics()
             this.started = false
 
@@ -35,6 +37,7 @@ class Game extends PersistentObject {
 
     reset() {
         this.currentScreen = GameScreen.LANDING_PAGE
+        this.additionalScreenProps = []
         this.allTopics = this._initTopics()
         this.started = false
         this.endTimer = null
@@ -65,6 +68,7 @@ class Game extends PersistentObject {
     startTopic(id: number, updateCb: (options: GameUpdateOptions) => void) {
         this.topicIndex = this.allTopics.findIndex(t => t.id == id)
         this.currentScreen = GameScreen.GAME_EDITOR
+        this.additionalScreenProps = []
         this._setTransitionTimeout(TRANSITION_TIMEOUT)
 
         this.allTopics[this.topicIndex].startTime = new Date().getTime()
@@ -83,6 +87,7 @@ class Game extends PersistentObject {
 
     showScores() {
         this.currentScreen = GameScreen.LEADERBOARD
+        this.additionalScreenProps = []
         this.topic = null
         this.topicIndex = null
 
@@ -91,9 +96,15 @@ class Game extends PersistentObject {
 
     showPodium() {
         this.currentScreen = GameScreen.PODIUM
+        this.additionalScreenProps = []
         this.topic = null
         this.topicIndex = null
 
+        this.save()
+    }
+
+    setAdditionalScreenProps(additionalScreenProps: string[]) {
+        this.additionalScreenProps = additionalScreenProps
         this.save()
     }
 
@@ -108,6 +119,7 @@ class Game extends PersistentObject {
         this.endTimer = new Date().getTime()
         this.topic.status = GamePlayerStatus.FINISHED
         this.currentScreen = GameScreen.AFTER_GAME
+        this.additionalScreenProps = []
         updateCb({ topic: this.topic })
         console.log(`Topic ${ this.topic.id } terminé`)
 

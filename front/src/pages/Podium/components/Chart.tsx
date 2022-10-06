@@ -1,4 +1,4 @@
-import {FC} from "react"
+import {FC, PropsWithChildren} from "react"
 import CountUp from "react-countup"
 import {useSelector} from "react-redux"
 import styles from "./Chart.module.scss"
@@ -9,22 +9,11 @@ import goldMedalUrl from "./medal-gold.svg"
 import {GamePlayer} from "../../../types/Player"
 import {RootState} from "../../../common/store"
 
-const delayBaseLine = 4.5
-const delayStartShowPosition = delayBaseLine + 2
 const delayBeforeCountUp = 2
-const delayBeforeShowPlayer = 2
-const delayBetweenPositions = 2
-
 const thirdPositionSlideDuration = 4
 const secondPositionSlideDuration = 5
 const firstPositionSlideDuration = 6
 
-const thirdPositionTotalDelay = delayStartShowPosition + delayBeforeCountUp + thirdPositionSlideDuration + delayBeforeShowPlayer
-const secondPositionTotalDelay = thirdPositionTotalDelay + delayBeforeCountUp + delayBetweenPositions + secondPositionSlideDuration + delayBeforeShowPlayer
-
-const showThirdPositionStartTime = delayStartShowPosition + delayBeforeCountUp
-const showSecondPositionStartTime = thirdPositionTotalDelay + delayBetweenPositions + delayBeforeCountUp
-const showFirstPositionStartTime = secondPositionTotalDelay + delayBetweenPositions + delayBeforeCountUp
 
 type PlayerNameWithScore = {
     names: string[],
@@ -36,70 +25,93 @@ type ChartProps = {}
 const Chart: FC<ChartProps> = ({}: ChartProps) => {
     const players = useSelector((state: RootState) => state.players)
 
-    const thirdPositionPlayers = reducePlayersByPosition(players, 3)
-    const secondPositionPlayers = reducePlayersByPosition(players, 2)
-    const firstPositionPlayers = reducePlayersByPosition(players, 1)
-
     return (
         <div className={styles.container}>
-            <div className={styles.thirdPosition}>
-                <p className={`${ styles.player } ${ thirdPositionPlayers.isVacant ? styles.vacant : "" }`}
-                   dangerouslySetInnerHTML={{ __html: thirdPositionPlayers.names.join("<br/>") }}
-                   style={{ marginTop: thirdPositionPlayers.names.length ? ((thirdPositionPlayers.names.length - 1) * -30) + "px" : 0 }}
-                />
-                <p className={styles.score}>
-                    <CountUp start={0}
-                             end={ thirdPositionPlayers.score }
-                             duration={thirdPositionSlideDuration}
-                             delay={showThirdPositionStartTime}
-                    />
-                </p>
+            <PodiumBar players={players}
+                       position={3}
+                       medalUrl={bronzeMedalUrl}
+                       styleClass={styles.thirdPosition}
+                       slideDuration={thirdPositionSlideDuration}
+            />
+            <PodiumBarWithHalo players={players}
+                       position={1}
+                       medalUrl={goldMedalUrl}
+                       styleClass={styles.firstPosition}
+                       slideDuration={firstPositionSlideDuration}
+            />
+            <PodiumBar players={players}
+                       position={2}
+                       medalUrl={silverMedalUrl}
+                       styleClass={styles.secondPosition}
+                       slideDuration={secondPositionSlideDuration}
+            />
 
-                <div className={styles.medal}>
-                    <img src={bronzeMedalUrl} />
-                </div>
-            </div>
-            <div className={styles.firstPosition}>
-                <p className={`${ styles.player } ${ firstPositionPlayers.isVacant ? styles.vacant : "" }`}
-                   dangerouslySetInnerHTML={{ __html: firstPositionPlayers.names.join("<br/>") }}
-                   style={{ marginTop: firstPositionPlayers.names.length ? ((firstPositionPlayers.names.length - 1) * -30) + "px" : 0 }}
-                />
-                <p className={styles.score}>
-                    <CountUp start={0}
-                             end={ firstPositionPlayers.score }
-                             duration={firstPositionSlideDuration}
-                             delay={showFirstPositionStartTime}
-                    />
-                </p>
-                <div className={styles.medal}>
-                    <img src={goldMedalUrl} />
-                </div>
-                <div className={styles.radialStripes}
-                     style={{ marginTop: firstPositionPlayers.names.length ? ((firstPositionPlayers.names.length - 1) * -15) + "px" : 0 }}
-                >
-                    <img src={stripesUrl} />
-                </div>
-            </div>
-            <div className={styles.secondPosition}>
-                <p className={`${ styles.player } ${ secondPositionPlayers.isVacant ? styles.vacant : "" }`}
-                   dangerouslySetInnerHTML={{ __html: secondPositionPlayers.names.join("<br/>") }}
-                   style={{ marginTop: secondPositionPlayers.names.length ? ((secondPositionPlayers.names.length - 1) * -30) + "px" : 0 }}
-                />
-                <p className={styles.score}>
-                    <CountUp start={0}
-                             end={ secondPositionPlayers.score }
-                             duration={secondPositionSlideDuration}
-                             delay={showSecondPositionStartTime}
-                    />
-                </p>
-
-                <div className={styles.medal}>
-                    <img src={silverMedalUrl} />
-                </div>
-            </div>
-
-            <div className={styles.baseLine} />
+            <div className={styles.baseLine}/>
         </div>
+    )
+}
+
+type PodiumBarProps = PropsWithChildren & {
+    players: GamePlayer[],
+    position: number,
+    medalUrl: string,
+    styleClass: string,
+    slideDuration: number
+}
+const PodiumBar: FC<PodiumBarProps> = ({players, position, medalUrl, styleClass, slideDuration, children}) => {
+    const additionalScreenProps = useSelector((state: RootState) => state.additionalScreenProps)
+    const positionPlayers = reducePlayersByPosition(players, position)
+
+    const isRevealed = isPositionRevealed(additionalScreenProps, position)
+    if (!isRevealed) {
+        return null
+    }
+
+    return (
+        <div className={`${styleClass} ${isRevealed ? styles.show : ""}`}>
+            <p className={`${styles.player} ${positionPlayers.isVacant ? styles.vacant : ""}`}
+               dangerouslySetInnerHTML={{__html: positionPlayers.names.join("<br/>")}}
+               style={{marginTop: positionPlayers.names.length ? ((positionPlayers.names.length - 1) * -30) + "px" : 0}}
+            />
+            <p className={styles.score}>
+                {
+                    isRevealed &&
+                  <CountUp start={0}
+                           end={positionPlayers.score + 1000}
+                           duration={slideDuration}
+                           delay={delayBeforeCountUp}
+                  />
+                }
+            </p>
+
+            <div className={styles.medal}>
+                <img src={medalUrl} alt="Médaille"/>
+            </div>
+
+            { children }
+        </div>
+    )
+}
+
+const PodiumBarWithHalo: FC<PodiumBarProps> = (props) => {
+    const additionalScreenProps = useSelector((state: RootState) => state.additionalScreenProps)
+    const positionPlayers = reducePlayersByPosition(props.players, props.position)
+
+    const isRevealed = isPositionRevealed(additionalScreenProps, props.position)
+    if (!isRevealed) {
+        return null
+    }
+
+    return (
+        <>
+            <PodiumBar { ...props }>
+                <div className={styles.radialStripes}
+                     style={{marginTop: positionPlayers.names.length ? ((positionPlayers.names.length - 1) * -15) + "px" : 0}}
+                >
+                    <img src={stripesUrl}/>
+                </div>
+            </PodiumBar>
+        </>
     )
 }
 
@@ -115,12 +127,16 @@ const reducePlayersByPosition = (players: GamePlayer[], position: number): Playe
     }
 
     return playersOnThatPosition.reduce((acc, item) =>
-        ({
-            names: acc.names ? [...acc.names, item.name].filter(n=>n) : [ item.name ],
-            score: item.score,
-            isVacant: false
-        }),
+            ({
+                names: acc.names ? [...acc.names, item.name].filter(n => n) : [item.name],
+                score: item.score,
+                isVacant: false
+            }),
         {} as PlayerNameWithScore)
+}
+
+const isPositionRevealed = (additionalScreenProps: string[], position: number) => {
+    return additionalScreenProps.includes(`podium-${position}-revealed`)
 }
 
 export default Chart

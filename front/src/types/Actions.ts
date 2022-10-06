@@ -36,6 +36,7 @@ export class WSAction extends Action {
     public static CALCULATE_SCORE = this._build("calculateTopicScore")
     public static SHOW_SCORES = this._build("showScores")
     public static SHOW_PODIUM = this._build("showPodium")
+    public static SET_ADDITIONAL_SCREEN_PROPS = (newProps: string[]) => this._build("setAdditionalScreenProps")(newProps)
 
     public static APPROVE_PLAYER = (uuid: string) => this._build("approvePlayer")({ uuid })
     public static DELETE_PLAYER = (uuid: string) => this._build("deletePlayer")({ uuid })

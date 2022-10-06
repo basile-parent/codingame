@@ -3,7 +3,7 @@ export type Game = {
     topic: Topic | null,
     endTimer?: number,
     allTopics: Topic[],
-    transitionTimeout: number,
+    transitionTimeout: number
 }
 
 export enum GameMode {

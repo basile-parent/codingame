@@ -7,6 +7,7 @@ import Presentation from "../model/Presentation";
 
 type WSStatus = {
     screen: GameScreen,
+    additionalScreenProps: string[],
     players: (Player | GamePlayer)[],
     admins?: Admin[],
     presentations?: Presentation[],

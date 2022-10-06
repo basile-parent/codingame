@@ -112,16 +112,28 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
     height: 200px;
     bottom: -200px;
 
-    $delay: $delay-startShowPosition + $delay-beforeCountUp;
-    animation: barSlideUp $thirdPositionSlideDuration ease-out $delay forwards;
+    //$delay: $delay-startShowPosition + $delay-beforeCountUp;
+    //animation: barSlideUp $thirdPositionSlideDuration ease-out $delay forwards;
+    //
+    //& p.score {
+    //  $delay-score: $delay - $delay-beforeCountUp;
+    //  animation: fadeIn 1s ease-in $delay-score forwards;
+    //}
+    //& p.player {
+    //  $delay-player: $delay + $thirdPositionSlideDuration + $delay-beforeShowPlayer;
+    //  animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    //}
 
-    & p.score {
-      $delay-score: $delay - $delay-beforeCountUp;
-      animation: fadeIn 1s ease-in $delay-score forwards;
-    }
-    & p.player {
-      $delay-player: $delay + $thirdPositionSlideDuration + $delay-beforeShowPlayer;
-      animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    &.show {
+      animation: barSlideUp $thirdPositionSlideDuration ease-out 2s forwards;
+
+      & p.score {
+        animation: fadeIn 1s ease-in forwards;
+      }
+      & p.player {
+        $delay-player: $thirdPositionSlideDuration + $delay-beforeShowPlayer;
+        animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+      }
     }
   }
 
@@ -129,18 +141,26 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
     @include bgColor($silver-medal);
     left: 70%;
     height: 300px;
-
     bottom: -300px;
-    $delay: $thirdPositionTotalDelay + $delay-betweenPositions + $delay-beforeCountUp;
-    animation: barSlideUp $secondPositionSlideDuration ease-out $delay forwards;
 
-    & p.score {
-      $delay-score: $delay - $delay-beforeCountUp;
-      animation: fadeIn 1s ease-in $delay-score forwards;
-    }
-    & p.player {
-      $delay-player: $delay + $secondPositionSlideDuration + $delay-beforeShowPlayer;
-      animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    //$delay: $thirdPositionTotalDelay + $delay-betweenPositions + $delay-beforeCountUp;
+    //animation: barSlideUp $secondPositionSlideDuration ease-out $delay forwards;
+    //
+    //& p.player {
+    //  $delay-player: $delay + $secondPositionSlideDuration + $delay-beforeShowPlayer;
+    //  animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    //}
+
+    &.show {
+      animation: barSlideUp $secondPositionSlideDuration ease-out 2s forwards;
+
+      & p.score {
+        animation: fadeIn 1s ease-in forwards;
+      }
+      & p.player {
+        $delay-player: $secondPositionSlideDuration + $delay-beforeShowPlayer;
+        animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+      }
     }
   }
 
@@ -148,20 +168,20 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
     @include bgColor($gold-medal);
     left: 42%;
     height: 400px;
-
     bottom: -400px;
-    $delay: $secondPositionTotalDelay + $delay-betweenPositions + $delay-beforeCountUp;
-    animation: barSlideUp 6s ease-out $delay forwards;
 
-    & p.score {
-      $delay-score: $delay - $delay-beforeCountUp;
-      animation: fadeIn 1s ease-in $delay-score forwards;
-    }
-
-    $delay-player: $delay + $firstPositionSlideDuration + $delay-beforeShowPlayer;
-    & p.player {
-      animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
-    }
+    //$delay: $secondPositionTotalDelay + $delay-betweenPositions + $delay-beforeCountUp;
+    //animation: barSlideUp 6s ease-out $delay forwards;
+    //
+    //& p.score {
+    //  $delay-score: $delay - $delay-beforeCountUp;
+    //  animation: fadeIn 1s ease-in $delay-score forwards;
+    //}
+    //
+    //$delay-player: $delay + $firstPositionSlideDuration + $delay-beforeShowPlayer;
+    //& p.player {
+    //  animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+    //}
     .radialStripes {
       position:absolute;
       top: -270px;
@@ -175,8 +195,25 @@ $secondPositionTotalDelay: $thirdPositionTotalDelay + $delay-betweenPositions + 
         height: 100%;
         width: 100%;
         opacity: 0;
-        $delay-stripes: $delay-player + 2s;
+        $delay-stripes: $firstPositionSlideDuration + 5s;
         animation: fadeIn 1s ease-in $delay-stripes forwards;
+      }
+    }
+
+    &.show {
+      animation: barSlideUp $firstPositionSlideDuration ease-out 2s forwards;
+
+      & p.score {
+        animation: fadeIn 1s ease-in forwards;
+      }
+      & p.player {
+        $delay-player: $firstPositionSlideDuration + $delay-beforeShowPlayer;
+        animation: fadeIn $delay-beforeShowPlayer ease-in $delay-player forwards;
+
+        .radialStripes img {
+          $delay-stripes: $delay-player + 2s;
+          animation: fadeIn 1s ease-in $delay-stripes forwards;
+        }
       }
     }
   }

@@ -7,6 +7,8 @@ import {toTopicStatusLabel} from "../../../types/Game"
 import WebsocketManager from "../../../common/components/WebsocketManager"
 import {RootState} from "../../../common/store"
 import TopicTimer from "../../../common/components/TopicTimer"
+import {Screen} from "../../../types/Screen";
+import PodiumCommands from "./PodiumCommands";
 
 type GameStatusProps = {}
 const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
@@ -28,7 +30,6 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
         }
         WebsocketManager.finishTopic()
     }, [ preventEndTimer ])
-
 
     return (
         <article className={styles.wrapper}>
@@ -52,6 +53,8 @@ const GameStatus: FC<GameStatusProps> = ({}: GameStatusProps) => {
                         )
                     }
                 </ul>
+
+                { screen === Screen.PODIUM && <PodiumCommands /> }
             </section>
             <aside className={styles.actions}>
                 <GameActions />

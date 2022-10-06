@@ -4,6 +4,7 @@ import adminsReducer from "./admins"
 import presentationsReducer from "./presentations"
 import modeReducer, {setMode} from "./mode"
 import screenReducer from "./screen"
+import additionalScreenPropsReducer from "./additionalScreenProps"
 import connectedReducer, {connect, disconnect} from "./connected"
 import gameReducer, {newEndTime} from "./game"
 import waitForApprovalReducer from "./waitForApproval"
@@ -21,6 +22,7 @@ export type RootState = {
     admins: GamePlayer[],
     presentations: GamePlayer[],
     screen: Screen,
+    additionalScreenProps: string[],
     game: Game | null,
     transitionTimeout: number,
     delayedState: RootState | null,
@@ -35,6 +37,7 @@ const store = configureStore<RootState>({
         admins: adminsReducer,
         presentations: presentationsReducer,
         screen: screenReducer,
+        additionalScreenProps: additionalScreenPropsReducer,
         game: gameReducer,
         transitionTimeout: transitionTimeoutReducer,
         waitForApproval: waitForApprovalReducer,

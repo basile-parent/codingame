@@ -20,6 +20,7 @@ class WebsocketManager extends EventEmitter {
     calculateTopicScore = () => this.emit("send", WSAction.CALCULATE_SCORE())
     showScores = () => this.emit("send", WSAction.SHOW_SCORES())
     showPodium = () => this.emit("send", WSAction.SHOW_PODIUM())
+    setAdditionalScreenProps = (newProps: string[]) => this.emit("send", WSAction.SET_ADDITIONAL_SCREEN_PROPS(newProps))
 
     approvePlayer = (uuid: string) => this.emit("send", WSAction.APPROVE_PLAYER(uuid))
     deletePlayer = (uuid: string) => this.emit("send", WSAction.DELETE_PLAYER(uuid))

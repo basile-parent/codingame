@@ -44,6 +44,7 @@ class WebSocketServerHandler {
         socket.on("tempCode", this.saveTempCode)
         socket.on("commitCode", this.submitCode)
         socket.on("shareCode", this.shareCode)
+        socket.on("setAdditionalScreenProps", this.setAdditionalScreenProps)
 
         socket.on("calculateTopicScore", this.calculateScores)
         socket.on("showScores", this.showScores)
@@ -153,6 +154,11 @@ class WebSocketServerHandler {
         this.broadcastStatus()
     }
 
+    private setAdditionalScreenProps = (payload: string[]) => {
+        this.GAME.setAdditionalScreenProps(payload)
+        this.broadcastStatus()
+    }
+
     private calculateScores = () => {
         const allPlayerTopics = this.userHandler.getAllPlayerTopics(this.GAME.topic)
         const allPlayerTopicsWithScore = this.GAME.topic.calculateScore(allPlayerTopics)
@@ -198,6 +204,7 @@ class WebSocketServerHandler {
     public getAdminStatus = (): WSStatus => {
         return {
             screen: this.GAME.currentScreen,
+            additionalScreenProps: this.GAME.additionalScreenProps,
             game: this.GAME.toAdminJson(),
             players: this.userHandler.getAllPlayers(),
             admins: this.userHandler.getAllAdmins(),
@@ -210,6 +217,7 @@ class WebSocketServerHandler {
     private getPlayerStatus = (player: Player): WSStatus => {
         return {
             screen: player.waitForApproval ? GameScreen.LANDING_PAGE : player.screen,
+            additionalScreenProps: this.GAME.additionalScreenProps,
             game: this.GAME.toPublicJson(),
             players: this.userHandler.getLeaderboard(),
             transitionTimeout: this.GAME.transitionTimeout,

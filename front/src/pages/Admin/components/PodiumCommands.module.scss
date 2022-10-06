@@ -1,0 +1,15 @@
+@import "../../../variables";
+
+.container {
+
+  .button {
+    width: 150px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+
+  .bronzeMedal, .bronzeMedal[disabled] { background-color: $bronze-medal; }
+  .silverMedal, .silverMedal[disabled] { background-color: $silver-medal; color: white; }
+  .goldMedal, .goldMedal[disabled] { background-color: $gold-medal; }
+}

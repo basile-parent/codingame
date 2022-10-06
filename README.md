@@ -52,7 +52,7 @@ return a[0]+a[1]
 - [x] Ne pas effacer l'output des tests quand on modifie le code
 - [x] Mettre à jour le code en direct dans l'admin + throttle sur l'envoi du status à l'admin (sinon trop de messages)
 - [x] Bug sur le démarrage d'un topic : on peut le faire si le précédent n'est pas calculé
-- [ ] Podium: Manual launch
+- [x] Podium: Manual launch
 - [ ] WS Rest pour mettre à jour la partie manuellement.
 - [ ] Share code: pas de scroll dispo
 - [ ] Admin: dropdown click away listener
@@ -65,6 +65,7 @@ return a[0]+a[1]
 - [ ] WebSocket message lighter and more specific : no more global status
 - [ ] Externalize ModalConfirm to a specific repo
 - [ ] Externalize WebSocketManager to a specific repo ?
+- [ ] Next ?
 - [ ] Cleanup types (Player / GamePlayer)
 - [ ] Cleanup backend (things are gone pretty messy...)
 - [ ] Mutualize back and front (types and src)
