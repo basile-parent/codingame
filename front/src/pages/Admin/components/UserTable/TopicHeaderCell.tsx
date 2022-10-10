@@ -6,6 +6,7 @@ import {Topic, TopicStatus} from "../../../../types/Game"
 import WebsocketManager from "../../../../common/components/WebsocketManager"
 import styles from "./TopicHeaderCell.module.scss"
 import {RootState} from "../../../../common/store"
+import {Screen} from "../../../../types/Screen";
 
 type TopicHeaderCellProps = {
     topic: Topic,
@@ -15,9 +16,16 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
     const [ open, setOpen ] = useState(false)
     const game = useSelector((state: RootState) => state.game)
     const currentGameTopic = useMemo(() => game?.topic, [ game ])
+    const screen = useSelector((state: RootState) => state.screen)
+
 
     const handleStartTopic = useCallback(() => {
         WebsocketManager.startTopic(topic.id)
+        setOpen(false)
+    }, [])
+
+    const handleCalculateScores = useCallback(() => {
+        WebsocketManager.calculateTopicScore(topic.id)
         setOpen(false)
     }, [])
 
@@ -54,6 +62,12 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
                                 disabled={!game?.started || [TopicStatus.IN_PROGRESS, TopicStatus.FINISHED].includes(currentGameTopic?.status!) }
                         >
                             Démarrer
+                        </button>
+                        <button className={`dropdown-item ${ styles.dropdownButton }`}
+                                onClick={handleCalculateScores}
+                                disabled={!game?.started || screen !== Screen.AFTER_GAME || topic.status !== TopicStatus.FINISHED }
+                        >
+                            Calcul scores
                         </button>
                         <button className={`dropdown-item ${ styles.dropdownButton }`}
                                 onClick={handleReinitTopic}

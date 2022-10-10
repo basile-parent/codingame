@@ -33,7 +33,7 @@ export class WSAction extends Action {
     public static REINIT_TOPIC = (topicId: number) => this._build("reinitTopic")({ id: topicId })
     public static ADD_TIME = (time: number) => this._build("addTime")({ time })
     public static FINISH_TOPIC = this._build("finishTopic")
-    public static CALCULATE_SCORE = this._build("calculateTopicScore")
+    public static CALCULATE_SCORE = (topicId: number) => this._build("calculateTopicScore")({ id: topicId })
     public static SHOW_SCORES = this._build("showScores")
     public static SHOW_PODIUM = this._build("showPodium")
     public static SET_ADDITIONAL_SCREEN_PROPS = (newProps: string[]) => this._build("setAdditionalScreenProps")(newProps)

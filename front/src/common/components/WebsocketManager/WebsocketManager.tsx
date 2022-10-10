@@ -17,7 +17,7 @@ class WebsocketManager extends EventEmitter {
     reinitTopic = (topicId: number) => this.emit("send", WSAction.REINIT_TOPIC(topicId))
     addTime = (time: number) => this.emit("send", WSAction.ADD_TIME(time))
     finishTopic = () => this.emit("send", WSAction.FINISH_TOPIC())
-    calculateTopicScore = () => this.emit("send", WSAction.CALCULATE_SCORE())
+    calculateTopicScore = (topicId: number) => this.emit("send", WSAction.CALCULATE_SCORE(topicId))
     showScores = () => this.emit("send", WSAction.SHOW_SCORES())
     showPodium = () => this.emit("send", WSAction.SHOW_PODIUM())
     setAdditionalScreenProps = (newProps: string[]) => this.emit("send", WSAction.SET_ADDITIONAL_SCREEN_PROPS(newProps))

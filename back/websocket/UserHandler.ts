@@ -106,6 +106,11 @@ class UserHandler extends PersistentObject {
             const allUuids = this[userProperty].map(user => user.uuid).join(", ")
             throw new Error(`Cannot delete ${ userProperty } with uuid ${ userUuid }: uuid not found (list of available uuid: ${ allUuids })`)
         }
+        const user = this[userProperty].find(user => user.uuid === userUuid)
+        if (user.connected) {
+            throw new Error("Cannot delete a connected user")
+        }
+
         this[userProperty] = this[userProperty].filter(user => user.uuid !== userUuid)
         console.debug(`${ userProperty } ${ userUuid } deleted`)
     }

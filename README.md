@@ -53,7 +53,7 @@ return a[0]+a[1]
 - [x] Mettre à jour le code en direct dans l'admin + throttle sur l'envoi du status à l'admin (sinon trop de messages)
 - [x] Bug sur le démarrage d'un topic : on peut le faire si le précédent n'est pas calculé
 - [x] Podium: Manual launch
-- [ ] WS Rest pour mettre à jour la partie manuellement.
+- [x] WS Rest pour mettre à jour la partie manuellement.
 - [ ] Share code: pas de scroll dispo
 - [ ] Admin: dropdown click away listener
 - [ ] Deployment & CD
@@ -80,3 +80,4 @@ return a[0]+a[1]
 - [ ] Better looking admin
 - [ ] Reactive UI
 - [ ] Customize styling (a less codingame copycat)
+- [ ] Back: body-parser is deprecated

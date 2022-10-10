@@ -29,7 +29,7 @@ const Timer: FC<TimerProps> = ({ endTimer, onEndTimer, className }: TimerProps) 
 
 const _getInitFormattedTime = (endTimer: number) => {
     const diff = new Date(endTimer).getTime() - new Date().getTime()
-    return dateUtils.timeToString(diff / 1000)
+    return dateUtils.timeToString(Math.round(diff / 1000))
 }
 
 const _runTimer = (endDate: string,

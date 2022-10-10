@@ -66,11 +66,15 @@ class Game extends PersistentObject {
     }
 
     startTopic(id: number, updateCb: (options: GameUpdateOptions) => void) {
-        this.topicIndex = this.allTopics.findIndex(t => t.id == id)
+        if (this.topic) {
+            throw new Error("A topic is already started")
+        }
+
         this.currentScreen = GameScreen.GAME_EDITOR
         this.additionalScreenProps = []
         this._setTransitionTimeout(TRANSITION_TIMEOUT)
 
+        this.topicIndex = this.allTopics.findIndex(t => t.id == id)
         this.allTopics[this.topicIndex].startTime = new Date().getTime()
         this.topic = this.allTopics[this.topicIndex]
         this.topic.status = GamePlayerStatus.IN_PROGRESS
@@ -117,7 +121,10 @@ class Game extends PersistentObject {
 
     finishTopic(updateCb: (options: GameUpdateOptions) => void) {
         this.endTimer = new Date().getTime()
+
+        this.allTopics[this.topicIndex].status = GamePlayerStatus.FINISHED
         this.topic.status = GamePlayerStatus.FINISHED
+
         this.currentScreen = GameScreen.AFTER_GAME
         this.additionalScreenProps = []
         updateCb({ topic: this.topic })

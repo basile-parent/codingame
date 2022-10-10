@@ -54,7 +54,7 @@ const GameActions: FC<GameActionsProps> = ({}: GameActionsProps) => {
                       </button>
                       <button className={`button is-small is-primary ${ styles.button }`}
                               disabled={!game || screen !== Screen.AFTER_GAME || game.topic.status === TopicStatus.SCORE_CALCULATED }
-                              onClick={WebsocketManager.calculateTopicScore}
+                              onClick={() => WebsocketManager.calculateTopicScore(game.topic!.id)}
                       >
                         Calcul score
                       </button>

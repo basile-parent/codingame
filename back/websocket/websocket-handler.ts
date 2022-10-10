@@ -46,7 +46,7 @@ class WebSocketServerHandler {
         socket.on("shareCode", this.shareCode)
         socket.on("setAdditionalScreenProps", this.setAdditionalScreenProps)
 
-        socket.on("calculateTopicScore", this.calculateScores)
+        socket.on("calculateTopicScore", this.calculateTopicScores)
         socket.on("showScores", this.showScores)
 
         socket.on("showPodium", this.showPodium)
@@ -74,32 +74,31 @@ class WebSocketServerHandler {
         this.logPlayers()
     }
 
-    private startGame = () => {
+    public startGame = () => {
         this.userHandler.setGameToPlayers(this.GAME)
         this.GAME.startGame()
         this.broadcastStatus()
-        console.log("Partie démarrée")
     }
 
-    private startTopic = (payload: { id: number }) => {
+    public startTopic = (payload: { id: number }) => {
         this.GAME.startTopic(payload.id, this.gameUpdateCb)
     }
-    private showScores = () => {
+    public showScores = () => {
         this.GAME.showScores()
         this.gameUpdateCb()
     }
-    private showPodium = () => {
+    public showPodium = () => {
         this.GAME.showPodium()
         this.gameUpdateCb()
     }
-    private reinitTopic = (payload: { id: number }) => {
+    public reinitTopic = (payload: { id: number }) => {
         this.GAME.reinitTopic(payload.id)
         this.userHandler.reinitTopicForAllPlayers(payload.id)
         console.log("Topic reset")
         this.broadcastStatus()
     }
 
-    private finishTopic = () => {
+    public finishTopic = () => {
         this.GAME.finishTopic(this.gameUpdateCb)
         const allUnfinishedPlayerTopics = this.userHandler._getAllUnfinishedPlayerTopics(this.GAME.topic.id)
         allUnfinishedPlayerTopics.forEach(playerTopic => {
@@ -107,7 +106,7 @@ class WebSocketServerHandler {
         })
     }
 
-    private addTime = (payload: { time: number }) => {
+    public addTime = (payload: { time: number }) => {
         this.GAME.addTimeToTopic(payload.time)
         this.broadcast("newEndTime", this.GAME.endTimer)
     }
@@ -118,7 +117,7 @@ class WebSocketServerHandler {
         this.broadcastStatus()
     }
 
-    private resetGame = () => {
+    public resetGame = () => {
         this.GAME.reset()
         this.userHandler.resetGameOnPlayer()
         this.broadcastStatus()
@@ -154,38 +153,43 @@ class WebSocketServerHandler {
         this.broadcastStatus()
     }
 
-    private setAdditionalScreenProps = (payload: string[]) => {
+    public setAdditionalScreenProps = (payload: string[]) => {
         this.GAME.setAdditionalScreenProps(payload)
         this.broadcastStatus()
     }
 
-    private calculateScores = () => {
-        const allPlayerTopics = this.userHandler.getAllPlayerTopics(this.GAME.topic)
-        const allPlayerTopicsWithScore = this.GAME.topic.calculateScore(allPlayerTopics)
+    public calculateTopicScores = (payload: { id: number }) => {
+        const topic = this.GAME.allTopics.find(t => t.id === payload.id)
+        if (!topic) {
+            throw new Error(`Topic #${ payload.id } not found`)
+        }
+
+        const allPlayerTopics = this.userHandler.getAllPlayerTopics(topic)
+        const allPlayerTopicsWithScore = topic.calculateScore(allPlayerTopics)
         this.userHandler.updateAllPlayerTopics(allPlayerTopicsWithScore)
         this.userHandler.calculateAllPlayerScoreAndPosition()
         this.GAME.calculateScore()
         this.broadcastStatus()
     }
 
-    private approvePlayer = (payload: { uuid: string }) => {
+    public approvePlayer = (payload: { uuid: string }) => {
         this.userHandler.approvePlayer(payload.uuid)
         // @ts-ignore
         console.log(this.userHandler.PLAYERS)
         this.logPlayers()
         this.broadcastStatus()
     }
-    private deletePlayer = (payload: { uuid: string }) => {
+    public deletePlayer = (payload: { uuid: string }) => {
         this.userHandler.deletePlayer(payload.uuid)
         this.logPlayers()
         this.broadcastStatus()
     }
-    private deleteAdmin = (payload: { uuid: string }) => {
+    public deleteAdmin = (payload: { uuid: string }) => {
         this.userHandler.deleteAdmin(payload.uuid)
         this.logPlayers()
         this.broadcastStatus()
     }
-    private deletePresentation = (payload: { uuid: string }) => {
+    public deletePresentation = (payload: { uuid: string }) => {
         this.userHandler.deletePresentation(payload.uuid)
         this.logPlayers()
         this.broadcastStatus()
