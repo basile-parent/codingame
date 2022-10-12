@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux";
 import {PayloadAction} from "@reduxjs/toolkit";
 import {ReduxActions, RootState} from "../../store";
 
-const {VITE_SERVER_URL, VITE_WS_PATH} = import.meta.env
+const {VITE_WEBSOCKET_URL, VITE_WS_PATH} = import.meta.env
 let socket: WebSocketHandler | null = null
 
 type WebsocketProviderProps = {
@@ -51,7 +51,7 @@ const WebsocketProvider: FC<WebsocketProviderProps> = ({mode}: WebsocketProvider
 
     useEffect(() => {
         dispatch(ReduxActions.connected.disconnect())
-        socket = new WebSocketHandler(VITE_SERVER_URL, {
+        socket = new WebSocketHandler(VITE_WEBSOCKET_URL, {
             mode,
             path: VITE_WS_PATH,
             onConnect: () => handleMessage(ReduxActions.connected.connect()),

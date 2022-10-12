@@ -77,7 +77,7 @@ const PodiumBar: FC<PodiumBarProps> = ({players, position, medalUrl, styleClass,
                 {
                     isRevealed &&
                   <CountUp start={0}
-                           end={positionPlayers.score + 1000}
+                           end={positionPlayers.score}
                            duration={slideDuration}
                            delay={delayBeforeCountUp}
                   />

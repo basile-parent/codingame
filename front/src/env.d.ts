@@ -1,8 +1,9 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-    readonly SERVER_URL: string
-    readonly WS_PATH: string
+    readonly VITE_SERVER_URL: string
+    readonly VITE_WEBSOCKET_URL: string
+    readonly VITE_WS_PATH: string
 }
 
 interface ImportMeta {
