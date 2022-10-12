@@ -1,0 +1,101 @@
+@import "../FlipTimer.module";
+
+$width: 55px;
+
+.wrapper {
+  position: relative;
+  display: inline-block;
+  height: $height;
+  width: $width;
+  margin: 0 3px;
+
+  font-size: $font-size;
+  font-weight: 700;
+  line-height: $height;
+
+  &.animated {
+    .before .upperPart {
+      animation: flipUpperPart 0.3s ease-in forwards;
+    }
+
+    .after .lowerPart {
+      animation: flipLowerPart 0.3s ease-in forwards;
+    }
+  }
+
+  .before {
+    .upperPart {z-index: 20;}
+    .lowerPart {z-index: 10;}
+  }
+  .after {
+    .upperPart {z-index: 5;}
+    .lowerPart {
+      z-index: 15;
+      transform: rotateX(180deg);
+      translate: 0 calc(($height / -2) - 1px);
+    }
+  }
+
+  .upperPart, .lowerPart {
+    position: absolute;
+    height: 50%;
+    width: 100%;
+
+    text-align: center;
+    overflow: hidden;
+    color: black;
+
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .upperPart {
+    border-radius: 7px 7px 0 0;
+    background-color: #e2e2e2;
+
+    .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .lowerPart {
+    top: calc(50% + 2px);
+    border-radius: 0 0 7px 7px;
+    background-color: #b7b7b7;
+
+    .content {
+      position: absolute;
+      top: calc(($height / -2) - 1px);
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+@keyframes flipUpperPart {
+  from {
+    transform: rotateX(0deg);
+    translate: 0 0;
+  }
+  to {
+    transform: rotateX(180deg);
+    translate: 0 calc(($height / 2) + 1px);
+  }
+}
+
+@keyframes flipLowerPart {
+  from {
+    transform: rotateX(180deg);
+    translate: 0 calc(($height / -2) - 1px);
+  }
+  to {
+    transform: rotateX(0deg);
+    translate: 0 0;
+  }
+}

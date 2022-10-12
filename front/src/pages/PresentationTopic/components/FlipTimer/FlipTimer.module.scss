@@ -1,0 +1,11 @@
+$height: 75px;
+$font-size: 60px;
+
+.wrapper {
+  .separator {
+    display: inline-block;
+    line-height: $height;
+    font-size: $font-size;
+    vertical-align: top;
+  }
+}
