@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.scss'
+import './index-admin.scss'
 import AdminApp from "./AdminApp"
 import {AdminContextProvider} from "./common/context/AdminContext"
 import store from "./common/store"
