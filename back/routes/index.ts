@@ -13,7 +13,7 @@ router.use('/admin', adminRoutes)
 router.get('/', (req, res) => {
   res.status(200)
       .setHeader('Content-Type', 'application/json')
-      .json({ success: true, message: 'PING OK' })
+      .json({ success: true, message: 'PING OK - Version finale !' })
 })
 
 export default router
