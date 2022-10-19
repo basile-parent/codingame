@@ -39,7 +39,7 @@ const debug = () => {
 function runTest (code, args, expectedResult) {
   const solutionFn = new Function("...inputArray", code)
   const result = solutionFn(...args)
-  notify(result === expectedResult)
+  notify(result == expectedResult)
 }
 
 function notify(isSuccess) {

@@ -1,0 +1,29 @@
+{
+  "id": 1,
+  "summary": "fizzbuzz",
+  "timer": 300000,
+  "points": 1000,
+  "maxPointsTimer": 300000,
+  "gameMode": "fastest",
+  "subject": "Vous recevez 1 entier <strong>A</strong> en entrée. <br/>Si <strong>A</strong> est un multiple de 3, retourner \"fizz\". <br/>Si <strong>A</strong> est un multiple de 5, retourner \"buzz\". <br/>Si <strong>A</strong> est un multiple de 3 et de 5, retourner \"fizzbuzz\". <br/>Sinon, retourner \"Je suis une théière!\"",
+  "inputs": "Un entier positif <strong>A</strong> tels que inputArray = [ A ]",
+  "output": "\"fizz\", \"buzz\", \"fizzbuzz\" ou \"Je suis une théière!\"",
+  "constraints": [
+    "0 ≤ <strong>A</strong> ≤ 500 000"
+  ],
+  "examples": [
+    { "inputs": [3], "output": "fizz" },
+    { "inputs": [5], "output": "buzz" },
+    { "inputs": [15], "output": "fizzbuzz" }
+  ],
+  "defaultCode": "const myInputArray = inputArray\n// Pour debugger, dans la sortie standard, utiliser la fonction \"debug\". Exemple: debug(inputArray)\n// Faire un \"return\" de la solution au problème\n\nreturn \"solution\"",
+  "tests": [
+    { "inputs": [3], "output": "fizz" },
+    { "inputs": [5], "output": "buzz" },
+    { "inputs": [15], "output": "fizzbuzz" },
+    { "inputs": [7], "output": "Je suis une théière!" },
+    { "inputs": [9], "output": "fizz", "hidden": true },
+    { "inputs": [500000], "output": "buzz", "hidden": true },
+    { "inputs": [0], "output": "fizzbuzz", "hidden": true }
+  ]
+}

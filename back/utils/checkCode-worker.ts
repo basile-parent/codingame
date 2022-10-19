@@ -39,7 +39,7 @@ runTest(quietConsole + code, args, expectedResult)
 function runTest (code, args, expectedResult) {
   const solutionFn = new Function("...inputArray", code)
   const result = solutionFn(...args)
-  notify(result === expectedResult)
+  notify(JSON.stringify(result) === JSON.stringify(expectedResult))
 }
 
 function notify(isSuccess) {

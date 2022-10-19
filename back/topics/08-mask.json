@@ -1,0 +1,28 @@
+{
+  "id": 8,
+  "summary": "Masque",
+  "timer": 600000,
+  "points": 3000,
+  "maxPointsTimer": 180000,
+  "gameMode": "reverse",
+  "subject": "",
+  "inputs": "",
+  "output": "",
+  "constraints": [],
+  "examples": [
+    { "inputs": [["00000", "AAAAA", "xxxxx"], ["00000", "BBBBB", "xxxxx"], ["00000", "CCCCC", "xxxxx"], ["00000", "DDDDD", "xxxxx"], ["00000", "EEEEE", "xxxxx"]], "output": ["AAAAA", "BBBBB", "CCCCC", "DDDDD", "EEEEE"] },
+    { "inputs": [["00000", "Alpha", "Error"], ["00000", "Bravo", "Avoid"], ["00000", "Delta", "These"], ["00000", "Hotel", "Other"], ["00000", "Oscar", "Words"]], "output": ["Alpha", "Bravo", "Delta", "Hotel", "Oscar"] },
+    { "inputs": [["11111", "FALSE", "RIGHT"], ["11111", "WRONG", "RIGHT"], ["11111", "ERROR", "RIGHT"], ["11111", "UNFIT", "RIGHT"], ["11111", "FAILS", "RIGHT"]], "output": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"] },
+    { "inputs": [["110", "zyC", "ABx"], ["111", "def", "DEF"], ["010", "GdI", "eHf"], ["001", "JKn", "qpL"], ["101", "tNo", "MpO"]], "output": ["ABC", "DEF", "GHI", "JKL", "MNO"] },
+    { "inputs": [["0000010111", "Spoilyrsfr", "sdikneyAle"], ["1111110001", "fpoklmrryq", "rtInHafvbP"], ["0110100111", "otheyTojki", "qttrrcvmRi"], ["1010101000", "mdhefsdord", "dsltIfLrvh"], ["0111100101", "Vsluhmoct?", "aoldesdry!"]], "output": ["SpoilerAle", "rtInHarryP", "otterTomRi", "ddleIsLord", "Voldemort!"] }
+  ],
+  "defaultCode": "const allLines = inputArray\n\nreturn \"solution\"",
+  "tests": [
+    { "inputs": [["00000", "AAAAA", "xxxxx"], ["00000", "BBBBB", "xxxxx"], ["00000", "CCCCC", "xxxxx"], ["00000", "DDDDD", "xxxxx"], ["00000", "EEEEE", "xxxxx"]], "output": ["AAAAA", "BBBBB", "CCCCC", "DDDDD", "EEEEE"] },
+    { "inputs": [["00000", "Alpha", "Error"], ["00000", "Bravo", "Avoid"], ["00000", "Delta", "These"], ["00000", "Hotel", "Other"], ["00000", "Oscar", "Words"]], "output": ["Alpha", "Bravo", "Delta", "Hotel", "Oscar"] },
+    { "inputs": [["11111", "FALSE", "RIGHT"], ["11111", "WRONG", "RIGHT"], ["11111", "ERROR", "RIGHT"], ["11111", "UNFIT", "RIGHT"], ["11111", "FAILS", "RIGHT"]], "output": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"] },
+    { "inputs": [["110", "zyC", "ABx"], ["111", "def", "DEF"], ["010", "GdI", "eHf"], ["001", "JKn", "qpL"], ["101", "tNo", "MpO"]], "output": ["ABC", "DEF", "GHI", "JKL", "MNO"] },
+    { "inputs": [["0000010111", "Spoilyrsfr", "sdikneyAle"], ["1111110001", "fpoklmrryq", "rtInHafvbP"], ["0110100111", "otheyTojki", "qttrrcvmRi"], ["1010101000", "mdhefsdord", "dsltIfLrvh"], ["0111100101", "Vsluhmoct?", "aoldesdry!"]], "output": ["SpoilerAle", "rtInHarryP", "otterTomRi", "ddleIsLord", "Voldemort!"] },
+    { "inputs": [["1010001010", "AOLJENCJSN", "ALSKCIELXM"], ["1000010111", "GKENCKJSLK", "MPLQKNKSIL"], ["0000110110", "SLMDJERJNE", "ZQLMKNSDFL"], ["1111010111", "FZELKNFEGF", "FGEZLEJNEF"], ["1010111000", "FEZSFCEZCZ", "FEZVCCEZRE"]], "output": ["AOSJENEJXN", "MKENCNJSIL", "SLMDKNRDFE", "FGEZKEFNEF", "FEZSCCEZCZ"], "hidden": true }
+  ]
+}

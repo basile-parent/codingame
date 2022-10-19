@@ -1,0 +1,30 @@
+{
+  "id": 5,
+  "summary": "Cuisine",
+  "timer": 900000,
+  "points": 4000,
+  "maxPointsTimer": 300000,
+  "gameMode": "fastest",
+  "subject": "Vous allez aider un chef pâtissier à vérifier ses recettes. Pour qu'un gâteau soit \"cuisinable\", la recette doit répondre à un certain nombre de critères: <ul>\n<li>Il doit y avoir au moins 1 oeuf pour 200g de farine (donc au moins 2 pour 400g, etc.). Un oeuf pèse en moyenne 60g.</li>\n<li>Il doit y avoir au moins 30g de sucre pour 200g de farine.</li>\n<li>Il doit y avoir au moins 80g de beurre pour 200g de farine.</li>\n<li>La température du four doit être entre 160°C et 220°C, cependant si le gâteau fait plus de 1kg, on peut pousser le four jusque 250°C</li>\n</ul>\n\n<br/><i>Formule des températures: 1°F = 1.8°C + 32°</i>",
+  "inputs": "Un tableau contenant la recette: [ quantité de farine en g, quantité de sucre en g, quantité de beurre en g, nombre d'oeufs, température du four <b><ins>en farenheit</ins></b> ]",
+  "output": "<ul>\n<li>\"La recette est parfaite\": si toutes les conditions sont remplies</li>\n<li>\"Il manque du sucre\": si la quantité de sucre est insuffisante</li>\n<li>\"Il manque du beurre\": si la quantité de beurre est insuffisante</li>\n<li>\"Il manque des oeufs\": si la quantité d'oeufs est insuffisante</li>\n<li>\"Mauvaise température\": si la température du four n'est pas bonne</li>\n</ul>",
+  "examples": [
+    { "inputs": [800, 120, 320, 3, 392], "output": "Il manque des oeufs" }
+  ],
+  "defaultCode": "const [ flour, sugar, butter, eggs, temperatureInFarenheit ] = inputArray\n// Pour debugger, dans la sortie standard, utiliser la fonction \"debug\". Exemple: debug(inputArray)\n// Faire un \"return\" de la solution au problème\n\nreturn \"solution\"",
+  "tests": [
+    { "inputs": [800, 120, 320, 3, 392], "output": "Il manque des oeufs", "name": "Il manque des oeufs" },
+    { "inputs": [600, 20, 260, 3, 356], "output": "Il manque du sucre", "name": "Il manque du sucre" },
+    { "inputs": [800, 120, 200, 4, 410], "output": "Il manque du beurre", "name": "Il manque du beurre" },
+    { "inputs": [400, 60, 180, 2, 302], "output": "Mauvaise température", "name": "Température trop basse" },
+    { "inputs": [400, 60, 180, 2, 446], "output": "Mauvaise température", "name": "Température trop haute" },
+    { "inputs": [600, 120, 320, 3, 482], "output": "La recette est parfaite", "name": "Température haute mais c'est OK" },
+    { "inputs": [700, 120, 320, 4, 410], "output": "La recette est parfaite", "name": "Un oeuf en plus" },
+    { "inputs": [600, 120, 320, 3, 340], "output": "La recette est parfaite", "name": "La recette est parfaite" },
+    { "inputs": [600, 90, 320, 3, 340], "output": "La recette est parfaite", "hidden": true },
+    { "inputs": [600, 120, 240, 3, 340], "output": "La recette est parfaite", "hidden": true },
+    { "inputs": [600, 120, 280, 3, 320], "output": "La recette est parfaite", "hidden": true },
+    { "inputs": [600, 120, 280, 3, 428], "output": "La recette est parfaite", "hidden": true },
+    { "inputs": [400, 120, 360, 2, 482], "output": "La recette est parfaite", "hidden": true }
+  ]
+}

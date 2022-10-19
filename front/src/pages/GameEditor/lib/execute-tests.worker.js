@@ -16,7 +16,8 @@ const debug = (...args) => {
 const runTest = (code, args, expectedResult) => {
   const solutionFn = new Function("...inputArray", code)
   const result = solutionFn(...args)
-  const isSuccess = result === expectedResult
+  const isSuccess = JSON.stringify(result) === JSON.stringify(expectedResult)
+
   let details = debugDetails ? "Debug: \n" : ""
   details += debugDetails + "\n"
   if (isSuccess) {

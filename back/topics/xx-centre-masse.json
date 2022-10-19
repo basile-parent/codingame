@@ -1,0 +1,29 @@
+{
+  "id": 999,
+  "summary": "Centre de masse",
+  "timer": 900000,
+  "points": 5000,
+  "maxPointsTimer": 300000,
+  "gameMode": "fastest",
+  "subject": "En physique, le centre de masse (x,y) d'un système d'objets est défini comme ceci:\n<br/>x = (m1*x1 + m2*x2 + m3*x3...) / (m1 + m2 + m3...)\n<br/>y = (m1*y1 + m2*y2 + m3*y3...) / (m1 + m2 + m3...)\n<br/><br/>\nVous allez recevoir en entrée un tableau de taille <strong>H</strong> x <strong>W</strong> contenant des lettres entre A et Z. Chaque lettre à une masse (m) allant de A=1 à Z=26.\n<br/>(1,1) sont les corrdonnées du coin supérieur gauche, (W,H) sont les coordonnées du coin inférieur droit\n<br/>Trouvez les coordonnées du point le plus proche du centre de masse de la grille.",
+  "inputs": "Les dimensions du tableaux et le tableau de données, tels que inputArray = \n[\n\t{ \n\t\tdimensions: [ H, W ], \n\t\tdata: [\n\t\t\t[ \"A\", \"B\", ... ],\n\t\t\t[ \"C\", \"D\", ... ],\n\t\t\t... \n\t\t] \n\t}\n ]",
+  "output": "Un chaine de caractère sans espace donnant les coordonées du centre de masse. Exemple: \"1,2\"",
+  "constraints": [
+    "5 ≤ <strong>H</strong> ≤ 35",
+    "5 ≤ <strong>W</strong> ≤ 35"
+  ],
+  "examples": [
+        { "inputs": [{ "dimensions": [ 10, 10 ],
+          "data": ["ACCUSATION", "ACCUSATIVE", "ACCUSATORY", "ACCUSINGLY", "ADMONITORS", "ALCOHOLICS", "ANNOYANCES", "ARCHFIENDS", "ARCHRIVALS", "BACKBITERS"]
+        }], "output": "6,5" }
+  ],
+  "defaultCode": "const { dimensions: [ H, W ], data } = inputArray[0]\n\nreturn \"solution\"",
+  "tests": [
+    { "inputs": [{ "dimensions": [ 10, 10 ],
+      "data": ["ACCUSATION", "ACCUSATIVE", "ACCUSATORY", "ACCUSINGLY", "ADMONITORS", "ALCOHOLICS", "ANNOYANCES", "ARCHFIENDS", "ARCHRIVALS", "BACKBITERS"]
+    }], "output": "6,5" },
+    { "inputs": [{ "dimensions": [ 5, 5 ],
+      "data": ["ABCDE", "FGHIJ", "KLMNO"]
+    }], "output": "6,5" }
+  ]
+}

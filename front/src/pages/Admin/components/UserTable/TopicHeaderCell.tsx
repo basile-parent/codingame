@@ -15,7 +15,6 @@ type TopicHeaderCellProps = {
 const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: TopicHeaderCellProps) => {
     const [ open, setOpen ] = useState(false)
     const game = useSelector((state: RootState) => state.game)
-    const currentGameTopic = useMemo(() => game?.topic, [ game ])
     const screen = useSelector((state: RootState) => state.screen)
 
 
@@ -59,7 +58,7 @@ const TopicHeaderCell: FC<TopicHeaderCellProps> = ({topic, onDetailTopic}: Topic
                         </button>
                         <button className={`dropdown-item ${ styles.dropdownButton }`}
                                 onClick={handleStartTopic}
-                                disabled={!game?.started || [TopicStatus.IN_PROGRESS, TopicStatus.FINISHED].includes(currentGameTopic?.status!) }
+                                disabled={!game?.started || [Screen.GAME_EDITOR, Screen.AFTER_GAME, Screen.PODIUM].includes(screen) }
                         >
                             Démarrer
                         </button>

@@ -1,0 +1,31 @@
+{
+  "id": 7,
+  "summary": "Suite de Syracuse",
+  "timer": 600000,
+  "points": 5000,
+  "maxPointsTimer": 60000,
+  "gameMode": "shortest",
+  "subject": "On appelle suite de Syracuse une suite d'entiers naturels définie de la manière suivante: on part d'un nombre entier strictement positif; s’il est pair, on le divise par 2; s’il est impair, on le multiplie par 3 et l'on ajoute 1. L'objectif est de calculer le <strong>N</strong>ième nombre de la suite pour un entier <strong>A</strong> passé en paramètre.",
+  "inputs": "Les entiers <strong>A</strong> et <strong>N</strong> tels que inputArray = [ A, N ]",
+  "output": "Un entier qui est le <strong>N</strong>ième élément de la suite de Syracuse du nombre <strong>A</strong>.",
+  "constraints": [
+    "1 ≤ <strong>A</strong> ≤ 1 000",
+    "1 ≤ <strong>N</strong> ≤ 1 000"
+  ],
+  "examples": [
+    { "inputs": [14, 1], "output": 14 },
+    { "inputs": [14, 2], "output": 7 },
+    { "inputs": [14, 3], "output": 22 }
+  ],
+  "defaultCode": "const myInputArray = inputArray\n\nreturn \"solution\"",
+  "tests": [
+    { "inputs": [14, 1], "output": 14, "name": "1er élément de 14" },
+    { "inputs": [14, 2], "output": 7, "name": "2ème élément de 14" },
+    { "inputs": [14, 3], "output": 22, "name": "3ème élément de 14" },
+    { "inputs": [10, 10], "output": 1, "name": "10ème élément de 10" },
+    { "inputs": [1000, 1000], "output": 1, "hidden": true },
+    { "inputs": [1, 51], "output": 2, "hidden": true },
+    { "inputs": [124, 242], "output": 4, "hidden": true },
+    { "inputs": [5140, 2035], "output": 2, "hidden": true }
+  ]
+}

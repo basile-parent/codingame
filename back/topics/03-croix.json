@@ -1,0 +1,25 @@
+{
+  "id": 3,
+  "summary": "Croix",
+  "timer": 900000,
+  "points": 3000,
+  "maxPointsTimer": 60000,
+  "gameMode": "shortest",
+  "subject": "L'objectif est de créer une croix de taille <strong>N</strong>. Vous recevrez en entrée un entier <strong>N</strong>, vous retournerez en sortie une chaîne de caractère représentant un carré de côté <strong>N</strong> où tous les caractères sont des # sauf les diagonales qui seront des X",  "inputs": "Un entier positif <strong>N</strong> tels que inputArray = [ N ]",
+  "output": "Un carré de côté <strong>N</strong> avec une croix",
+  "constraints": [
+    "3 ≤ <strong>N</strong> ≤ 25"
+  ],
+  "examples": [
+    { "inputs": [3], "output": "X#X\n#X#\nX#X" },
+    { "inputs": [5], "output": "X###X\n#X#X#\n##X##\n#X#X#\nX###X" }
+  ],
+  "defaultCode": "const myInputArray = inputArray\n// Pour debugger, dans la sortie standard, utiliser la fonction \"debug\". Exemple: debug(inputArray)\n// Faire un \"return\" de la solution au problème\n\nreturn \"solution\"",
+  "tests": [
+    { "inputs": [3], "output": "X#X\n#X#\nX#X" },
+    { "inputs": [5], "output": "X###X\n#X#X#\n##X##\n#X#X#\nX###X" },
+    { "inputs": [4], "output": "X##X\n#XX#\n#XX#\nX##X" },
+    { "inputs": [10], "output": "X########X\n#X######X#\n##X####X##\n###X##X###\n####XX####\n####XX####\n###X##X###\n##X####X##\n#X######X#\nX########X", "hidden": true },
+    { "inputs": [25], "output": "X#######################X\n#X#####################X#\n##X###################X##\n###X#################X###\n####X###############X####\n#####X#############X#####\n######X###########X######\n#######X#########X#######\n########X#######X########\n#########X#####X#########\n##########X###X##########\n###########X#X###########\n############X############\n###########X#X###########\n##########X###X##########\n#########X#####X#########\n########X#######X########\n#######X#########X#######\n######X###########X######\n#####X#############X#####\n####X###############X####\n###X#################X###\n##X###################X##\n#X#####################X#\nX#######################X", "hidden": true }
+  ]
+}

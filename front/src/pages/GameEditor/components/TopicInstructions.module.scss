@@ -38,6 +38,7 @@
 
   .exampleValue {
     font-family: monospace;
+    white-space: break-spaces;
   }
 
   strong {
@@ -52,5 +53,17 @@
     background-color: $details-background;
     padding: 15px 25px;
     margin-top: 25px;
+
+    .text {
+      font-family: inherit;
+      white-space: break-spaces;
+      font-size: 1em;
+      line-height: 1em;
+
+      * {
+        font-size: 1em;
+        line-height: 1em;
+      }
+    }
   }
 }

@@ -1,0 +1,28 @@
+{
+  "id": 4,
+  "summary": "César",
+  "timer": 600000,
+  "points": 5000,
+  "maxPointsTimer": 60000,
+  "gameMode": "reverse",
+  "subject": "",
+  "inputs": "",
+  "output": "",
+  "constraints": [],
+  "examples": [
+    { "inputs": [ "ATECNA" ], "output": "BUFDOB" },
+    { "inputs": [ "CODINGAME" ], "output": "DPEJOHBNF" },
+    { "inputs": [ "CESAR" ], "output": "DFTBS" },
+    { "inputs": [ "ABBA" ], "output": "BCCB" },
+    { "inputs": [ "ZAZA" ], "output": "ABAB" }
+  ],
+  "defaultCode": "const myInputArray = inputArray\n// Pour debugger, dans la sortie standard, utiliser la fonction \"debug\". Exemple: debug(inputArray)\n// Faire un \"return\" de la solution au problème\n\nreturn inputArray[0] + inputArray[1]",
+  "tests": [
+    { "inputs": [ "ATECNA" ], "output": "BUFDOB" },
+    { "inputs": [ "CODINGAME" ], "output": "DPEJOHBNF" },
+    { "inputs": [ "CESAR" ], "output": "DFTBS" },
+    { "inputs": [ "ABBA" ], "output": "BCCB" },
+    { "inputs": [ "ZAZA" ], "output": "ABAB" },
+    { "inputs": [ "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ], "output": "BCDEFGHIJKLMNOPQRSTUVWXYZA", "hidden": true }
+  ]
+}

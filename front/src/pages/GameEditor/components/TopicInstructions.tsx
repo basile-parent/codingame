@@ -31,11 +31,11 @@ const TopicInstructions: FC<TopicInstructionsProps> = ({}) => {
             <p dangerouslySetInnerHTML={{__html: topic.subject || ""}}/>
             <div className={styles.details}>
                 <h3>Entrées:</h3>
-                <p dangerouslySetInnerHTML={{__html: topic.inputs || ""}}/>
+                <pre dangerouslySetInnerHTML={{__html: topic.inputs || ""}} className={styles.text} />
 
                 <hr/>
                 <h3>Sortie:</h3>
-                <p dangerouslySetInnerHTML={{__html: topic.output || ""}}/>
+                <pre dangerouslySetInnerHTML={{__html: topic.output || ""}} className={styles.text} />
 
                 <hr/>
 
@@ -48,6 +48,7 @@ const TopicInstructions: FC<TopicInstructionsProps> = ({}) => {
                             topic.constraints.map((constraint, index) => (
                                 <li key={`constraint-${index}`}
                                     dangerouslySetInnerHTML={{__html: constraint}}
+                                    className={styles.text}
                                 />
                             ))
                         }
@@ -65,6 +66,7 @@ const TopicInstructions: FC<TopicInstructionsProps> = ({}) => {
 
 const Examples = (props: { topic: Topic }) => {
     const { topic } = props
+
     return (
         <>
             {
@@ -76,11 +78,11 @@ const Examples = (props: { topic: Topic }) => {
                           <div className={styles.example} key={`example-${index}`}>
                               <div className={styles.exampleInput}>
                                   <p className={styles.exampleTitle}>Entrée</p>
-                                  <p className={styles.exampleValue}>[{example.inputs.join(", ")}]</p>
+                                  <pre className={styles.exampleValue}>{JSON.stringify(example.inputs)}</pre>
                               </div>
                               <div className={styles.exampleOutput}>
                                   <p className={styles.exampleTitle}>Sortie</p>
-                                  <p className={styles.exampleValue}>{example.output}</p>
+                                  <pre className={styles.exampleValue}>{example.output}</pre>
                               </div>
                           </div>
                       ))

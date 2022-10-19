@@ -1,0 +1,36 @@
+{
+  "id": 6,
+  "summary": "Chiffre romain",
+  "timer": 900000,
+  "points": 5000,
+  "maxPointsTimer": 300000,
+  "gameMode": "fastest",
+  "subject": "Transformer un chiffre romain <strong>R</strong> en entier. Rappel des significations des lettres:<ul><li>- I = 1</li><li>- V = 5</li><li>- X = 10</li><li>- L = 50</li><li>- C = 100</li><li>- D = 500</li><li>- M = 1 000</li></ul>Quand 2 chiffres sont ordonnés de manières croissantes, ils s'additionnent. Si un chiffre est inférieur au suivant, il se soustrait.",
+  "inputs": "Une chaîne de caractère représentant le chiffre romain, tel que inputArray = [ R ].",
+  "output": "Un entier",
+  "constraints": [
+    "1 ≤ <strong>R</strong> ≤ 3 999"
+  ],
+  "examples": [
+    { "inputs": ["I"], "output": 1 },
+    { "inputs": ["VI"], "output": 6, "name": "VI" },
+    { "inputs": ["VIII"], "output": 8, "name": "VIII" },
+    { "inputs": ["DIX"], "output": 509, "name": "DIX" },
+    { "inputs": ["LIV"], "output": 54, "name": "LIV" },
+    { "inputs": ["XCIV"], "output": 94, "name": "XCIV" }
+  ],
+  "defaultCode": "const [ roman ] = inputArray\n// Pour debugger, dans la sortie standard, utiliser la fonction \"debug\". Exemple: debug(inputArray)\n// Faire un \"return\" de la solution au problème\n\nlet arabic = 0\n\nreturn arabic",
+  "tests": [
+    { "inputs": ["I"], "output": 1, "name": "I" },
+    { "inputs": ["VI"], "output": 6, "name": "VI" },
+    { "inputs": ["VIII"], "output": 8, "name": "VIII" },
+    { "inputs": ["DIX"], "output": 509, "name": "DIX" },
+    { "inputs": ["LIV"], "output": 54, "name": "LIV" },
+    { "inputs": ["XCIV"], "output": 94, "name": "XCIV" },
+    { "inputs": ["XC"], "output": 90, "hidden": true },
+    { "inputs": ["XCIX"], "output": 99, "hidden": true },
+    { "inputs": ["M"], "output": 1000, "hidden": true },
+    { "inputs": ["MCCXXXIV"], "output": 1234, "hidden": true },
+    { "inputs": ["MMMCMXCIX"], "output": 3999, "hidden": true }
+  ]
+}
