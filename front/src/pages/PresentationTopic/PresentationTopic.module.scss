@@ -2,11 +2,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  width: 600px;
+  flex-direction: row;
+  width: 900px;
 
   .progress {
-    margin-bottom: 50px;
+    width: 400px;
+    height: 400px;
+    margin-right: 100px;
 
     .timer {
       font-size: 5rem;
@@ -18,9 +20,8 @@
     }
   }
 
-
   .playerList {
-    max-height: 277px; // 5 items
+    max-height: 600px;
   }
 
 }

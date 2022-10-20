@@ -20,8 +20,6 @@ const PresentationTopic: FC<PresentationTopicProps> = ({}: PresentationTopicProp
     }
 
     let duration = game?.topic?.timer / 1000
-    console.log("duration", duration)
-    console.log("remainingTime", remainingTime)
 
     return (
         <div className={styles.container}>
